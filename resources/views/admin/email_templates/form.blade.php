@@ -70,7 +70,7 @@
     {{-- Buttons --}}
     <div class="col-12 border-top pt-4 mt-4">
         <button type="submit" class="btn btn-primary">
-            {{ isset($email_template) ? 'Update Template' : 'Create Template' }}
+            {{ isset($email_template) ? 'Update' : 'Save' }}
         </button>
         <a href="{{ route('admin.email-templates.index') }}" class="btn btn-light">Cancel</a>
     </div>

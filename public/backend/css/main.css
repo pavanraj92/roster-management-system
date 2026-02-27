@@ -956,7 +956,7 @@ b {
 
 .form-control,
 .form-select {
-  background-color: #f4f5f9;
+  /* background-color: #f4f5f9; */
   border: 2px solid #f4f5f9;
   font-size: 13px;
   box-shadow: none;
@@ -1002,7 +1002,7 @@ textarea.form-control {
 .searchform button {
   border-radius: 0 4px 4px 0;
   border: 0;
-  background-color: #f4f5f9;
+  /* background-color: #f4f5f9; */
   box-shadow: 0 !important;
   width: 70px;
   height: 42px;
@@ -1060,7 +1060,7 @@ textarea.form-control {
 }
 
 .custom_select .select2-container--default .select2-selection--single {
-  background-color: #f4f5f9;
+  /* background-color: #f4f5f9; */
   border: 2px solid #f4f5f9;
   border-radius: 4px !important;
   height: 45px;

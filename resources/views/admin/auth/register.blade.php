@@ -81,7 +81,7 @@
                                     <label class="form-label">Role</label>
                                     <select class="form-select @error('role') is-invalid @enderror" name="role">
                                         <option value="">Select Role</option>
-                                        <option value="Admin" {{ old('role') == 'Admin' ? 'selected' : '' }}>Admin
+                                        <option value="admin" {{ old('role') == 'admin' ? 'selected' : '' }}>Admin
                                         </option>
                                     </select>
                                     @error('role')

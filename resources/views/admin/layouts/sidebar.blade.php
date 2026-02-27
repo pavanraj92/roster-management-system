@@ -24,11 +24,20 @@
                 </li>
             @endcan
 
+            {{-- @can('user_access')
+            <li class="menu-item {{ request()->routeIs('admin.staff.*') ? 'active' : '' }}">
+                <a class="menu-link" href="{{ route('admin.staff.index') }}">
+                    <i class="icon material-icons md-person"></i>
+                    <span class="text">Staff Manager</span>
+                </a>
+            </li>
+            @endcan --}}
+
             @can('user_access')
-                <li class="menu-item {{ request()->routeIs('admin.staff.*') ? 'active' : '' }}">
-                    <a class="menu-link" href="{{ route('admin.staff.index') }}">
+                <li class="menu-item {{ request()->routeIs('admin.user.*') ? 'active' : '' }}">
+                    <a class="menu-link" href="{{ route('admin.user.index') }}">
                         <i class="icon material-icons md-person"></i>
-                        <span class="text">Staff Manager</span>
+                        <span class="text">User Manager</span>
                     </a>
                 </li>
             @endcan
@@ -80,10 +89,10 @@
                             class="{{ request()->routeIs('admin.settings.index') ? 'active' : '' }}">Website
                             Setting</a>
                         {{-- <a href="{{ route('admin.settings.banners.index') }}"
-                        class="{{ request()->is('admin/settings/banners*') ? 'active' : '' }}">Banner Setting</a> --}}
+                            class="{{ request()->is('admin/settings/banners*') ? 'active' : '' }}">Banner Setting</a>
                         <a href="{{ route('admin.settings.visibility.index') }}"
                             class="{{ request()->routeIs('admin.settings.visibility.*') ? 'active' : '' }}">Visibility
-                            Setting</a>
+                            Setting</a>--}}
                     </div>
                 </li>
             @endcan

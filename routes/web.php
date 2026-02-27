@@ -6,7 +6,7 @@ use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', fn () => view('frontend.pages.home'))->name('home');
+Route::get('/', fn() => view('frontend.pages.home'))->name('home');
 Route::get('/pages/{slug}', [PageController::class, 'show'])->name('pages.about');
 
 
@@ -17,7 +17,7 @@ Route::middleware('guest')->group(function () {
 
     Route::post('/login', [AuthController::class, 'login'])
         ->name('login.post');
-    
+
     Route::post('/login/otp/send', [AuthController::class, 'sendLoginOtp'])
         ->name('login.otp.send');
 

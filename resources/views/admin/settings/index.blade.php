@@ -8,7 +8,8 @@
             <div class="clearfix">
                 <div class="float-start">
                     <h2 class="content-title card-title mb-0">Website Settings</h2>
-                    <p class="listing-page-subtitle mb-3">Configure general site information, home page content, and social links.</p>
+                    <p class="listing-page-subtitle mb-3">Configure general site information, home page content, and social
+                        links.</p>
                 </div>
 
                 <!-- Right side: Breadcrumb -->
@@ -27,12 +28,13 @@
                         <nav class="nav nav-pills flex-lg-column mb-4">
                             <a class="nav-link {{ $tab == 'website' ? 'active' : '' }}"
                                 href="{{ route('admin.settings.index', ['tab' => 'website']) }}">General</a>
-                            <a class="nav-link {{ $tab == 'home' ? 'active' : '' }}"
+                            {{--<a class="nav-link {{ $tab == 'home' ? 'active' : '' }}"
                                 href="{{ route('admin.settings.index', ['tab' => 'home']) }}">Home Page</a>
                             <a class="nav-link {{ $tab == 'social-icons' ? 'active' : '' }}"
                                 href="{{ route('admin.settings.index', ['tab' => 'social-icons']) }}">Social Icons</a>
                             <a class="nav-link {{ $tab == 'service-highlights' ? 'active' : '' }}"
-                                href="{{ route('admin.settings.index', ['tab' => 'service-highlights']) }}">Service Highlights</a>
+                                href="{{ route('admin.settings.index', ['tab' => 'service-highlights']) }}">Service
+                                Highlights</a>--}}
                         </nav>
                     </aside>
                     <div class="col-lg-9">
@@ -126,7 +128,7 @@
                                             <h5 class="mb-3">Social Media Links</h5>
                                             <div id="social-icons-repeater">
                                                 @php
-    $socialIcons = $settings['social_icons'] ?? [];
+                                                    $socialIcons = $settings['social_icons'] ?? [];
                                                 @endphp
                                                 @forelse($socialIcons as $index => $item)
                                                     <div class="row mb-4 align-items-center social-icon-row border-bottom pb-3">
@@ -139,11 +141,13 @@
                                                         <div class="col-md-4">
                                                             <label class="form-label">Icon Image</label>
                                                             <div class="input-upload">
-                                                                <label class="btn btn-light rounded font-md" for="social-input-{{ $index }}">
+                                                                <label class="btn btn-light rounded font-md"
+                                                                    for="social-input-{{ $index }}">
                                                                     <i class="icons material-icons md-backup font-md"></i> Upload
                                                                 </label>
-                                                                <input type="file" name="social_icons[{{ $index }}][icon]" 
-                                                                    id="social-input-{{ $index }}" class="d-none icon-input" accept="image/*">
+                                                                <input type="file" name="social_icons[{{ $index }}][icon]"
+                                                                    id="social-input-{{ $index }}" class="d-none icon-input"
+                                                                    accept="image/*">
                                                             </div>
                                                             <input type="hidden" name="social_icons[{{ $index }}][old_icon]"
                                                                 value="{{ $item['icon'] ?? '' }}">
@@ -173,8 +177,8 @@
                                                                 <label class="btn btn-light rounded font-md" for="social-input-0">
                                                                     <i class="icons material-icons md-backup font-md"></i> Upload
                                                                 </label>
-                                                                <input type="file" name="social_icons[0][icon]" 
-                                                                    id="social-input-0" class="d-none icon-input" accept="image/*">
+                                                                <input type="file" name="social_icons[0][icon]" id="social-input-0"
+                                                                    class="d-none icon-input" accept="image/*">
                                                             </div>
                                                             <input type="hidden" name="social_icons[0][old_icon]" value="">
                                                         </div>
@@ -200,9 +204,9 @@
                                             <h5 class="mb-3">Service Highlights</h5>
                                             <div id="service-highlights-repeater">
                                                 @php
-    $highlights = $settings['service_highlights'] ?? [];
+                                                    $serviceHighlights = $settings['service_highlights'] ?? [];
                                                 @endphp
-                                                @forelse($highlights as $index => $item)
+                                                @forelse($serviceHighlights as $index => $item)
                                                     <div class="row mb-4 align-items-center service-row border-bottom pb-3">
                                                         <div class="col-md-2 text-center">
                                                             <img src="{{ !empty($item['image']) ? asset('storage/' . $item['image']) : asset('backend/imgs/theme/upload.svg') }}"
@@ -213,11 +217,13 @@
                                                         <div class="col-md-3">
                                                             <label class="form-label">Image</label>
                                                             <div class="input-upload">
-                                                                <label class="btn btn-light rounded font-md" for="service-input-{{ $index }}">
+                                                                <label class="btn btn-light rounded font-md"
+                                                                    for="service-input-{{ $index }}">
                                                                     <i class="icons material-icons md-backup font-md"></i> Upload
                                                                 </label>
-                                                                <input type="file" name="service_highlights[{{ $index }}][image]" 
-                                                                    id="service-input-{{ $index }}" class="d-none service-image-input" accept="image/*">
+                                                                <input type="file" name="service_highlights[{{ $index }}][image]"
+                                                                    id="service-input-{{ $index }}"
+                                                                    class="d-none service-image-input" accept="image/*">
                                                             </div>
                                                             <input type="hidden" name="service_highlights[{{ $index }}][old_image]"
                                                                 value="{{ $item['image'] ?? '' }}">
@@ -253,20 +259,21 @@
                                                                 <label class="btn btn-light rounded font-md" for="service-input-0">
                                                                     <i class="icons material-icons md-backup font-md"></i> Upload
                                                                 </label>
-                                                                <input type="file" name="service_highlights[0][image]" 
-                                                                    id="service-input-0" class="d-none service-image-input" accept="image/*">
+                                                                <input type="file" name="service_highlights[0][image]"
+                                                                    id="service-input-0" class="d-none service-image-input"
+                                                                    accept="image/*">
                                                             </div>
                                                             <input type="hidden" name="service_highlights[0][old_image]" value="">
                                                         </div>
                                                         <div class="col-md-3">
                                                             <label class="form-label">Title</label>
-                                                            <input type="text" name="service_highlights[0][title]" class="form-control"
-                                                                placeholder="Best Prices & Offers">
+                                                            <input type="text" name="service_highlights[0][title]"
+                                                                class="form-control" placeholder="Best Prices & Offers">
                                                         </div>
                                                         <div class="col-md-3">
                                                             <label class="form-label">Sub-Title</label>
-                                                            <input type="text" name="service_highlights[0][sub_title]" class="form-control"
-                                                                placeholder="Orders $50 or more">
+                                                            <input type="text" name="service_highlights[0][sub_title]"
+                                                                class="form-control" placeholder="Orders $50 or more">
                                                         </div>
                                                         <div class="col-md-1">
                                                             <button type="button"
@@ -275,14 +282,15 @@
                                                     </div>
                                                 @endforelse
                                             </div>
-                                            <button type="button" id="add-service-highlight" class="btn btn-secondary btn-sm mt-3">Add
+                                            <button type="button" id="add-service-highlight"
+                                                class="btn btn-secondary btn-sm mt-3">Add
                                                 New Service Highlight</button>
                                         </div>
                                     </div>
                                 @endif
 
                                 <br />
-                                <button class="btn btn-primary" type="submit">Save changes</button>
+                                <button class="btn btn-primary" type="submit">Save</button>
                             </form>
                         </section>
                     </div>
@@ -310,76 +318,76 @@
 
             // Social Icons Repeater
             let socialIconIndex = {{ count($settings['social_icons'] ?? [0]) }};
-            
+
             $('#add-social-icon').on('click', function () {
                 let html = `
-                    <div class="row mb-4 align-items-center social-icon-row border-bottom pb-3">
-                        <div class="col-md-2 text-center">
-                            <img src="{{ asset('backend/imgs/theme/upload.svg') }}"
-                                class="img-sm img-thumbnail mb-2 preview-image"
-                                style="width: 50px; height: 50px; object-fit: contain;"
-                                id="social-preview-${socialIconIndex}">
-                        </div>
-                        <div class="col-md-4">
-                            <label class="form-label">Icon Image</label>
-                            <div class="input-upload">
-                                <label class="btn btn-light rounded font-md" for="social-input-${socialIconIndex}">
-                                    <i class="icons material-icons md-backup font-md"></i> Upload
-                                </label>
-                                <input type="file" name="social_icons[${socialIconIndex}][icon]" 
-                                    id="social-input-${socialIconIndex}" class="d-none icon-input" accept="image/*">
-                            </div>
-                            <input type="hidden" name="social_icons[${socialIconIndex}][old_icon]" value="">
-                        </div>
-                        <div class="col-md-4">
-                            <label class="form-label">URL</label>
-                            <input type="url" name="social_icons[${socialIconIndex}][url]" class="form-control" placeholder="https://facebook.com/yourpage">
-                        </div>
-                        <div class="col-md-2">
-                            <button type="button" class="btn btn-danger btn-sm remove-row">Remove</button>
-                        </div>
-                    </div>
-                `;
+                                                        <div class="row mb-4 align-items-center social-icon-row border-bottom pb-3">
+                                                            <div class="col-md-2 text-center">
+                                                                <img src="{{ asset('backend/imgs/theme/upload.svg') }}"
+                                                                    class="img-sm img-thumbnail mb-2 preview-image"
+                                                                    style="width: 50px; height: 50px; object-fit: contain;"
+                                                                    id="social-preview-${socialIconIndex}">
+                                                            </div>
+                                                            <div class="col-md-4">
+                                                                <label class="form-label">Icon Image</label>
+                                                                <div class="input-upload">
+                                                                    <label class="btn btn-light rounded font-md" for="social-input-${socialIconIndex}">
+                                                                        <i class="icons material-icons md-backup font-md"></i> Upload
+                                                                    </label>
+                                                                    <input type="file" name="social_icons[${socialIconIndex}][icon]" 
+                                                                        id="social-input-${socialIconIndex}" class="d-none icon-input" accept="image/*">
+                                                                </div>
+                                                                <input type="hidden" name="social_icons[${socialIconIndex}][old_icon]" value="">
+                                                            </div>
+                                                            <div class="col-md-4">
+                                                                <label class="form-label">URL</label>
+                                                                <input type="url" name="social_icons[${socialIconIndex}][url]" class="form-control" placeholder="https://facebook.com/yourpage">
+                                                            </div>
+                                                            <div class="col-md-2">
+                                                                <button type="button" class="btn btn-danger btn-sm remove-row">Remove</button>
+                                                            </div>
+                                                        </div>
+                                                    `;
                 $('#social-icons-repeater').append(html);
                 socialIconIndex++;
             });
 
             // Service Highlights Repeater
             let serviceIndex = {{ count($settings['service_highlights'] ?? [0]) }};
-            
+
             $('#add-service-highlight').on('click', function () {
                 let html = `
-                    <div class="row mb-4 align-items-center service-row border-bottom pb-3">
-                        <div class="col-md-2 text-center">
-                            <img src="{{ asset('backend/imgs/theme/upload.svg') }}"
-                                class="img-sm img-thumbnail mb-2 preview-image"
-                                style="width: 50px; height: 50px; object-fit: contain;"
-                                id="service-preview-${serviceIndex}">
-                        </div>
-                        <div class="col-md-3">
-                            <label class="form-label">Image</label>
-                            <div class="input-upload">
-                                <label class="btn btn-light rounded font-md" for="service-input-${serviceIndex}">
-                                    <i class="icons material-icons md-backup font-md"></i> Upload
-                                </label>
-                                <input type="file" name="service_highlights[${serviceIndex}][image]" 
-                                    id="service-input-${serviceIndex}" class="d-none service-image-input" accept="image/*">
-                            </div>
-                            <input type="hidden" name="service_highlights[${serviceIndex}][old_image]" value="">
-                        </div>
-                        <div class="col-md-3">
-                            <label class="form-label">Title</label>
-                            <input type="text" name="service_highlights[${serviceIndex}][title]" class="form-control" placeholder="Best Prices & Offers">
-                        </div>
-                        <div class="col-md-3">
-                            <label class="form-label">Sub-Title</label>
-                            <input type="text" name="service_highlights[${serviceIndex}][sub_title]" class="form-control" placeholder="Orders $50 or more">
-                        </div>
-                        <div class="col-md-1">
-                            <button type="button" class="btn btn-danger btn-sm remove-service-row">Remove</button>
-                        </div>
-                    </div>
-                `;
+                                                        <div class="row mb-4 align-items-center service-row border-bottom pb-3">
+                                                            <div class="col-md-2 text-center">
+                                                                <img src="{{ asset('backend/imgs/theme/upload.svg') }}"
+                                                                    class="img-sm img-thumbnail mb-2 preview-image"
+                                                                    style="width: 50px; height: 50px; object-fit: contain;"
+                                                                    id="service-preview-${serviceIndex}">
+                                                            </div>
+                                                            <div class="col-md-3">
+                                                                <label class="form-label">Image</label>
+                                                                <div class="input-upload">
+                                                                    <label class="btn btn-light rounded font-md" for="service-input-${serviceIndex}">
+                                                                        <i class="icons material-icons md-backup font-md"></i> Upload
+                                                                    </label>
+                                                                    <input type="file" name="service_highlights[${serviceIndex}][image]" 
+                                                                        id="service-input-${serviceIndex}" class="d-none service-image-input" accept="image/*">
+                                                                </div>
+                                                                <input type="hidden" name="service_highlights[${serviceIndex}][old_image]" value="">
+                                                            </div>
+                                                            <div class="col-md-3">
+                                                                <label class="form-label">Title</label>
+                                                                <input type="text" name="service_highlights[${serviceIndex}][title]" class="form-control" placeholder="Best Prices & Offers">
+                                                            </div>
+                                                            <div class="col-md-3">
+                                                                <label class="form-label">Sub-Title</label>
+                                                                <input type="text" name="service_highlights[${serviceIndex}][sub_title]" class="form-control" placeholder="Orders $50 or more">
+                                                            </div>
+                                                            <div class="col-md-1">
+                                                                <button type="button" class="btn btn-danger btn-sm remove-service-row">Remove</button>
+                                                            </div>
+                                                        </div>
+                                                    `;
                 $('#service-highlights-repeater').append(html);
                 serviceIndex++;
             });

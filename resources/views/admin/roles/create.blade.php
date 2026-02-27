@@ -10,7 +10,7 @@
                 <div class="float-start">
                     <h2 class="content-title card-title mb-0">Create New Role</h2>
                     <p class="listing-page-subtitle mb-3">
-                        Add a new admin role
+                        Add a new role
                     </p>
                 </div>
 
@@ -29,5 +29,3 @@
 
     </section>
 @endsection
-
-

@@ -10,7 +10,7 @@
                 <div class="float-start">
                     <h2 class="content-title card-title mb-0">Roles Manager</h2>
                     <p class="listing-page-subtitle mb-3">
-                        Manage admin roles and their permissions.
+                        Manage roles and their permissions.
                     </p>
                 </div>
 

@@ -42,33 +42,33 @@ $(document).ready(function () {
                     },
                     success: function (response) {
                         if (response.success) {
-                            const Toast = Swal.mixin({
-                                toast: true,
-                                position: 'top-end',
-                                showConfirmButton: false,
-                                timer: 3000,
-                                timerProgressBar: true,
-                            });
-                            Toast.fire({
-                                icon: 'success',
-                                title: 'Status updated successfully'
-                            });
+                            if (window.adminToast) {
+                                window.adminToast('success', 'Status updated successfully');
+                            }
                         } else {
                             $this.prop('checked', !isChecked);
-                            Swal.fire({
-                                icon: 'error',
-                                title: 'Error!',
-                                text: response.message || 'Something went wrong',
-                            });
+                            if (window.adminToast) {
+                                window.adminToast('error', response.message || 'Something went wrong');
+                            } else {
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Error!',
+                                    text: response.message || 'Something went wrong',
+                                });
+                            }
                         }
                     },
                     error: function (xhr) {
                         $this.prop('checked', !isChecked);
-                        Swal.fire({
-                            icon: 'error',
-                            title: 'Error!',
-                            text: 'Something went wrong while updating status.',
-                        });
+                        if (window.adminToast) {
+                            window.adminToast('error', 'Something went wrong while updating status.');
+                        } else {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Error!',
+                                text: 'Something went wrong while updating status.',
+                            });
+                        }
                     }
                 });
             } else {
@@ -110,17 +110,9 @@ $(document).ready(function () {
                                 $('.dataTable').DataTable().ajax.reload(null, false);
                             }
 
-                            const Toast = Swal.mixin({
-                                toast: true,
-                                position: 'top-end',
-                                showConfirmButton: false,
-                                timer: 3000,
-                                timerProgressBar: true,
-                            });
-                            Toast.fire({
-                                icon: 'success',
-                                title: moduleName + ' deleted successfully'
-                            });
+                            if (window.adminToast) {
+                                window.adminToast('success', moduleName + ' deleted successfully');
+                            }
                         } else {
                             Swal.fire({
                                 icon: 'error',

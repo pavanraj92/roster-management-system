@@ -48,7 +48,7 @@
             }).addTo(map);
 
 
-            // control that shows state info on hover
+            // cont rol that shows state info on hover
             var info = L.control();
 
             info.onAdd = function (map) {

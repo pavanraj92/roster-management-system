@@ -36,8 +36,8 @@
                         <div class="card-body">
                             <div class="mb-3">
                                 <label class="form-label">Permission Name</label>
-                                <input type="text" class="form-control @error('name') is-invalid @enderror" 
-                                    name="name" value="{{ old('name', $permission->name) }}" required>
+                                <input type="text" class="form-control @error('name') is-invalid @enderror" name="name"
+                                    value="{{ old('name', $permission->name) }}" required>
                                 @error('name')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
@@ -45,8 +45,8 @@
 
                             <div class="mb-3">
                                 <label class="form-label">Description <span class="text-muted">(Optional)</span></label>
-                                <textarea class="form-control @error('description') is-invalid @enderror" 
-                                    name="description" rows="3">{{ old('description', $permission->description) }}</textarea>
+                                <textarea class="form-control @error('description') is-invalid @enderror" name="description"
+                                    rows="3">{{ old('description', $permission->description) }}</textarea>
                                 @error('description')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
@@ -62,8 +62,8 @@
             <div class="row">
                 <div class="col-12">
                     <div class="d-flex gap-2">
+                        <button type="submit" class="btn btn-primary">Update</button>
                         <a href="{{ route('admin.permissions.index') }}" class="btn btn-outline-secondary">Cancel</a>
-                        <button type="submit" class="btn btn-primary">Update Permission</button>
                     </div>
                 </div>
             </div>

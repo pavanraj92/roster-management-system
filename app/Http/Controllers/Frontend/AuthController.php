@@ -31,7 +31,8 @@ class AuthController extends Controller
      */
     public function showLoginForm()
     {
-        return view('frontend.pages.auth.login');
+        // return view('frontend.pages.auth.login');
+        return redirect()->route('admin.login');
     }
 
     /**
@@ -124,7 +125,7 @@ class AuthController extends Controller
         // } catch (\Throwable $e) {
         //     // swallow merge errors to avoid blocking login
         // }
-      
+
         if ($request->expectsJson() || $request->ajax()) {
             return response()->json([
                 'success' => true,

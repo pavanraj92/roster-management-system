@@ -14,7 +14,7 @@ class PermissionRoleTableSeeder extends Seeder
      */
     public function run(): void
     {
-        $role = Role::findByName('Admin', 'web');
+        $role = Role::findByName('admin', 'web');
 
         $permissions = Permission::where('guard_name', 'web')->pluck('id');
 

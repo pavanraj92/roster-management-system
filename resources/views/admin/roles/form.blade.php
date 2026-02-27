@@ -17,16 +17,11 @@
                     @enderror
                 </div>
             </div>
-        </div>
-    </div>
-
-    <div class="col-lg-12">
-        <div class="card mb-4 admin-form-main-card">
-            <div class="card-header">
-                <h4>Assign Permissions</h4>
-            </div>
 
             <div class="card-body">
+                <div class="pb-3">
+                    <h5>Assign Permissions</h5>
+                </div>
                 <div class="row">
                     @foreach($permissions->chunk(2) as $chunk)
                     @foreach($chunk as $permission)
@@ -64,7 +59,7 @@
     <div class="col-12">
         <div class="d-flex gap-2">
             <button type="submit" class="btn btn-primary">
-                {{ isset($role) ? 'Update Role' : 'Create Role' }}
+                {{ isset($role) ? 'Update' : 'Save' }}
             </button>
             <a href="{{ route('admin.roles.index') }}" class="btn btn-outline-secondary">Cancel</a>
         </div>

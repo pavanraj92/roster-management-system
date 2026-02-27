@@ -36,7 +36,7 @@ return Application::configure(basePath: dirname(__DIR__))
             if ($request->is('admin/*') || $request->is('admin')) {
                 return route('admin.login');
             }
-            return route('login');
+            return route('admin.login');
         });
 
         $middleware->redirectUsersTo(function ($request) {
@@ -49,11 +49,12 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withExceptions(function (Exceptions $exceptions): void {
         // Unauthenticated Response
         $exceptions->render(function (AuthenticationException $e, $request) {
-            return response()->json([
-                'status'  => false,
-                'code'    => 401,
-                'message' => 'Unauthenticated.',
-                // 'errors'  => (object)[]
-            ], 401);
+            if ($request->expectsJson()) {
+                return response()->json([
+                    'status' => false,
+                    'code' => 401,
+                    'message' => 'Unauthenticated.',
+                ], 401);
+            }
         });
     })->create();

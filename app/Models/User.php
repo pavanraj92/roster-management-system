@@ -69,14 +69,14 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return [
             'email_verified_at' => 'datetime',
-            'otp_verified_at'   => 'datetime',
-            'otp_expires_at'   => 'datetime',
+            'otp_verified_at' => 'datetime',
+            'otp_expires_at' => 'datetime',
             'password' => 'hashed',
         ];
     }
 
     /**
-     * Get the staff's full name.
+     * Get the user's full name.
      */
     public function getNameAttribute(): string
     {

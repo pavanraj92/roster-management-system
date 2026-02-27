@@ -15,9 +15,9 @@
 
                 <!-- Breadcrumb -->
                 <x-admin.breadcrumb :list="[
-                    ['label' => 'Email Templates Manager', 'url' => route('admin.email-templates.index')],
-                    ['label' => 'Email Template Details']
-                ]" class="float-end" />
+            ['label' => 'Email Templates Manager', 'url' => route('admin.email-templates.index')],
+            ['label' => 'Email Template Details']
+        ]" class="float-end" />
             </div>
         </div>
 
@@ -104,7 +104,7 @@
                         <i class="material-icons md-edit"></i> Edit
                     </a>
                     <a href="{{ route('admin.email-templates.index') }}" class="btn btn-light">
-                        <i class="material-icons md-arrow_back"></i> Back to list
+                        <i class="material-icons md-arrow_back"></i> Back
                     </a>
                 </div>
             </div>

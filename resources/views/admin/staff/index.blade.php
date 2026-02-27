@@ -54,12 +54,11 @@
                 <table class="table table-hover align-middle mb-0 listing-table" id="staff-table">
                     <thead>
                         <tr>
-                            <th width="70">ID</th>
-                            <th width="70">Name</th>
-                            <th width="70">Email</th>
-                            <th width="70">Phone</th>
-                            <th width="70">Status</th>
-                            <th width="70" class="text-center">Action</th>
+                            <th width="60">#</th>
+                            <th>Staff Member</th>
+                            <th width="140">Phone</th>
+                            <th width="110">Status</th>
+                            <th width="120" class="text-center">Actions</th>
                         </tr>
                     </thead>
                 </table>
@@ -93,10 +92,6 @@
                 {
                     data: 'name',
                     name: 'name'
-                },
-                {
-                    data: 'email',
-                    name: 'email'
                 },
                 {
                     data: 'phone',

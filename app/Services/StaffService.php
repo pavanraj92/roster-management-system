@@ -29,7 +29,22 @@ class StaffService
 
         return DataTables::of($data)
             ->addIndexColumn()
-            ->addColumn('name', fn($row) => $row->name)
+            ->addColumn('name', function ($row) {
+                $avatarUrl = $row->avatar_url ?? asset('backend/imgs/people/avatar-1.png');
+
+                return '
+                    <div class="d-flex align-items-center staff-cell">
+                        <div class="staff-avatar me-3">
+                            <img src="' . $avatarUrl . '" alt="' . e($row->name) . '" class="rounded-circle">
+                        </div>
+                        <div class="staff-meta">
+                            <div class="staff-name fw-semibold">' . e($row->name) . '</div>
+                            <div class="staff-email text-muted small">' . e($row->email) . '</div>
+                            ' . ($row->designation ? '<div class="staff-designation badge bg-light text-dark mt-1">' . e($row->designation) . '</div>' : '') . '
+                        </div>
+                    </div>
+                ';
+            })
             ->addColumn('status', function ($row) {
                 $checked = $row->status ? 'checked' : '';
                 return '<div class="form-check form-switch text-center">
@@ -64,7 +79,7 @@ class StaffService
                         </div>
                     ';
             })
-            ->rawColumns(['status', 'action'])
+            ->rawColumns(['name', 'status', 'action'])
             ->make(true);
     }
 

@@ -63,6 +63,29 @@
     margin-bottom: 1.25rem;
 }
 
+/* Staff listing specific */
+.staff-cell .staff-avatar img {
+    width: 40px;
+    height: 40px;
+    object-fit: cover;
+    border-radius: 999px;
+    border: 1px solid #e1e7f0;
+}
+
+.staff-cell .staff-name {
+    font-size: 14px;
+}
+
+.staff-cell .staff-email {
+    font-size: 12px;
+}
+
+.staff-cell .staff-designation {
+    font-size: 11px;
+    border-radius: 999px;
+    padding: 2px 8px;
+}
+
 .listing-page-subtitle {
     margin-top: 0.25rem;
     color: #6c757d;
@@ -186,7 +209,7 @@
 .admin-form-action-card .card-header,
 .category-main-card .card-header,
 .category-action-card .card-header {
-    background: linear-gradient(135deg, #f8fbff 0%, #f4f8f6 100%);
+    background: #3b95b7;
     border-bottom: 1px solid #edf1f6;
 }
 
@@ -202,7 +225,7 @@
 .category-main-card .form-control,
 .category-main-card .form-select {
     min-height: 42px;
-    border-radius: 10px;
+    border-radius: 4px;
 }
 
 .admin-form-media-panel,
@@ -337,6 +360,11 @@
 .screen-overlay {
     pointer-events: none;
 }
+
 .screen-overlay.show {
     pointer-events: auto;
+}
+
+.card-header h4 {
+    color: #fff;
 }

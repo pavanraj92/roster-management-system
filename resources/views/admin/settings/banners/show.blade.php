@@ -82,7 +82,7 @@
                         <i class="material-icons md-edit"></i> Edit
                     </a>
                     <a href="{{ route('admin.settings.banners.index') }}" class="btn btn-light">
-                        <i class="material-icons md-arrow_back"></i> Back to list
+                        <i class="material-icons md-arrow_back"></i> Back
                     </a>
                 </div>
             </div>

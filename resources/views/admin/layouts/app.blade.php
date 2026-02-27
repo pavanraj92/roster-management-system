@@ -31,6 +31,7 @@
     <link href="https://cdn.jsdelivr.net/npm/remixicon/fonts/remixicon.css" rel="stylesheet">
     <script src="https://cdn.lordicon.com/lusqsztk.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
     @stack('styles')
 </head>
 
@@ -38,22 +39,22 @@
     <div class="screen-overlay"></div>
     <script>
         // immediately clear any stray overlay (runs during page parse)
-        (function(){
+        (function () {
             var overlay = document.querySelector('.screen-overlay');
-            if(overlay) overlay.classList.remove('show');
+            if (overlay) overlay.classList.remove('show');
             document.body.classList.remove('offcanvas-active');
-            document.querySelectorAll('.mobile-offcanvas, .navbar-aside').forEach(function(el){ el.classList.remove('show'); });
+            document.querySelectorAll('.mobile-offcanvas, .navbar-aside').forEach(function (el) { el.classList.remove('show'); });
         })();
 
         // if for some reason the overlay gets left visible later on,
         // clicking anywhere should dismiss it so buttons remain clickable.
-        document.addEventListener('click', function(e){
+        document.addEventListener('click', function (e) {
             var overlay = document.querySelector('.screen-overlay');
-            if(overlay && overlay.classList.contains('show')) {
+            if (overlay && overlay.classList.contains('show')) {
                 overlay.classList.remove('show');
                 document.body.classList.remove('offcanvas-active');
                 document.querySelectorAll('.mobile-offcanvas, .navbar-aside')
-                        .forEach(function(el){ el.classList.remove('show'); });
+                    .forEach(function (el) { el.classList.remove('show'); });
             }
         });
     </script>
@@ -144,6 +145,7 @@
     </script>
 
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     @stack('scripts')
 </body>
 

@@ -18,7 +18,13 @@ class RolesSeeder extends Seeder
         Role::upsert(
             [
                 [
-                    'name' => 'Admin',
+                    'name' => 'admin',
+                    'guard_name' => 'web',
+                    'created_at' => $timestamp,
+                    'updated_at' => $timestamp,
+                ],
+                [
+                    'name' => 'manager',
                     'guard_name' => 'web',
                     'created_at' => $timestamp,
                     'updated_at' => $timestamp,

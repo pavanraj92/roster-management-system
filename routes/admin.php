@@ -10,6 +10,7 @@ use App\Http\Controllers\Admin\EmailTemplateController;
 use App\Http\Controllers\Admin\ProfileController;
 use App\Http\Controllers\Admin\VisibilitySettingController;
 use App\Http\Controllers\Admin\StaffController;
+use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\PermissionController;
 
@@ -19,11 +20,11 @@ use App\Http\Controllers\Admin\PermissionController;
 |--------------------------------------------------------------------------
 */
 
-Route::get('/admin', function () {
-    return redirect()->route('admin.login');
-});
+// Route::get('/admin', function () {
+//     return redirect()->route('admin.login');
+// });
 
-Route::prefix('admin')->name('admin.')->group(function () {
+Route::name('admin.')->group(function () {
 
     /*
     |--------------------------------------------------------------------------
@@ -64,6 +65,11 @@ Route::prefix('admin')->name('admin.')->group(function () {
         // Staffs
         Route::resource('staff', StaffController::class)->middleware('permission:user_access');
         Route::post('staff/toggle-status/{id}', [StaffController::class, 'toggleStatus'])->name('staff.toggle-status');
+
+        // Users
+        Route::resource('user', UserController::class)->middleware('permission:user_access');
+        Route::post('user/toggle-status/{id}', [UserController::class, 'toggleStatus'])->name('user.toggle-status');
+
 
         // Roles & Permissions
         Route::resource('roles', RoleController::class)->middleware('permission:role_access');
