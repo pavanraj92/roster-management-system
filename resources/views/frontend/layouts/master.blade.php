@@ -1,0 +1,26 @@
+@include('frontend.partials.head')
+<body>
+    @include('frontend.partials.header')
+    @include('frontend.partials.mobile-menu')
+
+    <main class="main @yield('main_class', '')">
+        @yield('content')
+    </main>
+
+    @include('frontend.partials.footer')
+
+    <!-- Preloader Start -->
+    <div id="preloader-active">
+        <div class="preloader d-flex align-items-center justify-content-center">
+            <div class="preloader-inner position-relative">
+                <div class="text-center">
+                    <img src="{{ asset('frontend/imgs/theme/loading.gif') }}" alt="" />
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @include('frontend.partials.scripts')
+</body>
+
+</html>
