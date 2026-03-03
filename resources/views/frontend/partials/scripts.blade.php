@@ -3,6 +3,8 @@
 <script src="{{ asset('frontend/js/vendor/jquery-3.6.0.min.js') }}"></script>
 <script src="{{ asset('frontend/js/vendor/jquery-migrate-3.3.0.min.js') }}"></script>
 <script src="{{ asset('frontend/js/vendor/bootstrap.bundle.min.js') }}"></script>
+<!-- Bootstrap JS from CDN for navbar functionality -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script src="{{ asset('frontend/js/plugins/slick.js') }}"></script>
 <script src="{{ asset('frontend/js/plugins/jquery.syotimer.min.js') }}"></script>
 <script src="{{ asset('frontend/js/plugins/wow.js') }}"></script>

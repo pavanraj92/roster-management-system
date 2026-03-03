@@ -24,7 +24,7 @@
     <title>@yield('title') | {{ $siteName}}</title>
     <link rel="shortcut icon" type="image/x-icon" href="{{ $faviconPath }}" />
     <!-- Template CSS -->
-    <script src="{{ asset('backend/js/vendors/color-modes.js') }}"></script>
+    {{-- <script src="{{ asset('backend/js/vendors/color-modes.js') }}"></script> --}}
     <link href="{{ asset('backend/css/main.css?v=6.0') }}" rel="stylesheet" type="text/css" />
     <link href="{{ asset('backend/css/custom.css') }}" rel="stylesheet" type="text/css" />
     <link href="https://cdn.jsdelivr.net/npm/remixicon/fonts/remixicon.css" rel="stylesheet">
