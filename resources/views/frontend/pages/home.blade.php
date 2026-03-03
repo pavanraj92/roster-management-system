@@ -7,37 +7,32 @@
 @section('content')
 
 <!-- Hero Banner Section -->
-<section class="hero-banner" style="color: white; padding: 100px 0; position: relative; overflow: hidden;">
+<section class="hero-banner" style="color: #ffffff; position: relative; overflow: hidden; padding: 90px 0 60px;">
     <div class="container">
         <div class="row align-items-center">
             <div class="col-lg-6 wow fadeInLeft" style="animation: fadeInLeft 0.8s ease;">
-                <h1 class="display-4 fw-bold mb-4" style="font-size: 48px; line-height: 1.2;">
-                    Manage Your Staff & Schedules with Ease
-                </h1>
-                <p class="fs-5 mb-4" style="opacity: 0.95;">
-                    A complete roster management solution designed to streamline scheduling, improve staff coordination, and boost operational efficiency.
-                </p>
-                <div class="d-flex gap-3 flex-wrap">
-                    @guest
-                        <a href="{{ route('register') }}" class="btn btn-light btn-lg fw-bold" style="padding: 12px 40px;">
-                            Get Started Free
-                        </a>
-                        <a href="{{ route('login') }}" class="btn btn-outline-light btn-lg fw-bold" style="padding: 12px 40px; border-width: 2px;">
-                            Sign In
-                        </a>
-                    @else
-                        <a href="{{ route('home') }}" class="btn btn-light btn-lg fw-bold" style="padding: 12px 40px;">
-                            Go to Dashboard
-                        </a>
-                    @endguest
+                <div class="card-soft p-5" style="background: linear-gradient(180deg, rgba(59,149,183,0.04), rgba(42,104,143,0.02));">
+                    <h1 class="display-5 fw-bold mb-3" style="font-size: 44px; line-height: 1.15; color: #132235;">Manage Your Staff & Schedules with Ease</h1>
+                    <p class="fs-5 mb-4" style="color: var(--muted);">A modern roster management solution to streamline scheduling, improve coordination, and boost efficiency.</p>
+                    <div class="d-flex gap-3 flex-wrap">
+                        @guest
+                            <a href="{{ route('register') }}" class="btn btn-primary btn-modern" style="background: linear-gradient(90deg,var(--brand-500),var(--brand-700)); border: none; color: #fff;">Get Started Free</a>
+                            <a href="{{ route('login') }}" class="btn btn-outline-secondary btn-modern" style="background: transparent; border: 1px solid rgba(34,50,80,0.08); color: var(--brand-700);">Sign In</a>
+                        @else
+                            <a href="{{ route('home') }}" class="btn btn-primary btn-modern" style="background: linear-gradient(90deg,var(--brand-500),var(--brand-700)); border: none; color: #fff;">Go to Dashboard</a>
+                        @endguest
+                    </div>
                 </div>
             </div>
+
             <div class="col-lg-6 wow fadeInRight" style="animation: fadeInRight 0.8s ease; animation-delay: 0.2s;">
-                <img src="https://images.unsplash.com/photo-1552664730-d307ca884978?w=500&h=400&fit=crop" alt="Roster Management" class="img-fluid rounded-lg shadow-lg" style="border-radius: 15px;">
+                <div class="card-soft p-3" style="display:flex;align-items:center;justify-content:center;border-radius:18px;">
+                    <img src="https://images.unsplash.com/photo-1552664730-d307ca884978?w=900&h=600&fit=crop" alt="Roster Management" class="img-fluid" style="border-radius:12px; max-height:380px; object-fit:cover;">
+                </div>
             </div>
         </div>
     </div>
-    <div style="position: absolute; bottom: 0; left: 0; right: 0; height: 100px; background: linear-gradient(to bottom, transparent, white);"></div>
+    <div style="position: absolute; inset: auto 0 0 0; height: 140px; background: linear-gradient(180deg, transparent, #f8f9fa); pointer-events:none;"></div>
 </section>
 
 
@@ -238,69 +233,89 @@
         <div class="row mb-5 text-center wow fadeInUp">
             <div class="col-lg-8 mx-auto">
                 <h2 class="display-5 fw-bold mb-4" style="color: #2a3f5f;">What Our Users Say</h2>
-                <p class="fs-5" style="color: #6c757d;">
-                    Join thousands of satisfied organizations across different industries
-                </p>
+                <p class="fs-5" style="color: #6c757d;">Join thousands of satisfied organizations across different industries</p>
             </div>
         </div>
 
-        <div class="row g-4">
-            <div class="col-lg-4 col-md-6 wow fadeInUp">
-                <div class="testimonial-card p-4 rounded-lg" style="background: white; box-shadow: 0 2px 12px rgba(0,0,0,0.08);">
-                    <div class="mb-3">
-                        <i class="bi bi-star-fill" style="color: #ffc107; font-size: 14px;"></i>
-                        <i class="bi bi-star-fill" style="color: #ffc107; font-size: 14px;"></i>
-                        <i class="bi bi-star-fill" style="color: #ffc107; font-size: 14px;"></i>
-                        <i class="bi bi-star-fill" style="color: #ffc107; font-size: 14px;"></i>
-                        <i class="bi bi-star-fill" style="color: #ffc107; font-size: 14px;"></i>
+        <div id="testimonialCarousel" class="carousel slide" data-bs-ride="carousel" data-bs-interval="5000">
+            {{-- <div class="carousel-indicators mb-4">
+                <button type="button" data-bs-target="#testimonialCarousel" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+                <button type="button" data-bs-target="#testimonialCarousel" data-bs-slide-to="1" aria-label="Slide 2"></button>
+                <button type="button" data-bs-target="#testimonialCarousel" data-bs-slide-to="2" aria-label="Slide 3"></button>
+            </div> --}}
+            <div class="carousel-inner">
+                <div class="carousel-item active">
+                    <div class="row justify-content-center">
+                        <div class="col-lg-8">
+                            <div class="testimonial-card p-4 rounded-lg text-center" style="background: white; box-shadow: 0 8px 30px rgba(30,40,60,0.06);">
+                                <div class="mb-3">
+                                    <i class="bi bi-star-fill" style="color: #ffc107; font-size: 14px;"></i>
+                                    <i class="bi bi-star-fill" style="color: #ffc107; font-size: 14px;"></i>
+                                    <i class="bi bi-star-fill" style="color: #ffc107; font-size: 14px;"></i>
+                                    <i class="bi bi-star-fill" style="color: #ffc107; font-size: 14px;"></i>
+                                    <i class="bi bi-star-fill" style="color: #ffc107; font-size: 14px;"></i>
+                                </div>
+                                <p style="color: #6c757d; line-height: 1.6; margin-bottom: 20px;">"This platform has transformed how we manage our retail staff schedules. It's intuitive, powerful, and our team loves it!"</p>
+                                <div style="border-top: 1px solid #eef2f5; padding-top: 15px;">
+                                    <p class="fw-bold mb-0" style="color: #2a3f5f; font-size: 14px;">Sarah Johnson</p>
+                                    <p style="color: #6c757d; font-size: 13px;">Store Manager, Fashion Retail</p>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <p style="color: #6c757d; line-height: 1.6; margin-bottom: 20px;">
-                        "This platform has transformed how we manage our retail staff schedules. It's intuitive, powerful, and our team loves it!"
-                    </p>
-                    <div style="border-top: 1px solid #e9ecef; padding-top: 15px;">
-                        <p class="fw-bold mb-0" style="color: #2a3f5f; font-size: 14px;">Sarah Johnson</p>
-                        <p style="color: #6c757d; font-size: 13px;">Store Manager, Fashion Retail</p>
+                </div>
+
+                <div class="carousel-item">
+                    <div class="row justify-content-center">
+                        <div class="col-lg-8">
+                            <div class="testimonial-card p-4 rounded-lg text-center" style="background: white; box-shadow: 0 8px 30px rgba(30,40,60,0.06);">
+                                <div class="mb-3">
+                                    <i class="bi bi-star-fill" style="color: #ffc107; font-size: 14px;"></i>
+                                    <i class="bi bi-star-fill" style="color: #ffc107; font-size: 14px;"></i>
+                                    <i class="bi bi-star-fill" style="color: #ffc107; font-size: 14px;"></i>
+                                    <i class="bi bi-star-fill" style="color: #ffc107; font-size: 14px;"></i>
+                                    <i class="bi bi-star-fill" style="color: #ffc107; font-size: 14px;"></i>
+                                </div>
+                                <p style="color: #6c757d; line-height: 1.6; margin-bottom: 20px;">"Reduced our scheduling time by 70%. The mobile app is a game-changer for communicating with my team."</p>
+                                <div style="border-top: 1px solid #eef2f5; padding-top: 15px;">
+                                    <p class="fw-bold mb-0" style="color: #2a3f5f; font-size: 14px;">Michael Chen</p>
+                                    <p style="color: #6c757d; font-size: 13px;">Operations Director, Healthcare</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="carousel-item">
+                    <div class="row justify-content-center">
+                        <div class="col-lg-8">
+                            <div class="testimonial-card p-4 rounded-lg text-center" style="background: white; box-shadow: 0 8px 30px rgba(30,40,60,0.06);">
+                                <div class="mb-3">
+                                    <i class="bi bi-star-fill" style="color: #ffc107; font-size: 14px;"></i>
+                                    <i class="bi bi-star-fill" style="color: #ffc107; font-size: 14px;"></i>
+                                    <i class="bi bi-star-fill" style="color: #ffc107; font-size: 14px;"></i>
+                                    <i class="bi bi-star-fill" style="color: #ffc107; font-size: 14px;"></i>
+                                    <i class="bi bi-star-fill" style="color: #ffc107; font-size: 14px;"></i>
+                                </div>
+                                <p style="color: #6c757d; line-height: 1.6; margin-bottom: 20px;">"Exceptional customer support and regular updates. Best investment we've made for our operations!"</p>
+                                <div style="border-top: 1px solid #eef2f5; padding-top: 15px;">
+                                    <p class="fw-bold mb-0" style="color: #2a3f5f; font-size: 14px;">Emma Rodriguez</p>
+                                    <p style="color: #6c757d; font-size: 13px;">HR Manager, Restaurant Group</p>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
 
-            <div class="col-lg-4 col-md-6 wow fadeInUp" style="animation-delay: 0.1s;">
-                <div class="testimonial-card p-4 rounded-lg" style="background: white; box-shadow: 0 2px 12px rgba(0,0,0,0.08);">
-                    <div class="mb-3">
-                        <i class="bi bi-star-fill" style="color: #ffc107; font-size: 14px;"></i>
-                        <i class="bi bi-star-fill" style="color: #ffc107; font-size: 14px;"></i>
-                        <i class="bi bi-star-fill" style="color: #ffc107; font-size: 14px;"></i>
-                        <i class="bi bi-star-fill" style="color: #ffc107; font-size: 14px;"></i>
-                        <i class="bi bi-star-fill" style="color: #ffc107; font-size: 14px;"></i>
-                    </div>
-                    <p style="color: #6c757d; line-height: 1.6; margin-bottom: 20px;">
-                        "Reduced our scheduling time by 70%. The mobile app is a game-changer for communicating with my team."
-                    </p>
-                    <div style="border-top: 1px solid #e9ecef; padding-top: 15px;">
-                        <p class="fw-bold mb-0" style="color: #2a3f5f; font-size: 14px;">Michael Chen</p>
-                        <p style="color: #6c757d; font-size: 13px;">Operations Director, Healthcare</p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-lg-4 col-md-6 wow fadeInUp" style="animation-delay: 0.2s;">
-                <div class="testimonial-card p-4 rounded-lg" style="background: white; box-shadow: 0 2px 12px rgba(0,0,0,0.08);">
-                    <div class="mb-3">
-                        <i class="bi bi-star-fill" style="color: #ffc107; font-size: 14px;"></i>
-                        <i class="bi bi-star-fill" style="color: #ffc107; font-size: 14px;"></i>
-                        <i class="bi bi-star-fill" style="color: #ffc107; font-size: 14px;"></i>
-                        <i class="bi bi-star-fill" style="color: #ffc107; font-size: 14px;"></i>
-                        <i class="bi bi-star-fill" style="color: #ffc107; font-size: 14px;"></i>
-                    </div>
-                    <p style="color: #6c757d; line-height: 1.6; margin-bottom: 20px;">
-                        "Exceptional customer support and regular updates. Best investment we've made for our operations!"
-                    </p>
-                    <div style="border-top: 1px solid #e9ecef; padding-top: 15px;">
-                        <p class="fw-bold mb-0" style="color: #2a3f5f; font-size: 14px;">Emma Rodriguez</p>
-                        <p style="color: #6c757d; font-size: 13px;">HR Manager, Restaurant Group</p>
-                    </div>
-                </div>
-            </div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#testimonialCarousel" data-bs-slide="prev" aria-label="Previous testimonial">
+                <span class="carousel-control-prev-icon" aria-hidden="true"><i class="bi bi-chevron-left"></i></span>
+                <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#testimonialCarousel" data-bs-slide="next" aria-label="Next testimonial">
+                <span class="carousel-control-next-icon" aria-hidden="true"><i class="bi bi-chevron-right"></i></span>
+                <span class="visually-hidden">Next</span>
+            </button>
         </div>
     </div>
 </section>
@@ -407,66 +422,45 @@
 @push('styles')
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
 <style>
-    .wow {
-        visibility: hidden;
-    }
-    
-    .wow.fadeInLeft, .wow.fadeInRight, .wow.fadeInUp {
-        animation-duration: 0.8s;
-        animation-fill-mode: both;
-    }
-    
-    @keyframes fadeInLeft {
-        from {
-            opacity: 0;
-            transform: translate3d(-100px, 0, 0);
-        }
-        to {
-            opacity: 1;
-            transform: none;
-        }
-    }
-    
-    @keyframes fadeInRight {
-        from {
-            opacity: 0;
-            transform: translate3d(100px, 0, 0);
-        }
-        to {
-            opacity: 1;
-            transform: none;
-        }
-    }
-    
-    @keyframes fadeInUp {
-        from {
-            opacity: 0;
-            transform: translate3d(0, 50px, 0);
-        }
-        to {
-            opacity: 1;
-            transform: none;
-        }
-    }
-    
-    .rounded-lg {
-        border-radius: 15px;
-    }
+    .wow { visibility: hidden; }
+    .wow.fadeInLeft, .wow.fadeInRight, .wow.fadeInUp { animation-duration: 0.8s; animation-fill-mode: both; }
 
-    .feature-box:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 8px 24px rgba(59, 149, 183, 0.12) !important;
-    }
+    @keyframes fadeInLeft { from { opacity:0; transform:translate3d(-100px,0,0);} to{opacity:1;transform:none;} }
+    @keyframes fadeInRight{ from{opacity:0;transform:translate3d(100px,0,0);} to{opacity:1;transform:none;} }
+    @keyframes fadeInUp{ from{opacity:0;transform:translate3d(0,50px,0);} to{opacity:1;transform:none;} }
 
-    .accordion-button:not(.collapsed) {
-        background-color: #e8f4f8;
-        color: #3b95b7;
-    }
+    .rounded-lg{ border-radius:15px; }
+    .card-soft{ background:#fff;border-radius:14px;box-shadow:0 12px 30px rgba(39,54,72,0.06); }
+    .feature-box{ transition: transform .25s ease, box-shadow .25s ease; }
+    .feature-box:hover{ transform: translateY(-6px); box-shadow: 0 18px 40px rgba(39,54,72,0.06) !important; }
 
-    .accordion-button:focus {
-        border-color: #3b95b7;
-        box-shadow: 0 0 0 0.25rem rgba(59, 149, 183, 0.25);
+    .testimonial-card{ border-radius:12px; }
+    .cta-final .btn{ border-radius:12px; }
+
+    /* Responsive hero tweaks */
+    @media (max-width: 992px){ .hero-banner{ padding: 60px 0 40px; } .card-soft{ padding:24px; } }
+    /* Make carousel side buttons visible and high-contrast */
+    #testimonialCarousel { position: relative; }
+    #testimonialCarousel .carousel-control-prev,
+    #testimonialCarousel .carousel-control-next{
+        width:48px; height:48px; top:50%; transform:translateY(-50%); background: rgba(11,37,64,0.85); border-radius:50%; display:flex; align-items:center; justify-content:center; opacity:1; z-index:6; padding:0; border:none;
     }
+    #testimonialCarousel .carousel-control-prev{ left:24px; }
+    #testimonialCarousel .carousel-control-next{ right:24px; }
+    #testimonialCarousel .carousel-control-prev-icon,
+    #testimonialCarousel .carousel-control-next-icon{ background-image:none; width:20px; height:20px; display:flex; align-items:center; justify-content:center; }
+    #testimonialCarousel .carousel-control-prev-icon i,
+    #testimonialCarousel .carousel-control-next-icon i{ color: #fff; font-size: 20px; line-height:1 }
+    @media (max-width: 768px){
+        #testimonialCarousel .carousel-control-prev,
+        #testimonialCarousel .carousel-control-next{ width:40px; height:40px; left:12px; right:12px; }
+        #testimonialCarousel .carousel-control-prev-icon i,
+        #testimonialCarousel .carousel-control-next-icon i{ font-size:18px }
+    }
+    /* indicators styling */
+    #testimonialCarousel .carousel-indicators{ position: relative; bottom: 0; display:flex; gap:8px; justify-content:center }
+    #testimonialCarousel .carousel-indicators [data-bs-target]{ width:10px; height:10px; border-radius:50%; background:#cfdce9; opacity:0.6; }
+    #testimonialCarousel .carousel-indicators .active{ background:var(--brand-700); opacity:1 }
 </style>
 @endpush
 

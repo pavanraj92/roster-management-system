@@ -1,20 +1,20 @@
-<footer class="main" style="background: linear-gradient(135deg, #3b95b7 0%, #2a6b8f 100%); color: white; padding: 60px 0 20px;">
+<footer class="main" style="background: #0b2540; color: #e8f1f8; padding: 60px 0 20px;">
     <div class="container">
-        <div class="row mb-5" style="color: white">
+        <div class="row mb-5">
             <!-- Brand & About -->
             <div class="col-lg-3 col-md-6 mb-4 mb-lg-0">
-                <h5 class="fw-bold mb-3" style="color: white">{{ config('app.name', 'Roster') }}</h5>
-                <p style="opacity: 0.85; font-size: 14px; line-height: 1.6;" style="color: white">
+                <h5 class="fw-bold mb-3" style="color: #ffffff">{{ config('app.name', 'Roster') }}</h5>
+                <p style="opacity: 0.9; font-size: 14px; line-height: 1.6; color: #dbeaf6;">
                     Simplifying workforce management with intelligent scheduling solutions.
                 </p>
             </div>
 
             <!-- Quick Links -->
             <div class="col-lg-3 col-md-6 mb-4 mb-lg-0">
-                <h6 class="fw-bold mb-3">Quick Links</h6>
+                <h6 class="fw-bold mb-3" style="color: #ffffff">Quick Links</h6>
                 <ul class="list-unstyled" style="font-size: 14px;">
                     <li class="mb-2">
-                        <a href="{{ route('home') }}" style="color: white; text-decoration: none; opacity: 0.85; transition: opacity 0.3s;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.85'">
+                        <a href="{{ route('home') }}" style="color: #dbeaf6; text-decoration: none; opacity: 0.9; transition: all 0.15s;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.9'">
                             → Home
                         </a>
                     </li>
@@ -38,26 +38,26 @@
 
             <!-- Support -->
             <div class="col-lg-3 col-md-6 mb-4 mb-lg-0">
-                <h6 class="fw-bold mb-3">Support</h6>
-                <ul class="list-unstyled" style="font-size: 14px; opacity: 0.85;">
+                <h6 class="fw-bold mb-3" style="color: #ffffff">Support</h6>
+                <ul class="list-unstyled" style="font-size: 14px; color: #dbeaf6; opacity: 0.95;">
                     <li class="mb-2">
-                        <i class="bi bi-envelope" style="margin-right: 8px;"></i>
-                        support@roster.local
+                        <i class="bi bi-envelope" style="margin-right: 8px; color:#cfe7fb"></i>
+                        <span style="color:#dbeaf6">support@roster.local</span>
                     </li>
                     <li class="mb-2">
-                        <i class="bi bi-telephone" style="margin-right: 8px;"></i>
-                        +1 (800) 900-0000
+                        <i class="bi bi-telephone" style="margin-right: 8px; color:#cfe7fb"></i>
+                        <span style="color:#dbeaf6">+1 (800) 900-0000</span>
                     </li>
                     <li class="mb-2">
-                        <i class="bi bi-clock" style="margin-right: 8px;"></i>
-                        Mon-Fri, 9AM-6PM
+                        <i class="bi bi-clock" style="margin-right: 8px; color:#cfe7fb"></i>
+                        <span style="color:#dbeaf6">Mon-Fri, 9AM-6PM</span>
                     </li>
                 </ul>
             </div>
 
             <!-- Social -->
             <div class="col-lg-3 col-md-6">
-                <h6 class="fw-bold mb-3">Connect With Us</h6>
+                <h6 class="fw-bold mb-3" style="color: #ffffff">Connect With Us</h6>
                 <div class="d-flex gap-3">
                     <a href="#" style="color: white; font-size: 20px; opacity: 0.85; text-decoration: none; transition: all 0.3s;" onmouseover="this.style.opacity='1'; this.style.transform='scale(1.15)'" onmouseout="this.style.opacity='0.85'; this.style.transform='scale(1)'">
                         <i class="bi bi-facebook"></i>
@@ -76,19 +76,19 @@
         </div>
 
         <!-- Divider -->
-        <hr style="opacity: 0.2; margin: 30px 0;">
+        <hr style="opacity: 0.08; margin: 30px 0; border-color: rgba(255,255,255,0.06)">
 
         <!-- Footer Bottom -->
         <div class="row align-items-center">
             <div class="col-md-6">
-                <p class="mb-0" style="font-size: 12px; opacity: 0.75;">
+                <p class="mb-0" style="font-size: 12px; opacity: 0.9; color: #cfe7fb;">
                     &copy; 2026 {{ config('app.name', 'Roster') }}. All rights reserved.
                 </p>
             </div>
             <div class="col-md-6 text-md-end">
-                <p class="mb-0" style="font-size: 12px; opacity: 0.75;">
-                    <a href="#" style="color: white; text-decoration: none; opacity: 0.75;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.75'">Privacy Policy</a> | 
-                    <a href="#" style="color: white; text-decoration: none; opacity: 0.75;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.75'">Terms of Service</a>
+                <p class="mb-0" style="font-size: 12px; color: #dbeaf6; opacity: 0.9;">
+                    <a href="#" style="color: #dbeaf6; text-decoration: none; opacity: 0.9;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.9'">Privacy Policy</a> | 
+                    <a href="#" style="color: #dbeaf6; text-decoration: none; opacity: 0.9;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.9'">Terms of Service</a>
                 </p>
             </div>
         </div>
