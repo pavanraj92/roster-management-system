@@ -23,14 +23,16 @@ return new class extends Migration
                 ->cascadeOnDelete();
 
             $table->foreignId('task_id')
-                ->constrained('shifts')
+                ->constrained('tasks')
                 ->cascadeOnDelete();
 
             $table->foreignId('created_by')
                 ->constrained('users')
-                ->cascadeOnDelete();
+                ->nullable();
 
             $table->date('date');
+
+            $table->unique(['user_id','shift_id','task_id','date']);
 
             $table->timestamps();
             $table->softDeletes();

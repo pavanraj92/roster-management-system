@@ -9,7 +9,7 @@
                 <div class="float-start">
                     <h2 class="content-title card-title mb-0">Roaster Management</h2>
                     <p class="listing-page-subtitle mb-3">
-                        Manage roles and their permissions.
+                        Manage task 
                     </p>
                 </div>
 
@@ -18,29 +18,7 @@
             </div>
         </div>
 
-        <div class="card mb-4 listing-card">
-            <header class="card-header">
-                <div class="row align-items-center listing-filter-bar">
-                    <div class="col-md-9 me-auto">
-                        <div class="d-flex flex-wrap align-items-center gap-2">
-                            <div class="input-group" style="flex: 1 1 200px; max-width: 300px;">
-                                <span class="input-group-text">
-                                    <i class="material-icons md-search" style="font-size: 18px;"></i>
-                                </span>
-                                <input type="text" placeholder="Search role name..." class="form-control" id="custom-search">
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-md-3 float-end text-end">
-                        <a href="{{ route('admin.roles.create') }}" class="btn btn-primary">
-                            <i class="material-icons md-plus"></i> Create Role
-                        </a>
-                    </div>
-                </div>
-            </header>
-
-            <div class="card-body">
+        <div class="card mb-4 listing-card">         
                 <div class="table-responsive">
                     <table class="table table-hover align-middle mb-0 listing-table" id="roles-table">
                         <thead>

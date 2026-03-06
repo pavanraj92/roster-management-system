@@ -10,20 +10,27 @@ class Roster extends Model
 {
     use HasFactory, SoftDeletes;
     protected $fillable = [
-        'staff_id',
+        'user_id',
         'shift_id',
-        'roster_date',
+        'task_id',
+        'created_by',
+        'date',
     ];
 
-    protected $dates = ['roster_date'];
+    protected $dates = ['date'];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 
     public function shift()
     {
         return $this->belongsTo(Shift::class);
     }
 
-    public function staff()
+    public function task()
     {
-        return $this->belongsTo(User::class, 'staff_id');
+        return $this->belongsTo(Task::class);
     }
 }

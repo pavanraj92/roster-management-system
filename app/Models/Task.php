@@ -1,10 +1,9 @@
 <?php
-
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Task extends Model
 {
@@ -13,7 +12,7 @@ class Task extends Model
     protected $fillable = [
         'title',
         'description',
-        'priority',
+        // 'priority',
         'created_by',
     ];
 
@@ -22,8 +21,8 @@ class Task extends Model
         return $this->belongsTo(User::class, 'created_by');
     }
 
-    public function assignments()
+    public function rosters()
     {
-        return $this->hasMany(TaskAssignment::class);
+        return $this->hasMany(Roster::class);
     }
 }

@@ -88,23 +88,15 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->avatar ? asset('storage/' . $this->avatar) : null;
     }
 
-    public function admin_address()
-    {
+    public function admin_address() {
         return $this->hasOne(\App\Models\Address::class, 'user_id');
     }
 
-    public function rosters()
-    {
-        return $this->hasMany(Roster::class, 'staff_id');
+    public function rosters() {
+        return $this->hasMany(Roster::class, 'user_id');
     }
 
-    public function taskAssignments()
-    {
-        return $this->hasMany(TaskAssignment::class, 'staff_id');
-    }
-
-    public function createdTasks()
-    {
+    public function createdTasks() {
         return $this->hasMany(Task::class, 'created_by');
     }
 }
