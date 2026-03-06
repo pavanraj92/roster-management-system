@@ -12,6 +12,7 @@ use App\Http\Controllers\Admin\StaffController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\PermissionController;
+use App\Http\Controllers\Admin\RosterController;
 
 /*
 |--------------------------------------------------------------------------
@@ -104,5 +105,7 @@ Route::name('admin.')->group(function () {
             Route::post('change-password', [ProfileController::class, 'changePassword'])->name('change-password');
             Route::post('update-avatar', [ProfileController::class, 'updateProfileImage'])->name('update-avatar');
         });
+
+        Route::get('roster', [RosterController::class, 'index'])->name('roster');
     });
 });

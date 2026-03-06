@@ -17,8 +17,8 @@ return new class extends Migration
             $table->string('title');
             $table->text('description')->nullable();
     
-            $table->enum('priority',['low','medium','high'])
-                  ->default('medium');
+            // $table->enum('priority',['low','medium','high'])
+                //   ->default('medium');
     
             $table->foreignId('created_by')
                   ->constrained('users')

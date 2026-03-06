@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('name'); // Morning, Evening, Night
             $table->time('start_time');
             $table->time('end_time');
+            $table->string('color')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

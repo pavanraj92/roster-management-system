@@ -91,12 +91,12 @@
                     </div>
                 </li>
             @endcan
-            <!-- <li class="menu-item">
-                <a class="menu-link" href="#">
+            <li class="menu-item">
+                <a class="menu-link" href="{{route('admin.roster')}}">
                     <i class="icon material-icons md-local_offer"></i>
-                    <span class="text"> Starter page </span>
+                    <span class="text"> Roaster </span>
                 </a>
-            </li> -->
+            </li>
         </ul>
         <br />
         <br />

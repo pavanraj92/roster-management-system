@@ -13,17 +13,25 @@ return new class extends Migration
     {
         Schema::create('rosters', function (Blueprint $table) {
             $table->id();
-    
-            $table->foreignId('staff_id')
-                  ->constrained('users')
-                  ->cascadeOnDelete();
-    
+
+            $table->foreignId('user_id')
+                ->constrained('users')
+                ->cascadeOnDelete();
+
             $table->foreignId('shift_id')
-                  ->constrained('shifts')
-                  ->cascadeOnDelete();
-    
-            $table->date('roster_date');
-    
+                ->constrained('shifts')
+                ->cascadeOnDelete();
+
+            $table->foreignId('task_id')
+                ->constrained('shifts')
+                ->cascadeOnDelete();
+
+            $table->foreignId('created_by')
+                ->constrained('users')
+                ->cascadeOnDelete();
+
+            $table->date('date');
+
             $table->timestamps();
             $table->softDeletes();
         });
