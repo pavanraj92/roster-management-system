@@ -14,10 +14,22 @@ class PermissionRoleTableSeeder extends Seeder
      */
     public function run(): void
     {
-        $role = Role::findByName('admin', 'web');
+        // Admin gets all permissions
+        $adminRole = Role::findByName('admin', 'web');
+        $allPermissions = Permission::where('guard_name', 'web')->pluck('id');
+        $adminRole->syncPermissions($allPermissions);
 
-        $permissions = Permission::where('guard_name', 'web')->pluck('id');
+        // Define specific permissions for other roles
+        $limitedPermissions = Permission::where('guard_name', 'web')
+            ->whereIn('name', ['dashboard_access', 'page_access'])
+            ->pluck('id');
 
-        $role->syncPermissions($permissions);
+        // Manager gets limited permissions
+        $managerRole = Role::findByName('manager', 'web');
+        $managerRole->syncPermissions($limitedPermissions);
+
+        // Staff gets limited permissions
+        $staffRole = Role::findByName('staff', 'web');
+        $staffRole->syncPermissions($limitedPermissions);
     }
 }
