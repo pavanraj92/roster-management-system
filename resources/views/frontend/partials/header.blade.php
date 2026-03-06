@@ -46,7 +46,7 @@
 
                 <!-- conditional action -->
                 @auth
-                    <a href="{{ route('admin.home') }}" class="btn btn-outline-light btn-sm" style="font-weight:600;">Dashboard</a>
+                    <a href="{{ route('admin.dashboard') }}" class="btn btn-outline-light btn-sm" style="font-weight:600;">Dashboard</a>
                 @else
                     <a href="{{ route('admin.login') }}" class="btn btn-outline-light btn-sm" style="font-weight:600;">Login</a>
                 @endauth

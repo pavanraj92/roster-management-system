@@ -22,7 +22,6 @@ class DatabaseSeeder extends Seeder
             RolesSeeder::class,
             AdminsSeeder::class,
             PermissionRoleTableSeeder::class,
-            BannerSettingSeeder::class,
             WebsiteSettingSeeder::class,
             PageSeeder::class,
             VisibilitySettingSeeder::class,

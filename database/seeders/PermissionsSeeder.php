@@ -254,49 +254,7 @@ class PermissionsSeeder extends Seeder
                 'created_at' => $createDate,
                 'updated_at' => $timestamp,
             ],
-
-            // Banners (under settings)
-            [
-                'name' => 'banner_list',
-                'display_name' => 'List Banners',
-                'guard_name' => 'web',
-                'group_name' => 'banners',
-                'created_at' => $createDate,
-                'updated_at' => $timestamp,
-            ],
-            [
-                'name' => 'banner_create',
-                'display_name' => 'Create Banner',
-                'guard_name' => 'web',
-                'group_name' => 'banners',
-                'created_at' => $createDate,
-                'updated_at' => $timestamp,
-            ],
-            [
-                'name' => 'banner_edit',
-                'display_name' => 'Edit Banner',
-                'guard_name' => 'web',
-                'group_name' => 'banners',
-                'created_at' => $createDate,
-                'updated_at' => $timestamp,
-            ],
-            [
-                'name' => 'banner_delete',
-                'display_name' => 'Delete Banner',
-                'guard_name' => 'web',
-                'group_name' => 'banners',
-                'created_at' => $createDate,
-                'updated_at' => $timestamp,
-            ],
-            [
-                'name' => 'banner_toggle_status',
-                'display_name' => 'Toggle Banner Status',
-                'guard_name' => 'web',
-                'group_name' => 'banners',
-                'created_at' => $createDate,
-                'updated_at' => $timestamp,
-            ],
-
+            
             // Visibility settings
             [
                 'name' => 'visibility_view',

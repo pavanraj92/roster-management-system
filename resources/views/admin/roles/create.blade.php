@@ -4,7 +4,6 @@
 
 @section('content')
     <section class="content-main admin-form-page">
-
         <div class="row">
             <div class="clearfix">
                 <div class="float-start">
@@ -18,7 +17,7 @@
                 <x-admin.breadcrumb :list="[
             ['label' => 'Roles Manager', 'url' => route('admin.roles.index')],
             ['label' => 'Create Role']
-        ]" class="float-end" />
+            ]" class="float-end" />
             </div>
         </div>
 
@@ -26,6 +25,5 @@
             @csrf
             @include('admin.roles.form')
         </form>
-
     </section>
 @endsection

@@ -28,7 +28,6 @@
         <div class="card">
             <div class="card-body">
                 <div class="row gx-5">
-
                     <!-- Sidebar -->
                     <aside class="col-lg-3 border-end">
                         <nav class="nav nav-pills flex-lg-column mb-4">

@@ -50,7 +50,7 @@ class StaffCreatedMail extends Mailable
         if ($this->template) {
             $content = str_replace(
                 ['{{name}}', '{{email}}', '{{password}}', '{{login_url}}', '{{company}}'],
-                [$this->staff->first_name, $this->staff->email, $this->password, route('login'), config('app.name')],
+                [$this->staff->first_name, $this->staff->email, $this->password, route('admin.login'), config('app.name')],
                 $this->template->description
             );
 
@@ -63,7 +63,7 @@ class StaffCreatedMail extends Mailable
         }
 
         return new Content(
-            view: 'emails.admin.staff_created',
+            view: 'emails.dynamic',
         );
     }
 

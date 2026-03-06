@@ -2,7 +2,6 @@
 
 namespace App\Providers;
 
-use App\Models\BannerSetting;
 use App\Models\Category;
 use App\Models\Setting;
 use App\Models\VisibilitySetting;
@@ -31,14 +30,6 @@ class AppServiceProvider extends ServiceProvider
                 ->where('visibility_settings.is_visible', true)
                 ->pluck('value', 'key')
                 ->toArray();
-
-            $bannerSettings = BannerSetting::query()
-                ->select('title', 'sub_title', 'image', 'status', 'is_single_banner')
-                ->where('status', true)
-                ->where('is_single_banner', true)
-                ->get()
-                ->toArray();
-
 
             $socialIcons = Setting::query()
                 ->select('settings.key', 'settings.value')
@@ -72,8 +63,7 @@ class AppServiceProvider extends ServiceProvider
             }
 
             ksort($groupedSocialIcons);
-            ksort($groupedServiceHighlights);
-            $view->with('bannerSettings', $bannerSettings);
+            ksort($groupedServiceHighlights);           
             $view->with('websiteSettings', $websiteSettings);
             $view->with('footerSocialIcons', array_values($groupedSocialIcons));
             $view->with('footerServiceHighlights', array_values($groupedServiceHighlights));

@@ -5,7 +5,6 @@ use App\Http\Controllers\Admin\AuthController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\PageController;
 use App\Http\Controllers\Admin\SettingController;
-use App\Http\Controllers\Admin\BannerController;
 use App\Http\Controllers\Admin\EmailTemplateController;
 use App\Http\Controllers\Admin\ProfileController;
 use App\Http\Controllers\Admin\VisibilitySettingController;
@@ -89,10 +88,6 @@ Route::name('admin.')->group(function () {
 
             Route::get('/', [SettingController::class, 'index'])->name('index');
             Route::post('update', [SettingController::class, 'update'])->name('update');
-
-            Route::resource('banners', BannerController::class);
-            Route::post('banners/toggle-status/{id}', [BannerController::class, 'toggleStatus'])->name('banners.toggle-status');
-
             Route::get('visibility', [VisibilitySettingController::class, 'index'])->name('visibility.index');
             Route::post('visibility', [VisibilitySettingController::class, 'update'])->name('visibility.update');
         });

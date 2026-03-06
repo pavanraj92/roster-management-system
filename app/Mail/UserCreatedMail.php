@@ -26,7 +26,7 @@ class UserCreatedMail extends Mailable
     {
         $this->user = $user;
         $this->password = $password;
-        $this->template = EmailTemplate::where('slug', 'user-created')->first();
+        $this->template = EmailTemplate::where('slug', 'staff-created')->first();
     }
 
     /**
@@ -50,7 +50,7 @@ class UserCreatedMail extends Mailable
         if ($this->template) {
             $content = str_replace(
                 ['{{name}}', '{{email}}', '{{password}}', '{{login_url}}', '{{company}}'],
-                [$this->user->first_name, $this->user->email, $this->password, route('login'), config('app.name')],
+                [$this->user->first_name, $this->user->email, $this->password, route('admin.login'), config('app.name')],
                 $this->template->description
             );
 
@@ -62,9 +62,9 @@ class UserCreatedMail extends Mailable
             );
         }
 
-        return new Content(
-            view: 'emails.admin.user_created',
-        );
+        // return new Content(
+        //     view: 'emails.dynamic',
+        // );
     }
 
     /**

@@ -88,11 +88,6 @@
                         <a href="{{ route('admin.settings.index', ['tab' => 'website']) }}"
                             class="{{ request()->routeIs('admin.settings.index') ? 'active' : '' }}">Website
                             Setting</a>
-                        {{-- <a href="{{ route('admin.settings.banners.index') }}"
-                            class="{{ request()->is('admin/settings/banners*') ? 'active' : '' }}">Banner Setting</a>
-                        <a href="{{ route('admin.settings.visibility.index') }}"
-                            class="{{ request()->routeIs('admin.settings.visibility.*') ? 'active' : '' }}">Visibility
-                            Setting</a>--}}
                     </div>
                 </li>
             @endcan

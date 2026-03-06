@@ -23,10 +23,8 @@
 
             <header class="card-header">
                 <div class="row align-items-center listing-filter-bar">
-
                     <div class="col-md-9 me-auto">
                         <div class="d-flex flex-wrap align-items-center gap-2">
-
                             <!-- Search Box (smaller width) -->
                             <div class="input-group" style="flex: 1 1 200px; max-width: 300px;">
                                 <span class="input-group-text">
@@ -35,7 +33,6 @@
                                 <input type="text" placeholder="Search role name..." class="form-control"
                                     id="custom-search">
                             </div>
-
                         </div>
                     </div>
 
@@ -61,9 +58,7 @@
                     </table>
                 </div>
             </div>
-
         </div>
-
     </section>
 @endsection
 
