@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="light">
 
 <head>
     @php
@@ -24,7 +24,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <link rel="shortcut icon" type="image/x-icon" href="{{ $faviconPath }}" />
     <!-- Template CSS -->
-    <script src="{{ asset('backend/js/vendors/color-modes.js') }}"></script>
+    {{-- <script src="{{ asset('backend/js/vendors/color-modes.js') }}"></script> --}}
     <link href="{{ asset('backend/css/main.css?v=6.0') }}" rel="stylesheet" type="text/css" />
     <link href="{{ asset('backend/css/custom.css') }}" rel="stylesheet" type="text/css" />
     <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/dataTables.bootstrap5.min.css">
