@@ -46,7 +46,7 @@
                 </ul>
             </div>
 
-            <!-- Right Side - Account & Support -->
+            <!-- Right Side - Support and account link -->
             <div class="d-flex align-items-center" style="gap: 30px;">
                 <!-- Support (Desktop Only) -->
                 <div class="d-none d-lg-flex align-items-center" style="gap: 8px; padding-left: 30px; border-left: 1px solid rgba(255,255,255,0.06);">
@@ -59,30 +59,12 @@
                     </div>
                 </div>
 
-                <!-- Account Menu (Mobile & Desktop) -->
-                <div class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="accountDropdown" role="button" data-bs-toggle="dropdown" style="color: #dbeaf6; font-weight: 600; display: flex; align-items: center; gap: 8px;">
-                        <i class="bi bi-person-circle" style="font-size: 20px;"></i>
-                        <span class="d-none d-lg-inline">Account</span>
-                    </a>
-                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="accountDropdown" style="border: 1px solid #e9ecef; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
-                        @auth
-                            <li><a class="dropdown-item" href="#" style="color: #2a3f5f;"><i class="bi bi-person me-2"></i>My Account</a></li>
-                            <li><hr class="dropdown-divider"></li>
-                            <li>
-                                <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('header-logout-form').submit();" style="color: #dc3545;">
-                                    <i class="bi bi-box-arrow-right me-2"></i>Sign out
-                                </a>
-                                <form id="header-logout-form" method="POST" action="{{ route('logout') }}" class="d-none">
-                                    @csrf
-                                </form>
-                            </li>
-                        @else
-                            <li><a class="dropdown-item" href="{{ route('login') }}" style="color: #2a3f5f;"><i class="bi bi-box-arrow-in-right me-2"></i>Login</a></li>
-                            <li><a class="dropdown-item" href="{{ route('register') }}" style="color: #2a3f5f;"><i class="bi bi-person-plus me-2"></i>Sign Up</a></li>
-                        @endauth
-                    </ul>
-                </div>
+                <!-- conditional action -->
+                @auth
+                    <a href="{{ route('home') }}" class="btn btn-outline-light btn-sm" style="font-weight:600;">Dashboard</a>
+                @else
+                    <a href="{{ route('login') }}" class="btn btn-outline-light btn-sm" style="font-weight:600;">Login</a>
+                @endauth
             </div>
         </div>
     </nav>
@@ -96,10 +78,7 @@
     .nav-link{transition:all .25s ease;border-radius:6px;padding:8px 12px !important;color:#dbeaf6;font-weight:500; font-size: 14px;}
     .nav-link:hover{color:#ffffff !important;background:rgba(255,255,255,0.08)}
     .nav-link.active{color:#ffffff !important; background:rgba(59,149,183,0.15);}
-    .dropdown-item:hover{background-color:#f0f7fb !important;color:var(--brand-500) !important}
-    .dropdown-menu{padding: 8px 0 !important; min-width: 160px;}
-    .dropdown-item{padding: 10px 16px !important; font-size: 14px;}
-
+    
     @media (max-width: 992px){
         .navbar-collapse{margin-top:14px;padding-top:14px;border-top:1px solid rgba(255,255,255,0.04)}
         .nav-link{padding:8px 0 !important}

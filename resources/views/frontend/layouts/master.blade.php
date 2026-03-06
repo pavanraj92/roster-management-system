@@ -1,3 +1,7 @@
+@php
+    $mainLogo = !empty($websiteSettings['favicon']) ?  asset('storage/' . ltrim($websiteSettings['favicon'], '/')) 
+     : asset('frontend/imgs/theme/logo.png');
+@endphp
 <!DOCTYPE html>
 <html class="no-js" lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 
@@ -13,7 +17,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
     <meta name="description" content="@yield('meta_description', 'Manage your staff and schedules with ease')" />
     <!-- Favicon -->
-    <link rel="shortcut icon" type="image/x-icon" href="{{ asset('frontend/imgs/theme/favicon.svg') }}" />
+    <link rel="shortcut icon" type="image/x-icon" href="{{ $mainLogo }}" />
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Template CSS -->
@@ -48,8 +52,6 @@
 
     <!-- Footer -->
     @include('frontend.partials.footer')
-
-
 
     <!-- Scripts -->
     @include('frontend.partials.scripts')

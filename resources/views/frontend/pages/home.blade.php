@@ -43,7 +43,7 @@
         <div class="row mb-5 text-center wow fadeInUp">
             <div class="col-lg-8 mx-auto">
                 <h2 class="display-5 fw-bold mb-4" style="color: #2a3f5f;">Key Features</h2>
-                <p class="fs-5" style="color: #6c757d;">
+                <p class="fs-5 mb-3" style="color: #6c757d;">
                     Packed with powerful features to make workforce management simple and efficient
                 </p>
             </div>
@@ -131,7 +131,7 @@
         <div class="row mb-5 text-center wow fadeInUp">
             <div class="col-lg-8 mx-auto">
                 <h2 class="display-5 fw-bold mb-4" style="color: #2a3f5f;">How It Works</h2>
-                <p class="fs-5" style="color: #6c757d;">
+                <p class="fs-5 mb-3" style="color: #6c757d;">
                     Simple 4-step process to get started with our platform
                 </p>
             </div>
