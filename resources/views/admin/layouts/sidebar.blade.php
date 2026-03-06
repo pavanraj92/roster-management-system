@@ -94,7 +94,7 @@
             <li class="menu-item">
                 <a class="menu-link" href="{{route('admin.roster')}}">
                     <i class="icon material-icons md-local_offer"></i>
-                    <span class="text"> Roaster </span>
+                    <span class="text"> Roster </span>
                 </a>
             </li>
         </ul>
