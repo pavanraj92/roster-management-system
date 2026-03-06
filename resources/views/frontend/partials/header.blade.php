@@ -4,16 +4,11 @@
 @endphp
 
 <header class="header-area" style="position: sticky; top: 0; z-index: 1050;">
-    <!-- Top Promo Bar -->
-    <div class="mobile-promotion" style="background: linear-gradient(135deg, #3b95b7 0%, #2a6b8f 100%); color: white; padding: 10px; text-align: center; font-size: 13px;">
-        <span>Welcome to <strong>{{ config('app.name', 'Roster') }}</strong> – manage your staff and schedules</span>
-    </div>
-
     <!-- Main Header -->
     <nav class="navbar navbar-expand-lg navbar-light" style="padding: 12px 0;">
         <div class="container">
             <!-- Logo -->
-            <a class="navbar-brand me-auto me-lg-5" href="{{ route('home') }}" style="display: flex; align-items: center;">
+            <a class="navbar-brand me-auto me-lg-5" href="{{ route('admin.dashboard') }}" style="display: flex; align-items: center;">
                 <img src="{{ $mainLogo }}" alt="logo" style="height: 50px; width: auto;">
             </a>
 
@@ -47,23 +42,13 @@
             </div>
 
             <!-- Right Side - Support and account link -->
-            <div class="d-flex align-items-center" style="gap: 30px;">
-                <!-- Support (Desktop Only) -->
-                <div class="d-none d-lg-flex align-items-center" style="gap: 8px; padding-left: 30px; border-left: 1px solid rgba(255,255,255,0.06);">
-                    <div style="color: #cfe7fb; font-size: 20px;">
-                        <i class="bi bi-telephone"></i>
-                    </div>
-                    <div style="font-size: 13px;">
-                        <div style="color: #ffffff; font-weight: 600;">24/7 Support</div>
-                        <div style="color: #dbeaf6;">Customer Care</div>
-                    </div>
-                </div>
+            <div class="d-flex align-items-center" style="gap: 30px;">                             
 
                 <!-- conditional action -->
                 @auth
-                    <a href="{{ route('home') }}" class="btn btn-outline-light btn-sm" style="font-weight:600;">Dashboard</a>
+                    <a href="{{ route('admin.home') }}" class="btn btn-outline-light btn-sm" style="font-weight:600;">Dashboard</a>
                 @else
-                    <a href="{{ route('login') }}" class="btn btn-outline-light btn-sm" style="font-weight:600;">Login</a>
+                    <a href="{{ route('admin.login') }}" class="btn btn-outline-light btn-sm" style="font-weight:600;">Login</a>
                 @endauth
             </div>
         </div>

@@ -42,9 +42,6 @@
     <!-- Header (Top of page) -->
     @include('frontend.partials.header')
     
-    <!-- Mobile Menu -->
-    @include('frontend.partials.mobile-menu')
-
     <!-- Main Content -->
     <main class="main @yield('main_class', '')">
         @yield('content')

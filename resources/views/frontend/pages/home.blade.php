@@ -16,10 +16,10 @@
                     <p class="fs-5 mb-4" style="color: var(--muted);">A modern roster management solution to streamline scheduling, improve coordination, and boost efficiency.</p>
                     <div class="d-flex gap-3 flex-wrap">
                         @guest
-                            <a href="{{ route('register') }}" class="btn btn-primary btn-modern" style="background: linear-gradient(90deg,var(--brand-500),var(--brand-700)); border: none; color: #fff;">Get Started Free</a>
-                            <a href="{{ route('login') }}" class="btn btn-outline-secondary btn-modern" style="background: transparent; border: 1px solid rgba(34,50,80,0.08); color: var(--brand-700);">Sign In</a>
+                            <a href="{{ route('admin.register') }}" class="btn btn-primary btn-modern" style="background: linear-gradient(90deg,var(--brand-500),var(--brand-700)); border: none; color: #fff;">Get Started Free</a>
+                            <a href="{{ route('admin.login') }}" class="btn btn-outline-secondary btn-modern" style="background: transparent; border: 1px solid rgba(34,50,80,0.08); color: var(--brand-700);">Sign In</a>
                         @else
-                            <a href="{{ route('home') }}" class="btn btn-primary btn-modern" style="background: linear-gradient(90deg,var(--brand-500),var(--brand-700)); border: none; color: #fff;">Go to Dashboard</a>
+                            <a href="{{ route('admin.dashboard') }}" class="btn btn-primary btn-modern" style="background: linear-gradient(90deg,var(--brand-500),var(--brand-700)); border: none; color: #fff;">Go to Dashboard</a>
                         @endguest
                     </div>
                 </div>
@@ -403,11 +403,11 @@
                 </p>
                 <div class="d-flex gap-3 justify-content-center flex-wrap">
                     @guest
-                        <a href="{{ route('register') }}" class="btn btn-light btn-lg fw-bold" style="padding: 14px 45px;">
+                        <a href="{{ route('admin.register') }}" class="btn btn-light btn-lg fw-bold" style="padding: 14px 45px;">
                             Start Free Trial
                         </a>
                     @else
-                        <a href="{{ route('home') }}" class="btn btn-light btn-lg fw-bold" style="padding: 14px 45px;">
+                        <a href="{{ route('admin.dashboard') }}" class="btn btn-light btn-lg fw-bold" style="padding: 14px 45px;">
                             Go to Dashboard
                         </a>
                     @endguest

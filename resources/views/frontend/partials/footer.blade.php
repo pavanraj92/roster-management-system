@@ -14,7 +14,7 @@
                 <h6 class="fw-bold mb-3" style="color: #ffffff">Quick Links</h6>
                 <ul class="list-unstyled" style="font-size: 14px;">
                     <li class="mb-2">
-                        <a href="{{ route('home') }}" style="color: #dbeaf6; text-decoration: none; opacity: 0.9; transition: all 0.15s;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.9'">
+                        <a href="{{ route('admin.dashboard') }}" style="color: #dbeaf6; text-decoration: none; opacity: 0.9; transition: all 0.15s;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.9'">
                             → Home
                         </a>
                     </li>
@@ -24,12 +24,12 @@
                         </a>
                     </li>
                     <li class="mb-2">
-                        <a href="{{ route('login') }}" style="color: white; text-decoration: none; opacity: 0.85; transition: opacity 0.3s;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.85'">
+                        <a href="{{ route('admin.login') }}" style="color: white; text-decoration: none; opacity: 0.85; transition: opacity 0.3s;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.85'">
                             → Login
                         </a>
                     </li>
                     <li class="mb-2">
-                        <a href="{{ route('register') }}" style="color: white; text-decoration: none; opacity: 0.85; transition: opacity 0.3s;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.85'">
+                        <a href="{{ route('admin.register') }}" style="color: white; text-decoration: none; opacity: 0.85; transition: opacity 0.3s;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.85'">
                             → Sign Up
                         </a>
                     </li>

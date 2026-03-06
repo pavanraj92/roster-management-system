@@ -2,7 +2,7 @@
 @section('title', 'Profile Setting')
 
 @section('content')
-
+{{-- @dd(auth()->user()->roles) --}}
     <section class="content-main">
         <div class="row">
             <div class="clearfix">

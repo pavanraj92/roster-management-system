@@ -13,7 +13,7 @@
         </div>
         <div class="mobile-header-content-area">
             <div class="mobile-search search-style-3 mobile-header-border">
-                <form action="{{ route('home') }}" method="get">
+                <form action="{{ route('admin.dashboard') }}" method="get">
                     <input type="text" name="q" placeholder="Search for items…" />
                     <button type="submit"><i class="fi-rs-search"></i></button>
                 </form>
@@ -21,13 +21,13 @@
             <div class="mobile-menu-wrap mobile-header-border">
                 <nav>
                     <ul class="mobile-menu font-heading">
-                        <li><a href="{{ route('home') }}">Home</a></li>
-                        <li><a href="{{ route('home') }}">Deals</a></li>
-                        <li><a href="{{ route('home') }}">About</a></li>
-                        <li><a href="{{ route('home') }}">Contact</a></li>
+                        <li><a href="{{ route('admin.dashboard') }}">Home</a></li>
+                        <li><a href="{{ route('admin.dashboard') }}">Deals</a></li>
+                        <li><a href="{{ route('admin.dashboard') }}">About</a></li>
+                        <li><a href="{{ route('admin.dashboard') }}">Contact</a></li>
                         @guest
-                            <li><a href="{{ route('login') }}">Login</a></li>
-                            <li><a href="{{ route('register') }}">Sign Up</a></li>
+                            <li><a href="{{ route('admin.login') }}">Login</a></li>
+                            <li><a href="{{ route('admin.register') }}">Sign Up</a></li>
                         @else
                              @if(Route::has('logout'))
                                             <li>
@@ -46,10 +46,10 @@
             </div>
             <div class="mobile-header-info-wrap">
                 <div class="single-mobile-header-info">
-                    <a href="{{ route('home') }}"><i class="fi-rs-marker"></i> Our location</a>
+                    <a href="{{ route('admin.dashboard') }}"><i class="fi-rs-marker"></i> Our location</a>
                 </div>
                 <div class="single-mobile-header-info">
-                    <a href="{{ route('login') }}"><i class="fi-rs-user"></i>Log In / Sign Up</a>
+                    <a href="{{ route('admin.login') }}"><i class="fi-rs-user"></i>Log In / Sign Up</a>
                 </div>
             </div>
             <div class="mobile-social-icon mb-50">
