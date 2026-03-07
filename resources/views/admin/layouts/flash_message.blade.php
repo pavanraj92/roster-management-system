@@ -88,10 +88,15 @@
     };
 
     document.addEventListener('DOMContentLoaded', function () {
-        var toastElList = [].slice.call(document.querySelectorAll('#adminToastContainer .toast'));
+        if (typeof bootstrap === 'undefined' || !bootstrap.Toast) return;
+        var container = document.getElementById('adminToastContainer');
+        if (!container) return;
+        var toastElList = [].slice.call(container.querySelectorAll('.toast'));
         toastElList.forEach(function (toastEl) {
-            var toast = new bootstrap.Toast(toastEl, { delay: 2000 });
-            toast.show();
+            try {
+                var toast = new bootstrap.Toast(toastEl, { delay: 5000 });
+                toast.show();
+            } catch (e) { /* ignore */ }
         });
     });
 </script>

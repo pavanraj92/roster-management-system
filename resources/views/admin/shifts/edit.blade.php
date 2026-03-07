@@ -1,6 +1,6 @@
 @extends('admin.layouts.app')
 
-@section('title', 'Edit Permission')
+@section('title', 'Edit Shift')
 
 @section('content')
 <section class="content-main admin-form-page">
@@ -8,36 +8,35 @@
     <div class="row">
         <div class="clearfix">
             <div class="float-start">
-                <h2 class="content-title card-title mb-0">Edit Permission</h2>
+                <h2 class="content-title card-title mb-0">Edit Shift</h2>
                 <p class="listing-page-subtitle mb-3">
-                    Update permission details
+                    Update shift: {{ $shift->name }}
                 </p>
             </div>
 
-            <!-- Right side: Breadcrumb -->
             <x-admin.breadcrumb :list="[
-            ['label' => 'Permissions Manager', 'url' => route('admin.permissions.index')],
-            ['label' => 'Edit Permission']
-        ]" class="float-end" />
+                    ['label' => 'Shifts Manager', 'url' => route('admin.shifts.index')],
+                    ['label' => 'Edit Shift']
+                ]" class="float-end" />
         </div>
     </div>
 
-    <form action="{{ route('admin.permissions.update', $permission->id) }}" method="POST">
+    <form action="{{ route('admin.shifts.update', $shift->id) }}" method="POST">
         @csrf
         @method('PUT')
-
         <div class="row">
             <div class="col-12">
                 <div class="card mb-4 admin-form-main-card">
                     <div class="card-header">
-                        <h4>Permission Information</h4>
+                        <h4>Shift Information</h4>
                     </div>
                     <div class="card-body">
-                        @include('admin.permissions.form')
+                        @include('admin.shifts.form')
                     </div>
                 </div>
             </div>
         </div>
     </form>
+
 </section>
 @endsection

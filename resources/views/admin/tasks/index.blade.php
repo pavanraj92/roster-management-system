@@ -1,6 +1,6 @@
 @extends('admin.layouts.app')
 
-@section('title', 'Roles')
+@section('title', 'Tasks')
 
 @section('content')
     <section class="content-main">
@@ -8,14 +8,13 @@
         <div class="row">
             <div class="clearfix">
                 <div class="float-start">
-                    <h2 class="content-title card-title mb-0">Roles Manager</h2>
+                    <h2 class="content-title card-title mb-0">Tasks Manager</h2>
                     <p class="listing-page-subtitle mb-3">
-                        Manage roles and their permissions.
+                        Manage tasks and their descriptions.
                     </p>
                 </div>
 
-                <!-- Right side: Breadcrumb -->
-                <x-admin.breadcrumb :list="[['label' => 'Roles Manager']]" class="float-end" />
+                <x-admin.breadcrumb :list="[['label' => 'Tasks Manager']]" class="float-end" />
             </div>
         </div>
 
@@ -25,20 +24,19 @@
                 <div class="row align-items-center listing-filter-bar">
                     <div class="col-md-9 me-auto">
                         <div class="d-flex flex-wrap align-items-center gap-2">
-                            <!-- Search Box (smaller width) -->
                             <div class="input-group" style="flex: 1 1 200px; max-width: 300px;">
                                 <span class="input-group-text">
                                     <i class="material-icons md-search" style="font-size: 18px;"></i>
                                 </span>
-                                <input type="text" placeholder="Search role name..." class="form-control"
+                                <input type="text" placeholder="Search tasks..." class="form-control"
                                     id="custom-search">
                             </div>
                         </div>
                     </div>
 
                     <div class="col-md-3 float-end text-end">
-                        <a href="{{ route('admin.roles.create') }}" class="btn btn-primary">
-                            <i class="material-icons md-plus"></i> Create Role
+                        <a href="{{ route('admin.tasks.create') }}" class="btn btn-primary">
+                            <i class="material-icons md-plus"></i> Create Task
                         </a>
                     </div>
                 </div>
@@ -46,12 +44,13 @@
 
             <div class="card-body">
                 <div class="table-responsive">
-                    <table class="table table-hover align-middle mb-0 listing-table" id="roles-table">
+                    <table class="table table-hover align-middle mb-0 listing-table" id="tasks-table">
                         <thead>
                             <tr>
                                 <th width="60">#</th>
-                                <th>Role Name</th>
-                                <th>Permissions</th>
+                                <th>Title</th>
+                                <th>Description</th>
+                                <th>Created By</th>
                                 <th width="120" class="text-center">Action</th>
                             </tr>
                         </thead>
@@ -62,4 +61,4 @@
     </section>
 @endsection
 
-@include('admin.roles.partials.script')
+@include('admin.tasks.partials.script')
