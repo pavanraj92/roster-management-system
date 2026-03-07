@@ -66,6 +66,8 @@ class ShiftService
      */
     public function createShift(array $validated): Shift
     {
+        $validated['color'] = $this->detectShiftColor($validated['start_time']);
+
         return Shift::create($validated);
     }
 
@@ -74,6 +76,8 @@ class ShiftService
      */
     public function updateShift(Shift $shift, array $validated): Shift
     {
+        $validated['color'] = $this->detectShiftColor($validated['start_time']);
+
         $shift->update($validated);
 
         return $shift;
@@ -87,5 +91,20 @@ class ShiftService
         $shift->delete();
 
         return true;
+    }
+
+    private function detectShiftColor(string $startTime): string
+    {
+        $ranges = config('shifts.ranges');
+        $colors = config('shifts.colors');
+
+        foreach ($ranges as $type => $range) {
+
+            if ($startTime >= $range[0] && $startTime <= $range[1]) {
+                return $colors[$type];
+            }
+        }
+
+        return '#6c757d'; // fallback gray
     }
 }

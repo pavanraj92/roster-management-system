@@ -27,7 +27,7 @@
                         <!-- Welcome / Site Name -->
                         <div class="text-center mt-4">
                             <h4 class="text-primary">Forgot Password?</h4>
-                            <p class="text-muted">Enter your email to reset your password for {{ $siteName }}.</p>
+                            <p class="text-muted">Enter your email to reset your password</p>
                         </div>
 
                         <div class="card-body">

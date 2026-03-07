@@ -26,13 +26,6 @@ $color = old('color', isset($shift) ? $shift->color : '');
             value="{{ old('end_time', isset($shift) ? $shift->end_time : '') }}">
         @error('end_time') <span class="text-danger small">{{ $message }}</span> @enderror
     </div>
-    <div class="mb-4 col-lg-6">
-        <label for="name" class="form-label">Name</label>
-        <input type="text" name="name" placeholder="Name" class="form-control" id="name"
-            value="{{ old('name', isset($shift) ? $shift->name : '') }}">
-        @error('name') <span class="text-danger small">{{ $message }}</span> @enderror
-    </div>
-
     <div class="col-12 border-top pt-4 mt-4">
         <button type="submit" class="btn btn-primary">
             {{ isset($shift) ? 'Update' : 'Save' }}

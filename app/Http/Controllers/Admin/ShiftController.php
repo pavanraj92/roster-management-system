@@ -43,7 +43,6 @@ class ShiftController extends Controller
             'name' => 'required|string|max:255',
             'start_time' => 'required|date_format:H:i',
             'end_time' => 'required|date_format:H:i|after:start_time',
-            'color' => 'nullable|string|max:50',
         ]);
 
         $this->shiftService->createShift($validated);
@@ -76,7 +75,6 @@ class ShiftController extends Controller
             'name' => 'required|string|max:255',
             'start_time' => 'required|date_format:H:i',
             'end_time' => 'required|date_format:H:i|after:start_time',
-            'color' => 'nullable|string|max:50',
         ]);
 
         $this->shiftService->updateShift($shift, $validated);
