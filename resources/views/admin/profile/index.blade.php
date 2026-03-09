@@ -84,18 +84,12 @@
                                                     <label class="form-label">Phone</label>
                                                     <input class="form-control" type="tel" name="phone"
                                                         value="{{ old('phone', $user->phone) }}">
-                                                    @error('phone')
-                                                        <span class="text-danger small">{{ $message }}</span>
-                                                    @enderror
                                                 </div>
 
                                                 <div class="col-lg-12 mb-3">
                                                     <label class="form-label">Address</label>
                                                     <input class="form-control" type="text" name="address_line1"
                                                         value="{{ old('address_line1', optional($user->admin_address)->address_line1) }}">
-                                                    @error('address_line1')
-                                                        <span class="text-danger small">{{ $message }}</span>
-                                                    @enderror
                                                 </div>
 
                                             </div>

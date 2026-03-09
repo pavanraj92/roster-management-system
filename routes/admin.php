@@ -13,6 +13,8 @@ use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\PermissionController;
 use App\Http\Controllers\Admin\RosterController;
+use App\Http\Controllers\Admin\ShiftController;
+use App\Http\Controllers\Admin\TaskController;
 
 /*
 |--------------------------------------------------------------------------
@@ -75,6 +77,12 @@ Route::name('admin.')->group(function () {
         Route::resource('roles', RoleController::class)->middleware('permission:role_access');
         Route::resource('permissions', PermissionController::class)->middleware('permission:role_access');
         Route::post('roles/{role}/permissions', [RoleController::class, 'assignPermissions'])->name('roles.assign-permissions');
+
+        // Shifts
+        Route::resource('shifts', ShiftController::class)->middleware('permission:shift_access');
+
+        // Tasks
+        Route::resource('tasks', TaskController::class)->middleware('permission:task_access');
 
         // Email Templates
         Route::resource('email-templates', EmailTemplateController::class)->middleware('permission:email_template_access');

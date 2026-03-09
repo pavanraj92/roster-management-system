@@ -47,7 +47,7 @@
 
                                 <div class="mb-3">
                                     <input class="form-control @error('email') is-invalid @enderror" name="email"
-                                        value="{{ old('email', $login_email ?? '') }}" placeholder="Username or email"
+                                        value="{{ old('email', $login_email ?? '') }}" placeholder="Email"
                                         type="text" />
                                     @error('email')
                                         <div class="invalid-feedback">

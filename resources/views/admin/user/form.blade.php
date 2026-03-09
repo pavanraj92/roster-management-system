@@ -76,22 +76,4 @@
     </div>
 </div>
 
-@push('scripts')
-    <script>
-        $(document).ready(function () {
-
-            $('#roles').select2({
-                placeholder: "Select Roles",
-                allowClear: true,
-                width: '100%'
-            });
-
-            flatpickr(".datepicker", {
-                dateFormat: "Y-m-d",
-                maxDate: "today"
-            });
-
-        });
-
-    </script>
-@endpush
+@include('admin.user.partials.script')

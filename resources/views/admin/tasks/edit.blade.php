@@ -1,6 +1,6 @@
 @extends('admin.layouts.app')
 
-@section('title', 'Edit Role')
+@section('title', 'Edit Task')
 
 @section('content')
     <section class="content-main admin-form-page">
@@ -8,31 +8,30 @@
         <div class="row">
             <div class="clearfix">
                 <div class="float-start">
-                    <h2 class="content-title card-title mb-0">Edit Role</h2>
+                    <h2 class="content-title card-title mb-0">Edit Task</h2>
                     <p class="listing-page-subtitle mb-3">
-                        Update role: {{ ucfirst($role->name) }}
+                        Update task: {{ $task->title }}
                     </p>
                 </div>
 
-                <!-- Right side: Breadcrumb -->
                 <x-admin.breadcrumb :list="[
-            ['label' => 'Roles Manager', 'url' => route('admin.roles.index')],
-            ['label' => 'Edit Role']
-        ]" class="float-end" />
+                    ['label' => 'Tasks Manager', 'url' => route('admin.tasks.index')],
+                    ['label' => 'Edit Task']
+                ]" class="float-end" />
             </div>
         </div>
 
-        <form action="{{ route('admin.roles.update', $role->id) }}" method="POST">
+        <form action="{{ route('admin.tasks.update', $task->id) }}" method="POST">
             @csrf
             @method('PUT')
             <div class="row">
                 <div class="col-12">
                     <div class="card mb-4 admin-form-main-card">
                         <div class="card-header">
-                            <h4>Role Information</h4>
+                            <h4>Task Information</h4>
                         </div>
                         <div class="card-body">
-                            @include('admin.roles.form')
+                            @include('admin.tasks.form')
                         </div>
                     </div>
                 </div>
@@ -41,5 +40,3 @@
 
     </section>
 @endsection
-
-
