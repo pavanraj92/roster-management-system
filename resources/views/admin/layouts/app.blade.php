@@ -38,7 +38,7 @@
 <body>
     <div class="screen-overlay"></div>
     <script>
-        // immediately clear any stray overlay (runs during page parse)
+        // Immediately clear any stray overlay (runs during page parse)
         (function () {
             var overlay = document.querySelector('.screen-overlay');
             if (overlay) overlay.classList.remove('show');
@@ -63,7 +63,6 @@
 
     <main class="main-wrap">
         @include('admin.layouts.header')
-
         {{-- global flash/toast messages --}}
         @include('admin.layouts.flash_message')
 

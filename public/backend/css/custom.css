@@ -368,3 +368,43 @@
 .card-header h4 {
     color: #fff;
 }
+
+/* #roster-table  td.staffname{
+    border: 5px solid blue;
+} */
+
+#roster-table tr,#roster-table th, #roster-table td {
+    border: 2px solid #adb6bf
+}
+ #roster-table td { 
+    padding: 5px;
+ }
+.assign-shift-btn {
+    width: 100% !important;
+    height: 100% !important;
+    background-color: #e4f4fb !important;
+    color:gray !important;
+    text-align: center !important;
+    display: block !important;    
+}
+.roster-text {
+    padding: 5px;
+    background: #8ca1f9;
+    border-radius: 4px;
+
+}
+.shift-txt{
+    font-weight: 900;
+}
+
+.roster-btn{
+    border: none;
+    background: white;
+    font-size: 30px;
+    color: #adb6bf;
+    position: relative;
+    padding: 0px;
+    line-height: 1.5rem;
+    margin-top: 10px;
+    margin-bottom: 0px;
+}
