@@ -20,6 +20,18 @@ class RosterService
         ]);
     }
 
+    public function updateRoster(Roster $roster, array $data): Roster
+    {
+        $roster->update([
+            'user_id'  => $data['user_id'],
+            'shift_id' => $data['shift_id'],
+            'task_id'  => $data['task_id'],
+            'date'     => $data['date'],
+        ]);
+
+        return $roster;
+    }
+
     public function getRosterData($request)
     {
         $start = $request->start

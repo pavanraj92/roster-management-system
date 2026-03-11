@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\ShiftStoreRequest;
+use App\Http\Requests\ShiftUpdateRequest;
 use App\Models\Shift;
 use App\Services\ShiftService;
 use Illuminate\Http\Request;
@@ -37,15 +39,9 @@ class ShiftController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(ShiftStoreRequest $request)
     {
-        $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'start_time' => 'required|date_format:H:i',
-            'end_time' => 'required|date_format:H:i|after:start_time',
-        ]);
-
-        $this->shiftService->createShift($validated);
+        $this->shiftService->createShift($request->validated());
 
         return redirect()->route('admin.shifts.index')->with('success', 'Shift created successfully.');
     }
@@ -69,15 +65,9 @@ class ShiftController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Shift $shift)
+    public function update(ShiftUpdateRequest $request, Shift $shift)
     {
-        $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'start_time' => 'required|date_format:H:i',
-            'end_time' => 'required|date_format:H:i|after:start_time',
-        ]);
-
-        $this->shiftService->updateShift($shift, $validated);
+        $this->shiftService->updateShift($shift, $request->validated());
 
         return redirect()->route('admin.shifts.index')->with('success', 'Shift updated successfully.');
     }

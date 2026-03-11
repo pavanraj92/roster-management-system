@@ -38,5 +38,6 @@
         </div>
     </form>
 
+    @include('admin.shifts.partials.timepicker-script')
 </section>
 @endsection

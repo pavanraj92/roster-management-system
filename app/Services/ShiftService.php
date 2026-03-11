@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Models\Shift;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
+use Carbon\Carbon;
 
 class ShiftService
 {
@@ -91,20 +92,34 @@ class ShiftService
         $shift->delete();
 
         return true;
-    }
+    }   
 
-    private function detectShiftColor(string $startTime): string
+    private function detectShiftColor(string $time): string
     {
-        $ranges = config('shifts.ranges');
-        $colors = config('shifts.colors');
+        $time = Carbon::createFromFormat('H:i', $time);
 
-        foreach ($ranges as $type => $range) {
+        $ranges = config('constant.shift_ranges');
+        $colors = config('constant.shift_colors');
 
-            if ($startTime >= $range[0] && $startTime <= $range[1]) {
-                return $colors[$type];
+        foreach ($ranges as $shift => $range) {
+
+            $start = Carbon::createFromFormat('H:i', $range[0]);
+            $end   = Carbon::createFromFormat('H:i', $range[1]);
+
+            // Normal range
+            if ($start <= $end) {
+                if ($time->between($start, $end)) {                    
+                    return $colors[$shift];
+                }
+            }
+            // Overnight range (cross midnight)
+            else {
+                if ($time >= $start || $time <= $end) {                    
+                    return $colors[$shift];
+                }
             }
         }
 
-        return '#6c757d'; // fallback gray
+        return config('constant.default_shift_color');
     }
 }

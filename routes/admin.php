@@ -116,5 +116,6 @@ Route::name('admin.')->group(function () {
 
         Route::get('roster', [RosterController::class, 'index'])->name('roster');
         Route::post('/roster/store', [RosterController::class,'store'])->name('roster.store');
+        Route::put('roster/{roster}', [RosterController::class, 'update'])->name('roster.update');
     });
 });

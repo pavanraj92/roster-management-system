@@ -10,6 +10,7 @@ class PermissionsSeeder extends Seeder
 {
     /**
      * Run the database seeds.
+     * command: php artisan db:seed --class=PermissionsSeeder
      */
     public function run(): void
     {

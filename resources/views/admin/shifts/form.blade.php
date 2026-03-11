@@ -16,14 +16,14 @@ $color = old('color', isset($shift) ? $shift->color : '');
     </div>
     <div class="mb-4 col-lg-6">
         <label for="start_time" class="form-label">Start Time</label>
-        <input type="time" name="start_time" placeholder="Start Time" class="form-control" id="start_time"
-            value="{{ old('start_time', isset($shift) ? $shift->start_time : '') }}">
+        <input type="text" name="start_time" placeholder="Start Time"
+            class="form-control timepicker" id="start_time" value="{{ $startTime }}">
         @error('start_time') <span class="text-danger small">{{ $message }}</span> @enderror
     </div>
     <div class="mb-4 col-lg-6">
         <label for="end_time" class="form-label">End Time</label>
-        <input type="time" name="end_time" placeholder="End Time" class="form-control" id="end_time"
-            value="{{ old('end_time', isset($shift) ? $shift->end_time : '') }}">
+        <input type="text" name="end_time" placeholder="End Time"
+            class="form-control timepicker" id="end_time" value="{{ $endTime }}">
         @error('end_time') <span class="text-danger small">{{ $message }}</span> @enderror
     </div>
     <div class="col-12 border-top pt-4 mt-4">
