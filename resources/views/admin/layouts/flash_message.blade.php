@@ -26,7 +26,7 @@
         @endif
     @endforeach
 
-    @if (session()->has('errors'))
+   {{-- @if (session()->has('errors'))
         @foreach (session('errors')->all() as $error)
             <div class="toast align-items-center text-bg-danger border-0" role="alert" aria-live="assertive" aria-atomic="true">
                 <div class="d-flex">
@@ -37,7 +37,7 @@
                 </div>
             </div>
         @endforeach
-    @endif
+    @endif --}}
 </div>
 
 <script>

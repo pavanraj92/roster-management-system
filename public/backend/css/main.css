@@ -3804,6 +3804,7 @@ body.aside-mini .menu-aside .menu-item.has-submenu .menu-link:after {
 }
 
 footer.main-footer {
+  margin-bottom: 20px;
   bottom: 0;
   padding: 30px 3%;
   position: absolute;
