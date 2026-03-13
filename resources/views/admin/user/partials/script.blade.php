@@ -23,7 +23,7 @@
                     },
                     {
                         data: 'name',
-                        name: 'name'
+                        name: 'first_name'
                     },
                     {
                         data: 'phone',
@@ -60,7 +60,7 @@
                     }
                 });
 
-                $('#custom-search').on('keyup', function () {
+                $('#custom-search').on('input keyup', function () {
                     table.search(this.value).draw();
                 });
 

@@ -29,6 +29,30 @@ class UserService
 
         return DataTables::of($data)
             ->addIndexColumn()
+            ->filter(function ($query) use ($request) {
+                $search = $request->get('search');
+                $keyword = trim((string) ($search['value'] ?? ''));
+
+                if ($keyword !== '') {
+                    $query->where(function ($q) use ($keyword) {
+                        $q->where('first_name', 'like', '%' . $keyword . '%')
+                            ->orWhere('last_name', 'like', '%' . $keyword . '%')
+                            ->orWhere('email', 'like', '%' . $keyword . '%')
+                            ->orWhere('phone', 'like', '%' . $keyword . '%')
+                            ->orWhere('designation', 'like', '%' . $keyword . '%');
+                    });
+                }
+            })
+            ->orderColumn('name', function ($query, $order) {
+                $query->orderBy('first_name', $order)->orderBy('last_name', $order);
+            })
+            ->filterColumn('name', function ($query, $keyword) {
+                $query->where(function ($q) use ($keyword) {
+                    $q->where('first_name', 'like', '%' . $keyword . '%')
+                        ->orWhere('last_name', 'like', '%' . $keyword . '%')
+                        ->orWhereRaw("CONCAT(COALESCE(first_name, ''), ' ', COALESCE(last_name, '')) LIKE ?", ['%' . $keyword . '%']);
+                });
+            })
             ->addColumn('name', function ($row) {
                 $avatarUrl = $row->avatar_url ?? asset('backend/imgs/theme/avatar-1.png');
 

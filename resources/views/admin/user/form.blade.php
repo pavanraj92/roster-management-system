@@ -13,14 +13,14 @@
     </div>
     <div class="mb-4 col-lg-6">
         <label for="email" class="form-label">Email</label>
-        <input type="email" name="email" placeholder="Email" class="form-control" id="email"
-            value="{{ old('email', isset($user) ? $user->email : '') }}">
+        <input type="email" name="email" placeholder="Email" class="form-control" id="email" 
+            value="{{ old('email', isset($user) ? $user->email : '') }}" {{ isset($user->email) ? 'readonly' : '' }}>
         @error('email') <span class="text-danger small">{{ $message }}</span> @enderror
     </div>
     <div class="mb-4 col-lg-6">
         <label for="phone" class="form-label">Phone</label>
         <input type="text" name="phone" placeholder="Phone" class="form-control" id="phone"
-            value="{{ old('phone', isset($user) ? $user->phone : '') }}">
+            value="{{ old('phone', isset($user) ? $user->phone : '') }}"  {{ isset($user->phone) ? 'readonly' : '' }}>
         @error('phone') <span class="text-danger small">{{ $message }}</span> @enderror
     </div>
 

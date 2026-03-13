@@ -40,9 +40,9 @@
                 </div>
 
                 <div class="col-md-3 float-end text-end">
-                    <a href="{{ route('admin.permissions.create') }}" class="btn btn-primary">
+                    {{-- <a href="{{ route('admin.permissions.create') }}" class="btn btn-primary">
                         <i class="material-icons md-plus"></i> Create Permission
-                    </a>
+                    </a> --}}
                 </div>
             </div>
         </header>
