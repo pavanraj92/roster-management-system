@@ -75,7 +75,9 @@ Route::name('admin.')->group(function () {
 
         // Roles & Permissions
         Route::resource('roles', RoleController::class)->middleware('permission:role_access');
-        Route::resource('permissions', PermissionController::class)->middleware('permission:role_access');
+        Route::resource('permissions', PermissionController::class)
+            ->except(['create', 'store'])
+            ->middleware('permission:role_access');
         Route::post('roles/{role}/permissions', [RoleController::class, 'assignPermissions'])->name('roles.assign-permissions');
 
         // Shifts

@@ -53,8 +53,8 @@
                     <thead>
                         <tr>
                             <th width="60">#</th>
-                            <th>Permission Name</th>
-                            <th>Guard</th>
+                            <th>Name</th>
+                            <th>Group Name</th>
                             <th width="120" class="text-center">Action</th>
                         </tr>
                     </thead>

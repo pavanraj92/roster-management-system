@@ -31,7 +31,7 @@ class PermissionController extends Controller
      */
     public function create()
     {
-        return view('admin.permissions.create');
+        abort(404);
     }
 
     /**
@@ -39,14 +39,7 @@ class PermissionController extends Controller
      */
     public function store(Request $request)
     {
-        $validated = $request->validate([
-            'name' => 'required|string|unique:permissions,name|max:255',
-            'description' => 'nullable|string|max:500',
-        ]);
-
-        $this->permissionService->createPermission($validated);
-
-        return redirect()->route('admin.permissions.index')->with('success', 'Permission created successfully.');
+        abort(404);
     }
 
     /**
@@ -71,8 +64,7 @@ class PermissionController extends Controller
     public function update(Request $request, Permission $permission)
     {
         $validated = $request->validate([
-            'name' => 'required|string|max:255|unique:permissions,name,' . $permission->id,
-            'description' => 'nullable|string|max:500',
+            'display_name' => 'required|string|max:255',
         ]);
 
         $this->permissionService->updatePermission($permission, $validated);

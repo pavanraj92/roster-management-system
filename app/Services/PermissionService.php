@@ -17,11 +17,28 @@ class PermissionService
 
         return DataTables::of($data)
             ->addIndexColumn()
-            ->addColumn('name', function ($row) {
-                return ucfirst(str_replace('_', ' ', $row->name));
+            ->filter(function ($query) use ($request) {
+                $search = $request->get('search');
+                $keyword = trim((string) ($search['value'] ?? ''));
+
+                if ($keyword !== '') {
+                    $query->where(function ($q) use ($keyword) {
+                        $q->where('display_name', 'like', '%' . $keyword . '%')
+                            ->orWhere('group_name', 'like', '%' . $keyword . '%');
+                    });
+                }
             })
-            ->addColumn('guard_name', function ($row) {
-                return $row->guard_name;
+            ->orderColumn('display_name', function ($query, $order) {
+                $query->orderBy('display_name', $order);
+            })
+            ->orderColumn('group_name', function ($query, $order) {
+                $query->orderBy('group_name', $order);
+            })
+            ->addColumn('display_name', function ($row) {
+                return $row->display_name ?: ucfirst(str_replace('_', ' ', (string) $row->name));
+            })
+            ->addColumn('group_name', function ($row) {
+                return $row->group_name ?: '<span class="text-muted">-</span>';
             })
             ->addColumn('action', function ($row) {
                 $btn = '<div class="text-end">
@@ -41,7 +58,7 @@ class PermissionService
                             </div>';
                 return $btn;
             })
-            ->rawColumns(['action'])
+            ->rawColumns(['action', 'group_name'])
             ->make(true);
     }
 

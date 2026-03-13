@@ -13,12 +13,12 @@
                         searchable: false
                     },
                     {
-                        data: 'name',
-                        name: 'name'
+                        data: 'display_name',
+                        name: 'display_name'
                     },
                     {
-                        data: 'guard_name',
-                        name: 'guard_name'
+                        data: 'group_name',
+                        name: 'group_name'
                     },
                     {
                         data: 'action',
@@ -33,7 +33,7 @@
                     }
                 });
 
-                $('#custom-search').on('keyup', function () {
+                $('#custom-search').on('input keyup', function () {
                     table.search(this.value).draw();
                 });
             }
