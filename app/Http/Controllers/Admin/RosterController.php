@@ -5,18 +5,17 @@ use App\Http\Controllers\Controller;
 use App\Models\Roster;
 use App\Services\RosterService;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 
 class RosterController extends Controller
 {
     protected $rosterService;
 
-    public function __construct(RosterService $rosterService)
-    {
+    public function __construct(RosterService $rosterService) {
         $this->rosterService = $rosterService;
     }
 
-    public function index(Request $request)
-    {
+    public function index(Request $request) {
         $data = $this->rosterService->getRosterData($request);
         if ($request->ajax()) {
             return view('admin.roster.partials.roster-table', $data)->render();
@@ -24,9 +23,16 @@ class RosterController extends Controller
         return view('admin.roster.index', $data);
     }
 
-    public function store(Request $request)
-    {
-        $this->rosterService->createRoster($request->all());
+    public function store(Request $request) {
+        $validated = $request->validate([
+            'user_id' => ['required', 'exists:users,id'],
+            'shift_id' => ['required', 'exists:shifts,id'],
+            'task_ids' => ['required', 'array', 'min:1'],
+            'task_ids.*' => ['required', Rule::exists('tasks', 'id')],
+            'date' => ['required', 'date'],
+        ]);
+
+        $this->rosterService->createRoster($validated);
 
         return response()->json([
             'status'  => true,
@@ -35,12 +41,12 @@ class RosterController extends Controller
         // return back()->with('success', 'Roster Assigned');
     }
 
-    public function update(Request $request, Roster $roster)
-    {
+    public function update(Request $request, Roster $roster) {
         $validated = $request->validate([
             'user_id'  => ['required', 'exists:users,id'],
             'shift_id' => ['required', 'exists:shifts,id'],
-            'task_id'  => ['required', 'exists:tasks,id'],
+            'task_ids' => ['required', 'array', 'min:1'],
+            'task_ids.*' => ['required', Rule::exists('tasks', 'id')],
             'date'     => ['required', 'date'],
         ]);
 

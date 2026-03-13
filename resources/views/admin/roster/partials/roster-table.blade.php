@@ -18,39 +18,47 @@
                 @foreach ($dates as $date)
                     <td>
                         @if (isset($rosters[$user->id][$date->toDateString()]))
-                            @foreach ($rosters[$user->id][$date->toDateString()] as $item)
+                            @php
+                                $shiftGroups = $rosters[$user->id][$date->toDateString()]->groupBy('shift_id');
+                            @endphp
+                            @foreach ($shiftGroups as $shiftItems)
+                                @php
+                                    $item = $shiftItems->first();
+                                    $groupTaskIds = $shiftItems->pluck('task_id')->unique()->values()->implode(',');
+                                    $groupTaskTitles = $shiftItems->pluck('task.title')->filter()->unique()->values()->implode(', ');
+                                    $groupTaskDescriptions = $shiftItems
+                                        ->filter(fn($row) => !empty($row->task?->description))
+                                        ->map(fn($row) => $row->task->title . ': ' . $row->task->description)
+                                        ->unique()
+                                        ->values()
+                                        ->implode(' | ');
+                                @endphp
                                 <div class="roster-text roster-shift-detail-trigger"
                                     style="background: {{ $item->shift->color }}; cursor: pointer;"
-                                    data-roster-id="{{ $item->id }}"
-                                    data-user-id="{{ $item->user_id }}"
-                                    data-date="{{ $date->toDateString() }}"
-                                    data-shift-id="{{ $item->shift_id }}"
+                                    data-roster-id="{{ $item->id }}" data-user-id="{{ $item->user_id }}"
+                                    data-date="{{ $date->toDateString() }}" data-shift-id="{{ $item->shift_id }}"
                                     data-shift-name="{{ $item->shift->name }}"
                                     data-shift-start="{{ \Carbon\Carbon::parse($item->shift->start_time)->format('H:i') }}"
                                     data-shift-end="{{ \Carbon\Carbon::parse($item->shift->end_time)->format('H:i') }}"
-                                    data-task-id="{{ $item->task_id }}"
-                                    data-task-title="{{ $item->task->title }}"
-                                    data-task-description="{{ $item->task->description ?? '' }}"
-                                >
+                                    data-task-id="{{ $item->task_id }}" data-task-ids="{{ $groupTaskIds }}" data-task-title="{{ $groupTaskTitles }}"
+                                    data-task-description="{{ $groupTaskDescriptions }}">
                                     <span>Shift:</span> {{ $item->shift->name }} <br>
-                                    <span>Task:</span> {{ $item->task->title }}
+                                    <span>Task:</span> {{ $groupTaskTitles }}
                                 </div>
                             @endforeach
+                     @else 
+                        @can('assign_roster')
+                            <button type="button" class="btn btn-sm assign-shift-btn"
+                                onclick="openModal({{ $user->id }},'{{ $date->toDateString() }}')"
+                                aria-label="Assign shift for {{ $user->name }} on {{ $date->toFormattedDateString() }}">
+                                <span class="material-icons md-add"></span>
+                                <span class="assign-shift-btn__label">Assign</span>
+                            </button>
                         @else
-                            @if(auth()->user()->hasRole(['Admin']))
-                                <button
-                                    type="button"
-                                    class="btn btn-sm assign-shift-btn"
-                                    onclick="openModal({{ $user->id }},'{{ $date->toDateString() }}')"
-                                    aria-label="Assign shift for {{ $user->name }} on {{ $date->toFormattedDateString() }}"
-                                >
-                                    <span class="material-icons md-add"></span>
-                                    <span class="assign-shift-btn__label">Assign</span>
-                                </button>
-                            @else
-                                <p style="text-align: center">-</p>
-                            @endif
+                            <p style="text-align: center">-</p>
+                        @endcan
                         @endif
+
                     </td>
                 @endforeach
             </tr>

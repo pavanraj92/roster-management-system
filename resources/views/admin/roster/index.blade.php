@@ -74,18 +74,19 @@
                     </div>
 
                     {{-- Edit mode --}}
-                    @if(auth()->user()->hasRole(['Admin']))
+                    @can('edit_assigned_roster')
                         <div id="shift-edit-form-container" class="d-none">
                             <form id="shiftEditForm">
                                 <input type="hidden" id="edit-roster-id">
-                                <div class="mb-3">
+                                <input type="hidden" id="edit-user" >
+                                {{-- <div class="mb-3">
                                     <label class="form-label">Staff</label>
                                     <select id="edit-user" class="form-control">
                                         @foreach ($users as $userOption)
                                             <option value="{{ $userOption->id }}">{{ $userOption->name }}</option>
                                         @endforeach
                                     </select>
-                                </div>
+                                </div> --}}
                                 <div class="mb-3">
                                     <label class="form-label">Date</label>
                                     <input type="text" id="edit-date" class="form-control">
@@ -100,7 +101,7 @@
                                 </div>
                                 <div class="mb-3">
                                     <label class="form-label">Task</label>
-                                    <select id="edit-task" class="form-control">
+                                    <select id="edit-task" class="form-control select2 task-selection" name="task_ids[]" multiple="multiple">
                                         @foreach ($tasks as $task)
                                             <option value="{{ $task->id }}">{{ $task->title }}</option>
                                         @endforeach
@@ -108,17 +109,17 @@
                                 </div>
                             </form>
                         </div>
-                    @endif
+                    @endcan
                 </div>
                 <div class="modal-footer roster-modal__footer">
-                    @if(auth()->user()->hasRole(['Admin']))
+                    @can('edit_assigned_roster')
                         <button type="button" class="btn btn-primary me-2" id="shift-detail-edit-btn">
                             Edit
                         </button>
                         <button type="button" class="btn btn-primary me-2 d-none" id="save-shift-edit-btn">
                             Save changes
                         </button>
-                    @endif
+                    @endcan
                     <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
                         Close
                     </button>
@@ -133,7 +134,7 @@
                 <form method="POST" action="{{ route('admin.roster.store') }}" id="shiftForm">
                     @csrf
                     <div class="modal-header roster-modal__header">
-                        <h5 class="modal-title">Assign shift & task</h5>
+                        <h5 class="modal-title">Assign Shift & Task</h5>
                     </div>
 
                     <div class="modal-body roster-modal__body">
@@ -147,10 +148,11 @@
                                 @endforeach
                             </select>
                         </div>
+                        
 
                         <div class="mb-3">
                             <label class="form-label">Task</label>
-                            <select name="task_id" class="form-control">
+                            <select id="assign-task" name="task_ids[]" class="form-control select2 task-selection" multiple="multiple">
                                 @foreach ($tasks as $task)
                                     <option value="{{ $task->id }}">{{ $task->title }}</option>
                                 @endforeach
@@ -177,10 +179,29 @@
         <script>
             let currentStart = "{{ $dates[0]->format('Y-m-d') }}";
             let currentEnd = "{{ $dates[6]->format('Y-m-d') }}";
+
+            function initTaskSelect2() {
+                $('.task-selection').each(function() {
+                    if ($(this).hasClass('select2-hidden-accessible')) {
+                        return;
+                    }
+
+                    $(this).select2({
+                        placeholder: 'Select tasks',
+                        allowClear: true,
+                        width: '100%',
+                        dropdownParent: $(this).closest('.modal')
+                    });
+                });
+            }
+
+            initTaskSelect2();
+
             // Add Shift form
             function openModal(userId, date) {
                 document.getElementById('user_id').value = userId;
                 document.getElementById('date').value = date;
+                $('#assign-task').val(null).trigger('change');
                 $('#assignModal').modal('show');
             }
             $("#shiftForm").submit(function(e) {
@@ -191,10 +212,13 @@
                     data: $(this).serialize(),
                     success: function(res) {
                         $("#assignModal").modal("hide");
+                        $('#shiftForm')[0].reset();
+                        $('#assign-task').val(null).trigger('change');
                         loadRoster(currentStart, currentEnd);
                     }
                 });
             });
+
         </script>
 
         <script>
@@ -255,6 +279,11 @@
                     const date = $(this).data('date');
                     const shiftId = $(this).data('shift-id');
                     const taskId = $(this).data('task-id');
+                    const taskIdsRaw = ($(this).data('task-ids') || '').toString();
+                    const taskIds = taskIdsRaw
+                        .split(',')
+                        .map(id => id.trim())
+                        .filter(Boolean);
 
                     // populate view mode
                     $('#detail-shift-name').text(shiftName);
@@ -274,7 +303,7 @@
                     $('#edit-user').val(userId);
                     $('#edit-date').val(date);
                     $('#edit-shift').val(shiftId);
-                    $('#edit-task').val(taskId);
+                    $('#edit-task').val(taskIds.length ? taskIds : [taskId]).trigger('change');
 
                     $('#shiftDetailModal').modal('show');
                 });
@@ -310,7 +339,7 @@
                     user_id: $('#edit-user').val(),
                     date: $('#edit-date').val(),
                     shift_id: $('#edit-shift').val(),
-                    task_id: $('#edit-task').val(),
+                    task_ids: $('#edit-task').val(),
                 };
 
                 // Build update URL from named route, replacing placeholder ID

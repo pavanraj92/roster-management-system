@@ -109,12 +109,15 @@ $logoPath = $setting && $setting->value ? storage_path('app/public/' . $setting-
                 </div>
             </li>
             @endcan
+
+             @can('roster_list')
             <li class="menu-item">
                 <a class="menu-link" href="{{route('admin.roster')}}">
                     <i class="icon material-icons md-local_offer"></i>
                     <span class="text"> Roster </span>
                 </a>
             </li>
+            @endcan
         </ul>
         <br />
         <br />
