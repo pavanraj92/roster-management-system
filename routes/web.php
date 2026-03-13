@@ -7,7 +7,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', fn() => view('frontend.pages.home'))->name('home');
-Route::get('/pages/{slug}', [PageController::class, 'show'])->name('pages.about');
+Route::get('/pages/{slug}', [PageController::class, 'show'])
+    ->where('slug', '[A-Za-z][A-Za-z0-9-]*')
+    ->name('pages.about');
 
 
 Route::middleware('guest')->group(function () {

@@ -94,7 +94,6 @@ Route::name('admin.')->group(function () {
         |--------------------------------------------------------------------------
         */
         Route::prefix('settings')->name('settings.')->middleware('permission:setting_access')->group(function () {
-
             Route::get('/', [SettingController::class, 'index'])->name('index');
             Route::post('update', [SettingController::class, 'update'])->name('update');
             Route::get('visibility', [VisibilitySettingController::class, 'index'])->name('visibility.index');
@@ -107,7 +106,6 @@ Route::name('admin.')->group(function () {
         |--------------------------------------------------------------------------
         */
         Route::prefix('profile')->name('profile.')->group(function () {
-
             Route::get('/', [ProfileController::class, 'index'])->name('index');
             Route::post('update', [ProfileController::class, 'updateProfile'])->name('update');
             Route::post('change-password', [ProfileController::class, 'changePassword'])->name('change-password');

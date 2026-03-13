@@ -49,9 +49,9 @@
                     </div>
 
                     <div class="col-md-3 float-end text-end">
-                        <a href="{{ route('admin.pages.create') }}" class="btn btn-primary">
+                        {{-- <a href="{{ route('admin.pages.create') }}" class="btn btn-primary">
                             <i class="material-icons md-plus"></i> Create Page
-                        </a>
+                        </a> --}}
                     </div>
                 </div>
             </header>
@@ -91,32 +91,33 @@
                         d.status = $('#status-filter').val();
                     }
                 },
-                columns: [{
-                    data: 'DT_RowIndex',
-                    name: 'DT_RowIndex',
-                    orderable: false,
-                    searchable: false
-                },
-                {
-                    data: 'title',
-                    name: 'title'
-                },
-                {
-                    data: 'subtitle',
-                    name: 'subtitle'
-                },
-                {
-                    data: 'status',
-                    name: 'status',
-                    orderable: false,
-                    searchable: false
-                },
-                {
-                    data: 'action',
-                    name: 'action',
-                    orderable: false,
-                    searchable: false
-                },
+                columns: [
+                    {
+                        data: 'DT_RowIndex',
+                        name: 'DT_RowIndex',
+                        orderable: false,
+                        searchable: false
+                    },
+                    {
+                        data: 'title',
+                        name: 'title'
+                    },
+                    {
+                        data: 'subtitle',
+                        name: 'subtitle'
+                    },
+                    {
+                        data: 'status',
+                        name: 'status',
+                        orderable: false,
+                        searchable: false
+                    },
+                    {
+                        data: 'action',
+                        name: 'action',
+                        orderable: false,
+                        searchable: false
+                    },
                 ],
                 pageLength: 10,
                 autoWidth: false,
@@ -137,7 +138,7 @@
                 table.search(this.value).draw();
             });
 
-            // Status filter
+            // Status Filter
             $('#status-filter').on('change', function () {
                 table.draw();
             });
