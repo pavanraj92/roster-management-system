@@ -3,7 +3,7 @@
     <div class="mb-4 col-lg-6">
         <label class="form-label">Role Name</label>
         <input type="text" class="form-control @error('name') is-invalid @enderror"
-            name="name" value="{{ old('name', $role->name ?? '') }}" placeholder="e.g., Manager">
+            name="name" value="{{ old('name', $role->name ?? '') }}" placeholder="e.g., Manager" {{isset($role->name) ? 'readonly' : '-'}}> 
         @error('name')
         <span class="text-danger small">{{ $message }}</span>
         @enderror

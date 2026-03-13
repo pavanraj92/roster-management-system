@@ -11,9 +11,8 @@ use Illuminate\Http\Request;
 
 class ShiftController extends Controller
 {
-    public function __construct(
-        protected ShiftService $shiftService
-    ) {
+    public function __construct(protected ShiftService $shiftService) {
+
     }
 
     /**
@@ -24,20 +23,19 @@ class ShiftController extends Controller
         if ($request->ajax()) {
             return $this->shiftService->getShiftDataTable($request);
         }
-
         return view('admin.shifts.index');
     }
 
     /**
      * Show the form for creating a new resource.
-     */
+    */
     public function create()
     {
         return view('admin.shifts.create');
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Store A Newly Created Resource In Storage.
      */
     public function store(ShiftStoreRequest $request)
     {
@@ -77,12 +75,18 @@ class ShiftController extends Controller
      */
     public function destroy(Request $request, Shift $shift)
     {
-        $this->shiftService->deleteShift($shift);
+        $res = $this->shiftService->deleteShift($shift);
 
-        if ($request->ajax() || $request->wantsJson()) {
-            return response()->json(['success' => true, 'message' => 'Shift deleted successfully.']);
+        if( $request->ajax()) {
+            if($res){
+                return response()->json(['success' => true, 'message' => 'Shift deleted successfully.']);
+            }
+            return response()->json(['success' => false, 'message' => 'This shift is already assigned']);
+        }else{
+             if($res){
+            return redirect()->route('admin.shifts.index')->with('success', 'Shift deleted successfully.');
+             }
+            return redirect()->route('admin.shifts.index')->with('error', 'This shift is already assigned.');
         }
-
-        return redirect()->route('admin.shifts.index')->with('success', 'Shift deleted successfully.');
     }
 }

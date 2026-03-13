@@ -17,8 +17,7 @@
                 <!-- Right side: Breadcrumb -->
                 <x-admin.breadcrumb :list="[
             ['label' => 'Roles Manager', 'url' => route('admin.roles.index')],
-            ['label' => 'Edit Role']
-        ]" class="float-end" />
+            ['label' => 'Edit Role']]" class="float-end" />
             </div>
         </div>
 

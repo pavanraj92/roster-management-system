@@ -16,6 +16,9 @@ class RosterController extends Controller
     }
 
     public function index(Request $request) {
+        $user = auth()->user();
+        $roles = $user->getRoleNames();
+        
         $data = $this->rosterService->getRosterData($request);
         if ($request->ajax()) {
             return view('admin.roster.partials.roster-table', $data)->render();

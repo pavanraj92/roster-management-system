@@ -89,8 +89,10 @@ class ShiftService
      */
     public function deleteShift(Shift $shift): bool
     {
+        if($shift->rosters()->exists()) {
+            return false; // Cannot delete shift with assigned rosters
+        }
         $shift->delete();
-
         return true;
     }   
 

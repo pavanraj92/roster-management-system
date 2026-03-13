@@ -10,8 +10,7 @@ use Illuminate\Support\Facades\DB;
 
 class RosterService
 {
-    public function createRoster($data)
-    {
+    public function createRoster($data) {
         return DB::transaction(function () use ($data) {
             $createdRosters = collect();
 
@@ -76,7 +75,6 @@ class RosterService
                 $existing->created_by = $createdBy;
                 $existing->save();
             }
-
             return $existing;
         }
 
@@ -89,8 +87,8 @@ class RosterService
         ]);
     }
 
-    public function getRosterData($request)
-    {
+    public function getRosterData($request) {
+
         $start = $request->start
             ? Carbon::parse($request->start)
             : Carbon::today();
@@ -106,10 +104,10 @@ class RosterService
             $current->addDay();
         }
 
-        if(auth()->user()->hasRole(['admin'])){
+        if(auth()->user()->hasRole(['admin'])) {
             $users = User::where('status', 1)
                 ->whereDoesntHave('roles', function ($query) {
-                    $query->where('name', 'admin');
+                    $query->where('name', 'Admin');
                 })
                 ->get();
 
@@ -119,7 +117,6 @@ class RosterService
             ->groupBy(['user_id', 'date']);
 
         }else{
-
             $users = User::where('id', auth()->user()->id)->get();
 
             $rosters = Roster::with(['shift', 'task'])

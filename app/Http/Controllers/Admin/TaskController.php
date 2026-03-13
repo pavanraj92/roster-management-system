@@ -107,12 +107,26 @@ class TaskController extends Controller
      */
     public function destroy(Request $request, Task $task)
     {
-        $this->taskService->deleteTask($task);
+        $res = $this->taskService->deleteTask($task);
 
-        if ($request->ajax() || $request->wantsJson()) {
-            return response()->json(['success' => true, 'message' => 'Task deleted successfully.']);
+        if( $request->ajax()) {
+            if($res){
+                return response()->json(['success' => true, 'message' => 'Task deleted successfully.']);
+            }
+            return response()->json(['success' => false, 'message' => 'This task is already assigned']);
+        }else{
+             if($res){
+            return redirect()->route('admin.tasks.index')->with('success', 'Task deleted successfully.');
+             }
+            return redirect()->route('admin.tasks.index')->with('error', 'This task is already assigned.');
         }
 
-        return redirect()->route('admin.tasks.index')->with('success', 'Task deleted successfully.');
+        // $this->taskService->deleteTask($task);
+
+        // if ($request->ajax() || $request->wantsJson()) {
+        //     return response()->json(['success' => true, 'message' => 'Task deleted successfully.']);
+        // }
+
+        // return redirect()->route('admin.tasks.index')->with('success', 'Task deleted successfully.');
     }
 }

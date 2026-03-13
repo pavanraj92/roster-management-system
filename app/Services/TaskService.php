@@ -88,6 +88,10 @@ class TaskService
      */
     public function deleteTask(Task $task): bool
     {
+        if($task->rosters()->exists()) {
+            return false; // Cannot delete task with assigned rosters
+        }
+
         $task->delete();
 
         return true;
