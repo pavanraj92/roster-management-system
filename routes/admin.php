@@ -15,6 +15,7 @@ use App\Http\Controllers\Admin\PermissionController;
 use App\Http\Controllers\Admin\RosterController;
 use App\Http\Controllers\Admin\ShiftController;
 use App\Http\Controllers\Admin\TaskController;
+use App\Http\Controllers\Admin\AttendanceController;
 
 /*
 |--------------------------------------------------------------------------
@@ -86,6 +87,9 @@ Route::name('admin.')->group(function () {
         // Tasks
         Route::resource('tasks', TaskController::class)->middleware('permission:task_access');
 
+        // Attendance
+        Route::resource('attendances', AttendanceController::class)->middleware('permission:attendance_access')->only(['index', 'show']);
+
         // Email Templates
         Route::resource('email-templates', EmailTemplateController::class)->middleware('permission:email_template_access');
         Route::post('email-templates/toggle-status/{id}', [EmailTemplateController::class, 'toggleStatus'])->name('email-templates.toggle-status');
@@ -115,7 +119,7 @@ Route::name('admin.')->group(function () {
         });
 
         Route::get('roster', [RosterController::class, 'index'])->name('roster');
-        Route::post('/roster/store', [RosterController::class,'store'])->name('roster.store');
+        Route::post('/roster/store', [RosterController::class, 'store'])->name('roster.store');
         Route::put('roster/{roster}', [RosterController::class, 'update'])->name('roster.update');
     });
 });

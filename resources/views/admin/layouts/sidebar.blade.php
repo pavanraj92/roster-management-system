@@ -76,6 +76,15 @@ $logoPath = $setting && $setting->value ? storage_path('app/public/' . $setting-
             </li>
             @endcan
 
+            @can('attendance_access')
+            <li class="menu-item {{ request()->routeIs('admin.attendances.*') ? 'active' : '' }}">
+                <a class="menu-link" href="{{ route('admin.attendances.index') }}">
+                    <i class="icon material-icons md-check_circle"></i>
+                    <span class="text">Attendance</span>
+                </a>
+            </li>
+            @endcan
+
             @can('page_access')
             <li class="menu-item {{ request()->routeIs('admin.pages.*') ? 'active' : '' }}">
                 <a class="menu-link" href="{{ route('admin.pages.index') }}">
@@ -110,7 +119,7 @@ $logoPath = $setting && $setting->value ? storage_path('app/public/' . $setting-
             </li>
             @endcan
 
-             @can('roster_list')
+            @can('roster_list')
             <li class="menu-item">
                 <a class="menu-link" href="{{route('admin.roster')}}">
                     <i class="icon material-icons md-local_offer"></i>
