@@ -58,18 +58,18 @@
                             @endforeach
                         @else
                             @if (today()->lte($date) && $canAssign)
+                            <div>
                                 <button type="button" class="btn btn-sm assign-shift-btn"
                                     onclick="openModal({{ $user->id }},'{{ $date->toDateString() }}')"
                                     aria-label="Assign shift for {{ $user->name }} on {{ $date->toFormattedDateString() }}">
                                     <span class="material-icons md-add"></span>
                                     <span class="assign-shift-btn__label">Assign</span>
                                 </button>
+                            </div>
                             @else
                                 <p style="text-align: center">-</p>
                             @endif
-
                         @endif
-
                 </td>
             @endforeach
         </tr>
