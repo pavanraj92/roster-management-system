@@ -26,6 +26,10 @@
                         name: 'first_name'
                     },
                     {
+                        data: 'role',
+                        name: 'role'
+                    },
+                    {
                         data: 'phone',
                         name: 'phone'
                     },

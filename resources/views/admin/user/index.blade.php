@@ -56,6 +56,7 @@
                             <tr>
                                 <th width="60">#</th>
                                 <th>User</th>
+                                <th>Role</th>
                                 <th width="140">Phone</th>
                                 <th width="110">Status</th>
                                 <th width="120" class="text-center">Actions</th>
