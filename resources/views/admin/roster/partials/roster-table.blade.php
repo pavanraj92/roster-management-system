@@ -58,6 +58,23 @@
                                     data-task-description="{{ $groupTaskDescriptions }}">
                                     <span>Shift:</span> {{ $item->shift->name }} <br>
                                     <span>Task:</span> {{ $groupTaskTitles }}
+                                    <br>
+                                    <div style="display: flex; margin-top: 5px; align-items: center;">
+                                        @if($attendance && $attendance->clock_in && !$attendance->clock_out)
+                                            <div class="shift-indication running">
+                                            </div>
+                                                <small>Running</small>
+                                        @elseif($attendance && $attendance->clock_out)
+                                            <div class="shift-indication completed">
+                                            </div>
+                                                <small>Completed</small>
+                                        @else
+                                        <div class="shift-indication not-started">
+                                        </div>
+                                            <small>Not Started</small>
+                                        @endif
+                                    </div>
+                                    <br>
                                 </div>
                             @endforeach
                         @else
