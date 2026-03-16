@@ -1,5 +1,24 @@
 @extends('admin.layouts.app')
 @section('title', 'Roster Management')
+<style>
+    .select2-container {
+    width: 100% !important;
+}
+.select2-container--default .select2-selection--multiple {
+    min-height: 38px;
+    height: auto;
+    padding: 4px;
+}
+
+.select2-container--default .select2-selection--multiple .select2-selection__rendered {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+}
+.select2-selection__rendered {
+    max-height: 90px;
+    overflow-y: auto;
+}</style>
 @section('content')
     <section class="content-main roster-page">
 
@@ -78,7 +97,15 @@
                         <div id="shift-edit-form-container" class="d-none">
                             <form id="shiftEditForm">
                                 <input type="hidden" id="edit-roster-id">
-                                <input type="hidden" id="edit-user" >                             
+                                <input type="hidden" id="edit-user" >
+                                {{-- <div class="mb-3">
+                                    <label class="form-label">Staff</label>
+                                    <select id="edit-user" class="form-control">
+                                        @foreach ($users as $userOption)
+                                            <option value="{{ $userOption->id }}">{{ $userOption->name }}</option>
+                                        @endforeach
+                                    </select>
+                                </div> --}}
                                 <div class="mb-3">
                                     <label class="form-label">Date</label>
                                     <input type="text" id="edit-date" class="form-control">
@@ -104,8 +131,8 @@
                     @endcan
                 </div>
                 <div class="modal-footer roster-modal__footer">
-                    @can('edit_assigned_roster')                    
-                        <button type="button" class="btn btn-primary me-2 d-none" id="shift-detail-edit-btn">
+                    @can('edit_assigned_roster')
+                        <button type="button" class="btn btn-primary me-2" id="shift-detail-edit-btn">
                             Edit
                         </button>
                         <button type="button" class="btn btn-primary me-2 d-none" id="save-shift-edit-btn">
@@ -182,7 +209,7 @@
                         placeholder: 'Select tasks',
                         allowClear: true,
                         width: '100%',
-                        dropdownParent: $(this).closest('.modal')
+                        dropdownParent: $(this).closest('.modal')                        
                     });
                 });
             }
@@ -276,20 +303,7 @@
                         .split(',')
                         .map(id => id.trim())
                         .filter(Boolean);
-                        let shiftDate = new Date(date);
-                        let today = new Date();
 
-                        today.setHours(0,0,0,0);
-                        shiftDate.setHours(0,0,0,0);
-
-                        if (shiftDate >= today) {
-                            $('#shift-detail-edit-btn').removeClass('d-none');
-                            
-                        }
-                        else{
-                             $('#shift-detail-edit-btn').addClass('d-none');
-                            }
-                            $('#save-shift-edit-btn').addClass('d-none');
                     // populate view mode
                     $('#detail-shift-name').text(shiftName);
                     $('#detail-shift-time').text(shiftStart + ' - ' + shiftEnd);
@@ -300,8 +314,8 @@
                     $('#shift-detail-view').removeClass('d-none');
                     $('#shift-edit-form-container').addClass('d-none');
                     $('#shiftDetailModalLabel').text('Shift & Task Details');
-                  
-                    
+                    $('#shift-detail-edit-btn').removeClass('d-none');
+                    $('#save-shift-edit-btn').addClass('d-none');
 
                     // populate edit form (admin only)
                     $('#edit-roster-id').val(rosterId);
