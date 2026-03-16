@@ -85,7 +85,7 @@ class RosterController extends Controller
      public function shiftClockOut(Request $request) {
         
         $validated = $request->validate([
-            'attendance_id' => ['required', 'exists:rosters,id'],
+            'attendance_id' => ['required', 'exists:attendances,id'],
         ]);
 
         $this->rosterService->shiftClockOut($validated['attendance_id']);

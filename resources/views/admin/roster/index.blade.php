@@ -53,6 +53,7 @@
                     {{-- Check In/Out Forms  --}}
                     <form method="POST" action="{{ route('admin.roster.clock.in') }}" id="clock-in-form">
                         @csrf
+                        <input type="hidden" id="clock-in-roster-id" name="roster_id">
                         <button class="btn btn-success" type="submit">
                             Clock In
                         </button>
@@ -60,6 +61,7 @@
 
                     <form method="POST" action="{{ route('admin.roster.clock.out') }}" id="clock-out-form" class="d-none">
                         @csrf
+                        <input type="hidden" id="clock-out-attendance-id" name="attendance_id">
                         <button class="btn btn-danger ">
                             Clock Out
                         </button>
@@ -184,6 +186,7 @@
         <script>
             let currentStart = "{{ $dates[0]->format('Y-m-d') }}";
             let currentEnd = "{{ $dates[6]->format('Y-m-d') }}";
+            const isAdminUser = @json(auth()->user()->hasRole(['admin', 'Admin']));
 
             function initTaskSelect2() {
                 $('.task-selection').each(function() {
@@ -284,11 +287,15 @@
                     const date = $(this).data('date');
                     const shiftId = $(this).data('shift-id');
                     const taskId = $(this).data('task-id');
+                    const attendanceId = $(this).data('attendance-id');
+                    const hasClockIn = Number($(this).data('clocked-in')) === 1;
+                    const hasClockOut = Number($(this).data('clocked-out')) === 1;
                     const taskIdsRaw = ($(this).data('task-ids') || '').toString();
                     const taskIds = taskIdsRaw
                         .split(',')
                         .map(id => id.trim())
                         .filter(Boolean);
+                    const isTodayShift = moment(date).isSame(moment(), 'day');
 
                     // populate view mode
                     $('#detail-shift-name').text(shiftName);
@@ -309,6 +316,23 @@
                     $('#edit-date').val(date);
                     $('#edit-shift').val(shiftId);
                     $('#edit-task').val(taskIds.length ? taskIds : [taskId]).trigger('change');
+
+                    // Reset action buttons each time modal opens
+                    $('#clock-in-form').addClass('d-none');
+                    $('#clock-out-form').addClass('d-none');
+                    $('#clock-in-roster-id').val('');
+                    $('#clock-out-attendance-id').val('');
+
+                    // Staff can clock only for today's shift
+                    if (!isAdminUser && isTodayShift) {
+                        if (hasClockIn && !hasClockOut && attendanceId) {
+                            $('#clock-out-form').removeClass('d-none');
+                            $('#clock-out-attendance-id').val(attendanceId);
+                        } else if (!hasClockIn) {
+                            $('#clock-in-form').removeClass('d-none');
+                            $('#clock-in-roster-id').val(rosterId);
+                        }
+                    }
 
                     $('#shiftDetailModal').modal('show');
                 });
@@ -362,8 +386,19 @@
                 });
             });
 
-            $('.clock-out-btn').click(function(e) {
+            $('#clock-out-form').submit(function(e) {
                 e.preventDefault();
+
+                const attendanceId = $('#clock-out-attendance-id').val();
+                if (!attendanceId) {
+                    Swal.fire('No attendance found for clock out.');
+                    return;
+                }
+
+                const payload = {
+                    _token: '{{ csrf_token() }}',
+                    attendance_id: attendanceId,
+                };
 
                 Swal.fire({
                     title: "Clock Out?",
@@ -372,6 +407,10 @@
                     showCancelButton: true,
                     confirmButtonText: "Yes, Clock Out"
                 }).then((result) => {
+                    if (!result.isConfirmed) {
+                        return;
+                    }
+
                     $.ajax({
                         url: "{{ route('admin.roster.clock.out') }}",
                         type: "POST",
@@ -381,7 +420,7 @@
                             if (res.status)
                                 loadRoster(currentStart, currentEnd);
                             else
-                                swal.fire(res.message);
+                                Swal.fire(res.message);
                         }
                     });
                 });
@@ -391,9 +430,16 @@
         <script>
             $("#clock-in-form").submit(function(e) {
                 e.preventDefault();
+                const rosterId = $('#clock-in-roster-id').val();
+
+                if (!rosterId) {
+                    Swal.fire('Select a valid shift to clock in.');
+                    return;
+                }
+
                 const payload = {
                     _token: '{{ csrf_token() }}',
-                    roster_id: $('#edit-roster-id').val(),
+                    roster_id: rosterId,
                 };
                 $.ajax({
                     url: "{{ route('admin.roster.clock.in') }}",
@@ -404,7 +450,7 @@
                         if (res.status)
                             loadRoster(currentStart, currentEnd);
                         else
-                            swal.fire(res.message);
+                            Swal.fire(res.message);
                     }
                 });
             });

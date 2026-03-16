@@ -113,20 +113,26 @@ class RosterService
                 })
                 ->get();
 
-            $rosters = Roster::with(['shift', 'task'])
+            $rosterRows = Roster::with(['shift', 'task'])
             ->whereBetween('date', [$start->toDateString(), $end->toDateString()])
-            ->get()
-            ->groupBy(['user_id', 'date']);
+            ->get();
 
         }else{
             $users = User::where('id', auth()->user()->id)->get();
 
-            $rosters = Roster::with(['shift', 'task'])
+            $rosterRows = Roster::with(['shift', 'task'])
             ->whereBetween('date', [$start->toDateString(), $end->toDateString()])
-            ->get()
             ->where('user_id', auth()->user()->id)
-            ->groupBy(['user_id', 'date']);
+            ->get();
         }
+
+        $rosters = $rosterRows->groupBy(['user_id', 'date']);
+
+        $attendancesByRoster = Attendance::whereIn('roster_id', $rosterRows->pluck('id'))
+            ->orderByDesc('id')
+            ->get()
+            ->unique('roster_id')
+            ->keyBy('roster_id');
 
         // $rosters = Roster::with(['shift', 'task'])
         //     ->whereBetween('date', [$start->toDateString(), $end->toDateString()])
@@ -137,6 +143,7 @@ class RosterService
             'users'     => $users,
             'dates'     => $dates,
             'rosters'   => $rosters,
+            'attendancesByRoster' => $attendancesByRoster,
             'shifts'    => Shift::all(),
             'tasks'     => Task::all(),
             'startDate' => $start,

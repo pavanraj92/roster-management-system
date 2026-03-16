@@ -27,6 +27,7 @@
                             @foreach ($shiftGroups as $shiftItems)
                                 @php
                                     $item = $shiftItems->first();
+                                    $attendance = $attendancesByRoster[$item->id] ?? null;
                                     $groupTaskIds = $shiftItems->pluck('task_id')->unique()->values()->implode(',');
                                     $groupTaskTitles = $shiftItems
                                         ->pluck('task.title')
@@ -50,6 +51,9 @@
                                     data-shift-start="{{ \Carbon\Carbon::parse($item->shift->start_time)->format('H:i') }}"
                                     data-shift-end="{{ \Carbon\Carbon::parse($item->shift->end_time)->format('H:i') }}"
                                     data-task-id="{{ $item->task_id }}" data-task-ids="{{ $groupTaskIds }}"
+                                    data-attendance-id="{{ $attendance?->id }}"
+                                    data-clocked-in="{{ $attendance && $attendance->clock_in ? 1 : 0 }}"
+                                    data-clocked-out="{{ $attendance && $attendance->clock_out ? 1 : 0 }}"
                                     data-task-title="{{ $groupTaskTitles }}"
                                     data-task-description="{{ $groupTaskDescriptions }}">
                                     <span>Shift:</span> {{ $item->shift->name }} <br>
