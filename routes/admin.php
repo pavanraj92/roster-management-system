@@ -122,5 +122,9 @@ Route::name('admin.')->group(function () {
         Route::get('roster/checkShiftClockIn',[RosterController::class, 'checkShiftClockIn'])->name('roster.shift.clock.in');
         Route::post('roster/clock-in', [RosterController::class, 'shiftClockIn'])->name('roster.clock.in');
         Route::post('roster/clock-out', [RosterController::class, 'shiftClockOut'])->name('roster.clock.out');
+
+        // Task log routes (more specific paths before the generic {roster} route)
+        Route::get('roster/{roster}/task-logs', [RosterController::class, 'getTaskLogs'])->name('roster.task-logs');
+        Route::put('roster/task-log/{taskLog}', [RosterController::class, 'updateTaskLog'])->name('roster.task-log.update');
     });
 });

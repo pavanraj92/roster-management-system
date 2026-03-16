@@ -18,8 +18,8 @@ return new class extends Migration
             $table->foreignId('shift_id')->nullable()->constrained()->nullOnDelete();
             $table->foreignId('task_id')->nullable()->constrained()->nullOnDelete();
             $table->enum('status', ['pending', 'running', 'complete'])->default('pending');
-            $table->date('start_at')->nullable()->comment('task status to running'); 
-            $table->date('end_at')->nullable()->comment('task status to completed');
+            $table->timestamp('start_at')->nullable()->comment('timestamp when task moved to running');
+            $table->timestamp('end_at')->nullable()->comment('timestamp when task moved to complete');
             $table->timestamps();
             $table->softDeletes();
 

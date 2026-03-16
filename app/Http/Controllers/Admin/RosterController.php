@@ -3,6 +3,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Roster;
+use App\Models\TaskLog;
 use App\Services\RosterService;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
@@ -93,6 +94,39 @@ class RosterController extends Controller
         return response()->json([
             'status' => true,
             'message' => 'Clocked out Successfully',
+        ]);
+    }
+
+    public function getTaskLogs(Roster $roster)
+    {
+        $taskLogs = $this->rosterService->getTaskLogsForRoster($roster->id);
+
+        return response()->json([
+            'status' => true,
+            'data'   => $taskLogs->map(fn($log) => [
+                'id'         => $log->id,
+                'task_title' => $log->task?->title ?? 'Unknown',
+                'status'     => $log->status,
+                'start_at'   => $log->start_at?->format('Y-m-d H:i:s'),
+                'end_at'     => $log->end_at?->format('Y-m-d H:i:s'),
+                'duration_minutes' => ($log->start_at && $log->end_at)
+                    ? $log->end_at->diffInMinutes($log->start_at)
+                    : null,
+            ]),
+        ]);
+    }
+
+    public function updateTaskLog(Request $request, TaskLog $taskLog)
+    {
+        $validated = $request->validate([
+            'status' => ['required', Rule::in(['pending', 'running', 'complete'])],
+        ]);
+
+        $this->rosterService->updateTaskLog($taskLog, $validated['status']);
+
+        return response()->json([
+            'status'  => true,
+            'message' => 'Task status updated successfully.',
         ]);
     }
 }

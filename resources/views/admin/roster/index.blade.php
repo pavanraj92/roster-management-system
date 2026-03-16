@@ -86,6 +86,38 @@
                             <strong>Description:</strong>
                             <p id="detail-task-description" class="mb-0 text-muted"></p>
                         </div>
+
+                        <div id="task-log-status-section" class="mt-3 pt-3 border-top d-none">
+                            <h6 class="mb-2">Task Progress</h6>
+                            <div class="d-flex gap-3 mb-2 small">
+                                <span>Pending: <strong id="task-log-count-pending">0</strong></span>
+                                <span>Running: <strong id="task-log-count-running">0</strong></span>
+                                <span>Complete: <strong id="task-log-count-complete">0</strong></span>
+                            </div>
+                            <div id="task-log-status-list" class="small text-muted">No task progress yet.</div>
+                        </div>
+
+                        {{-- Task Log Update — shown via JS only for running shifts (non-admin, today) --}}
+                        <div id="task-log-update-section" class="d-none mt-3 pt-3 border-top">
+                            <h6 class="mb-2">Update Task Status</h6>
+                            <div class="mb-2">
+                                <label class="form-label">Pending Task</label>
+                                <select id="task-log-task-select" class="form-control form-control-sm">
+                                    <option value="">Select a task</option>
+                                </select>
+                            </div>
+                            <div class="mb-2">
+                                <label class="form-label">New Status</label>
+                                <select id="task-log-status-select" class="form-control form-control-sm">
+                                    <option value="pending">Pending</option>
+                                    <option value="running">Running</option>
+                                    <option value="complete">Complete</option>
+                                </select>
+                            </div>
+                            <button type="button" class="btn btn-primary btn-sm" id="task-log-update-btn">
+                                Update
+                            </button>
+                        </div>
                     </div>
 
                     {{-- Edit Mode --}}
@@ -191,7 +223,9 @@
                 storeUrl: "{{ route('admin.roster.store') }}",
                 updateUrlTemplate: "{{ route('admin.roster.update', ['roster' => 'ROSTER_ID_PLACEHOLDER']) }}",
                 clockInUrl: "{{ route('admin.roster.clock.in') }}",
-                clockOutUrl: "{{ route('admin.roster.clock.out') }}"
+                clockOutUrl: "{{ route('admin.roster.clock.out') }}",
+                taskLogsUrlTemplate: "{{ route('admin.roster.task-logs', ['roster' => 'ROSTER_ID_PLACEHOLDER']) }}",
+                taskLogUpdateUrlTemplate: "{{ route('admin.roster.task-log.update', ['taskLog' => 'TASK_LOG_ID_PLACEHOLDER']) }}"
             };
         </script>
         <script src="{{ asset('backend/js/pages/roster.js') }}"></script>

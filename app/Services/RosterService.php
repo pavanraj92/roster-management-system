@@ -5,6 +5,7 @@ use App\Models\Roster;
 use App\Models\Shift;
 use App\Models\Task;
 use App\Models\Attendance;
+use App\Models\TaskLog;
 use App\Models\User;
 use Carbon\Carbon;
 use Log;
@@ -169,8 +170,28 @@ class RosterService
             'shift_status' => 'running',
         ]);
 
+        // Create a pending task_log for every task in this shift group
+        $rosterGroup = Roster::where('user_id', $roster->user_id)
+            ->where('shift_id', $roster->shift_id)
+            ->where('date', $roster->date)
+            ->get();
+
+        foreach ($rosterGroup as $rosterRow) {
+            TaskLog::firstOrCreate(
+                [
+                    'roster_id' => $rosterRow->id,
+                    'user_id'   => $rosterRow->user_id,
+                    'task_id'   => $rosterRow->task_id,
+                ],
+                [
+                    'shift_id' => $rosterRow->shift_id,
+                    'status'   => 'pending',
+                ]
+            );
+        }
+
         return true;
-        }catch(Exceptions $e){
+        }catch(\Exception $e){
             Log::info('error while checkin rosterid:'.$id.'erro is '.$e->getMessage());
             return false;
         }
@@ -187,9 +208,39 @@ class RosterService
             
             $checkLoginIn->save();
 
-        }catch(Exceptions $e){
-            Log::info('error while checkin rosterid:'.$id.'erro is '.$e->getMessage());
+        }catch(\Exception $e){
+            Log::info('error while clock-out rosterid:'.$id.' error is '.$e->getMessage());
             return false;
         }
+    }
+
+    public function getTaskLogsForRoster(int $rosterId): \Illuminate\Support\Collection
+    {
+        $roster = Roster::findOrFail($rosterId);
+
+        $rosterIds = Roster::where('user_id', $roster->user_id)
+            ->where('shift_id', $roster->shift_id)
+            ->where('date', $roster->date)
+            ->pluck('id');
+
+        return TaskLog::with('task')
+            ->whereIn('roster_id', $rosterIds)
+            ->orderBy('id')
+            ->get();
+    }
+
+    public function updateTaskLog(TaskLog $taskLog, string $status): void
+    {
+        $taskLog->status = $status;
+
+        if ($status === 'running' && !$taskLog->start_at) {
+            $taskLog->start_at = Carbon::now();
+        }
+
+        if ($status === 'complete' && !$taskLog->end_at) {
+            $taskLog->end_at = Carbon::now();
+        }
+
+        $taskLog->save();
     }
 }

@@ -36,7 +36,16 @@
         clockInForm: '#clock-in-form',
         clockOutForm: '#clock-out-form',
         clockInRosterId: '#clock-in-roster-id',
-        clockOutAttendanceId: '#clock-out-attendance-id'
+        clockOutAttendanceId: '#clock-out-attendance-id',
+        taskLogStatusSection: '#task-log-status-section',
+        taskLogStatusList: '#task-log-status-list',
+        taskLogCountPending: '#task-log-count-pending',
+        taskLogCountRunning: '#task-log-count-running',
+        taskLogCountComplete: '#task-log-count-complete',
+        taskLogSection: '#task-log-update-section',
+        taskLogTaskSelect: '#task-log-task-select',
+        taskLogStatusSelect: '#task-log-status-select',
+        taskLogUpdateBtn: '#task-log-update-btn'
     };
 
     function initTaskSelect2() {
@@ -84,6 +93,17 @@
         $(selectors.clockOutForm).addClass('d-none');
         $(selectors.clockInRosterId).val('');
         $(selectors.clockOutAttendanceId).val('');
+
+        $(selectors.taskLogStatusSection).addClass('d-none');
+        $(selectors.taskLogStatusList).html('No task progress yet.');
+        $(selectors.taskLogCountPending).text('0');
+        $(selectors.taskLogCountRunning).text('0');
+        $(selectors.taskLogCountComplete).text('0');
+
+        // Reset task log section
+        $(selectors.taskLogSection).addClass('d-none');
+        $(selectors.taskLogTaskSelect).html('<option value="">Select a task</option>').prop('disabled', false);
+        $(selectors.taskLogStatusSelect).val('pending');
     }
 
     function bindShiftDetailClicks() {
@@ -140,6 +160,15 @@
                     $(selectors.clockInRosterId).val(rosterId);
                 }
             }
+
+            // Only staff on today's running shift can update task status
+            const canUpdateTaskStatus = !isAdminUser && isTodayShift && hasClockIn && !hasClockOut && attendanceId;
+            if (canUpdateTaskStatus) {
+                $(selectors.taskLogSection).removeClass('d-none');
+            }
+
+            // Everyone can view task progress details in modal
+            loadTaskLogs(rosterId);
 
             $(selectors.shiftDetailModal).modal('show');
         });
@@ -245,7 +274,8 @@
                     data: payload,
                     success: function(res) {
                         if (res.status) {
-                            loadRoster(currentStart, currentEnd);
+                            $(selectors.shiftDetailModal).modal('hide');
+                            loadRoster(currentStart);
                         } else {
                             window.Swal.fire(res.message);
                         }
@@ -274,10 +304,43 @@
                 data: payload,
                 success: function(res) {
                     if (res.status) {
-                        loadRoster(currentStart, currentEnd);
+                        $(selectors.shiftDetailModal).modal('hide');
+                        loadRoster(currentStart);
                     } else {
                         window.Swal.fire(res.message);
                     }
+                }
+            });
+        });
+
+        $(selectors.taskLogUpdateBtn).on('click', function() {
+            var taskLogId = $(selectors.taskLogTaskSelect).val();
+            var status    = $(selectors.taskLogStatusSelect).val();
+
+            if (!taskLogId) {
+                window.Swal.fire('Please select a task to update.');
+                return;
+            }
+
+            var url = cfg.taskLogUpdateUrlTemplate.replace('TASK_LOG_ID_PLACEHOLDER', taskLogId);
+
+            $.ajax({
+                url: url,
+                type: 'PUT',
+                data: {
+                    _token: cfg.csrfToken,
+                    status: status
+                },
+                success: function(res) {
+                    if (res.status) {
+                        $(selectors.shiftDetailModal).modal('hide');
+                        loadRoster(currentStart);
+                    } else {
+                        window.Swal.fire(res.message || 'Update failed.');
+                    }
+                },
+                error: function() {
+                    window.Swal.fire('Could not update task status.');
                 }
             });
         });
@@ -304,6 +367,81 @@
         $(selectors.assignTask).val(null).trigger('change');
         $(selectors.assignModal).modal('show');
     };
+
+    function loadTaskLogs(rosterId) {
+        var url = cfg.taskLogsUrlTemplate.replace('ROSTER_ID_PLACEHOLDER', rosterId);
+        var $select = $(selectors.taskLogTaskSelect);
+
+        $select.html('<option value="">Loading...</option>').prop('disabled', true);
+        $(selectors.taskLogStatusSection).removeClass('d-none');
+        $(selectors.taskLogStatusList).html('Loading task progress...');
+
+        $.ajax({
+            url: url,
+            success: function(res) {
+                var logs = (res && res.data) ? res.data : [];
+                var pendingCount = 0;
+                var runningCount = 0;
+                var completeCount = 0;
+
+                $select.empty().append('<option value="">Select a task</option>');
+
+                if (logs.length) {
+                    var listHtml = '<ul class="list-unstyled mb-0">';
+
+                    logs.forEach(function(log) {
+                        if (log.status === 'pending') {
+                            pendingCount += 1;
+                        } else if (log.status === 'running') {
+                            runningCount += 1;
+                        } else if (log.status === 'complete') {
+                            completeCount += 1;
+                        }
+
+                        if (log.status === 'pending' || log.status === 'running') {
+                            $select.append(
+                                $('<option>').val(log.id).text(log.task_title + ' [' + log.status + ']')
+                            );
+                        }
+
+                        var timing = '';
+                        if (log.start_at) {
+                            timing += ' | Start: ' + log.start_at;
+                        }
+                        if (log.end_at) {
+                            timing += ' | End: ' + log.end_at;
+                        }
+                        if (log.duration_minutes !== null && log.duration_minutes !== undefined) {
+                            timing += ' | Duration: ' + log.duration_minutes + ' min';
+                        }
+
+                        listHtml += '<li class="mb-1"><strong>' + log.task_title + '</strong> - ' + log.status + timing + '</li>';
+                    });
+
+                    listHtml += '</ul>';
+                    $(selectors.taskLogStatusList).html(listHtml);
+                } else {
+                    $(selectors.taskLogStatusList).html('No task progress yet.');
+                }
+
+                if ($select.find('option').length === 1) {
+                    $select.append('<option value="" disabled>No active tasks</option>');
+                }
+
+                $(selectors.taskLogCountPending).text(String(pendingCount));
+                $(selectors.taskLogCountRunning).text(String(runningCount));
+                $(selectors.taskLogCountComplete).text(String(completeCount));
+                $select.prop('disabled', false);
+            },
+            error: function() {
+                $(selectors.taskLogStatusList).html('Failed to load task progress.');
+                $(selectors.taskLogCountPending).text('0');
+                $(selectors.taskLogCountRunning).text('0');
+                $(selectors.taskLogCountComplete).text('0');
+                $select.html('<option value="">Failed to load tasks</option>').prop('disabled', false);
+            }
+        });
+    }
 
     $(function() {
         if (!cfg.rosterUrl) {
