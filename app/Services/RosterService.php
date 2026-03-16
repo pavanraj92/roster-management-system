@@ -152,7 +152,6 @@ class RosterService
 
     public function shiftClockIn($id) {
     try{
-
         $checkLoginIn = Attendance::where('roster_id', $id)->first();
 
         if ($checkLoginIn != null) {
@@ -167,6 +166,7 @@ class RosterService
             'clock_in' => Carbon::now(),
             'date' => Carbon::today(),
             'shift_id' => $roster->shift_id,
+            'shift_status' => 'running',
         ]);
 
         return true;
@@ -183,6 +183,8 @@ class RosterService
                 throw new \Exception('Already clocked out for this shift.');
             }
             $checkLoginIn->clock_out = Carbon::now();
+            $checkLoginIn->shift_status = 'completed';
+            
             $checkLoginIn->save();
 
         }catch(Exceptions $e){

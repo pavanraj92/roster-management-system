@@ -19,6 +19,7 @@ class Attendance extends Model
         'clock_in',
         'clock_out',
         'total_hours',
+        'shift_status',
         'status'
     ];
 
