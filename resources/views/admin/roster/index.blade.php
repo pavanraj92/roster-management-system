@@ -44,26 +44,39 @@
     </section>
 
     {{-- Modal: Shift & Task Details --}}
-    <div class="modal fade" id="shiftDetailModal" tabindex="-1" aria-labelledby="shiftDetailModalLabel"
-        aria-hidden="true">
+    <div class="modal fade" id="shiftDetailModal" tabindex="-1" aria-labelledby="shiftDetailModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-md">
             <div class="modal-content roster-modal">
                 <div class="modal-header roster-modal__header">
                     <h5 class="modal-title" id="shiftDetailModalLabel">Shift & Task Details</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+
+                    {{-- Check In/Out Forms  --}}
+                    <form method="POST" action="{{ route('admin.roster.clock.in') }}" id="clock-in-form">
+                        @csrf
+                        <button class="btn btn-success" type="submit">
+                            Clock In
+                        </button>
+                    </form>
+
+                    <form method="POST" action="{{ route('admin.roster.clock.out') }}" id="clock-out-form" class="d-none">
+                        @csrf
+                        <button class="btn btn-danger ">
+                            Clock Out
+                        </button>
+                    </form>
                 </div>
                 <div class="modal-body roster-modal__body">
                     {{-- View mode --}}
                     <div id="shift-detail-view">
-                        <div class="mb-3">
+                        <div class="mb-1">
                             <strong>Shift:</strong>
                             <span id="detail-shift-name"></span>
                         </div>
-                        <div class="mb-3">
+                        <div class="mb-1">
                             <strong>Time:</strong>
                             <span id="detail-shift-time"></span>
                         </div>
-                        <div class="mb-3">
+                        <div class="mb-1">
                             <strong>Task:</strong>
                             <span id="detail-task-title"></span>
                         </div>
@@ -73,17 +86,17 @@
                         </div>
                     </div>
 
-                    {{-- Edit mode --}}
+                    {{-- Edit Mode --}}
                     @can('edit_assigned_roster')
                         <div id="shift-edit-form-container" class="d-none">
                             <form id="shiftEditForm">
                                 <input type="hidden" id="edit-roster-id">
-                                <input type="hidden" id="edit-user" >                               
-                                <div class="mb-3">
+                                <input type="hidden" id="edit-user">
+                                <div class="mb-1">
                                     <label class="form-label">Date</label>
                                     <input type="text" id="edit-date" class="form-control">
                                 </div>
-                                <div class="mb-3">
+                                <div class="mb-1">
                                     <label class="form-label">Shift</label>
                                     <select id="edit-shift" class="form-control">
                                         @foreach ($shifts as $shift)
@@ -91,9 +104,10 @@
                                         @endforeach
                                     </select>
                                 </div>
-                                <div class="mb-3">
+                                <div class="mb-1">
                                     <label class="form-label">Task</label>
-                                    <select id="edit-task" class="form-control select2 task-selection" name="task_ids[]" multiple="multiple">
+                                    <select id="edit-task" class="form-control select2 task-selection" name="task_ids[]"
+                                        multiple="multiple">
                                         @foreach ($tasks as $task)
                                             <option value="{{ $task->id }}">{{ $task->title }}</option>
                                         @endforeach
@@ -132,7 +146,7 @@
                     <div class="modal-body roster-modal__body">
                         <input type="hidden" name="user_id" id="user_id">
                         <input type="hidden" name="date" id="date">
-                        <div class="mb-3">
+                        <div class="mb-1">
                             <label class="form-label">Shift</label>
                             <select name="shift_id" class="form-control">
                                 @foreach ($shifts as $shift)
@@ -142,7 +156,8 @@
                         </div>
                         <div class="mb-3">
                             <label class="form-label">Task</label>
-                            <select id="assign-task" name="task_ids[]" class="form-control select2 task-selection" multiple="multiple">
+                            <select id="assign-task" name="task_ids[]" class="form-control select2 task-selection"
+                                multiple="multiple">
                                 @foreach ($tasks as $task)
                                     <option value="{{ $task->id }}">{{ $task->title }}</option>
                                 @endforeach
@@ -180,7 +195,7 @@
                         placeholder: 'Select tasks',
                         allowClear: true,
                         width: '100%',
-                        dropdownParent: $(this).closest('.modal')                        
+                        dropdownParent: $(this).closest('.modal')
                     });
                 });
             }
@@ -209,7 +224,6 @@
                     }
                 });
             });
-
         </script>
 
         <script>
@@ -221,7 +235,7 @@
                     loadRoster(dateStr);
                 }
             });
-            
+
             $('#nextWeek').click(function() {
                 let start = moment(currentStart)
                     .add(7, 'days')
@@ -259,7 +273,7 @@
             // Shift detail modal: click handler
             function bindShiftDetailClicks() {
                 $(document).off('click', '.roster-shift-detail-trigger');
-                $(document).on('click', '.roster-shift-detail-trigger', function () {
+                $(document).on('click', '.roster-shift-detail-trigger', function() {
                     const shiftName = $(this).data('shift-name');
                     const shiftStart = $(this).data('shift-start');
                     const shiftEnd = $(this).data('shift-end');
@@ -282,14 +296,14 @@
                     $('#detail-task-title').text(taskTitle);
                     $('#detail-task-description').text(taskDescription || 'No description available.');
 
-                    // reset modal to view mode
+                    // Reset modal to view mode
                     $('#shift-detail-view').removeClass('d-none');
                     $('#shift-edit-form-container').addClass('d-none');
                     $('#shiftDetailModalLabel').text('Shift & Task Details');
                     $('#shift-detail-edit-btn').removeClass('d-none');
                     $('#save-shift-edit-btn').addClass('d-none');
 
-                    // populate edit form (admin only)
+                    // Populate Edit Form (Admin Only)
                     $('#edit-roster-id').val(rosterId);
                     $('#edit-user').val(userId);
                     $('#edit-date').val(date);
@@ -300,18 +314,18 @@
                 });
             }
 
-            // initial bind
+            // Initial Bind
             bindShiftDetailClicks();
 
             // Edit button: toggle to edit mode
-            $('#shift-detail-edit-btn').on('click', function () {
+            $('#shift-detail-edit-btn').on('click', function() {
                 $('#shift-detail-view').addClass('d-none');
                 $('#shift-edit-form-container').removeClass('d-none');
                 $('#shiftDetailModalLabel').text('Edit Shift & Task Assignment');
                 $('#shift-detail-edit-btn').addClass('d-none');
                 $('#save-shift-edit-btn').removeClass('d-none');
 
-                // init date picker for edit date (if not already)
+                // Init date picker for edit date (if not already)
                 if (typeof flatpickr !== 'undefined') {
                     if (!document.getElementById('edit-date').dataset.flatpickrInitialized) {
                         flatpickr('#edit-date', {
@@ -322,8 +336,8 @@
                 }
             });
 
-            // Save edited shift/task assignment
-            $('#save-shift-edit-btn').on('click', function () {
+            // Save Edited shift/task assignment
+            $('#save-shift-edit-btn').on('click', function() {
                 const rosterId = $('#edit-roster-id').val();
                 const payload = {
                     _token: '{{ csrf_token() }}',
@@ -341,9 +355,56 @@
                     url: updateUrl,
                     type: 'PUT',
                     data: payload,
-                    success: function (res) {
+                    success: function(res) {
                         $('#shiftDetailModal').modal('hide');
                         loadRoster(currentStart, currentEnd);
+                    }
+                });
+            });
+
+            $('.clock-out-btn').click(function(e) {
+                e.preventDefault();
+
+                Swal.fire({
+                    title: "Clock Out?",
+                    text: "Are you sure you want to clock out?",
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonText: "Yes, Clock Out"
+                }).then((result) => {
+                    $.ajax({
+                        url: "{{ route('admin.roster.clock.out') }}",
+                        type: "POST",
+                        data: payload,
+                        success: function(res) {
+                            console.log(res.status);
+                            if (res.status)
+                                loadRoster(currentStart, currentEnd);
+                            else
+                                swal.fire(res.message);
+                        }
+                    });
+                });
+            });
+        </script>
+
+        <script>
+            $("#clock-in-form").submit(function(e) {
+                e.preventDefault();
+                const payload = {
+                    _token: '{{ csrf_token() }}',
+                    roster_id: $('#edit-roster-id').val(),
+                };
+                $.ajax({
+                    url: "{{ route('admin.roster.clock.in') }}",
+                    type: "POST",
+                    data: payload,
+                    success: function(res) {
+                        console.log(res.status);
+                        if (res.status)
+                            loadRoster(currentStart, currentEnd);
+                        else
+                            swal.fire(res.message);
                     }
                 });
             });

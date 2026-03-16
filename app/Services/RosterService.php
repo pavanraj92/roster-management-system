@@ -4,8 +4,10 @@ namespace App\Services;
 use App\Models\Roster;
 use App\Models\Shift;
 use App\Models\Task;
+use App\Models\Attendance;
 use App\Models\User;
 use Carbon\Carbon;
+use Log;
 use Illuminate\Support\Facades\DB;
 
 class RosterService
@@ -141,4 +143,44 @@ class RosterService
         ];
     }
 
+    public function shiftClockIn($id) {
+    try{
+
+        $checkLoginIn = Attendance::where('roster_id', $id)->first();
+
+        if ($checkLoginIn != null) {
+            return false;
+        }
+
+        $roster = Roster::findOrFail($id);
+
+        Attendance::create([
+            'user_id' => auth()->id(),
+            'roster_id' => $id,
+            'clock_in' => Carbon::now(),
+            'date' => Carbon::today(),
+            'shift_id' => $roster->shift_id,
+        ]);
+
+        return true;
+        }catch(Exceptions $e){
+            Log::info('error while checkin rosterid:'.$id.'erro is '.$e->getMessage());
+            return false;
+        }
+    }
+    
+    public function shiftClockOut($id) {
+        try {
+            $checkLoginIn = Attendance::findOrFail($id);
+            if ($checkLoginIn->clock_out) {
+                throw new \Exception('Already clocked out for this shift.');
+            }
+            $checkLoginIn->clock_out = Carbon::now();
+            $checkLoginIn->save();
+
+        }catch(Exceptions $e){
+            Log::info('error while checkin rosterid:'.$id.'erro is '.$e->getMessage());
+            return false;
+        }
+    }
 }

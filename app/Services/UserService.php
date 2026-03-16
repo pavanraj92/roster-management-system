@@ -58,7 +58,6 @@ class UserService
             })
             ->addColumn('name', function ($row) {
                 $avatarUrl = $row->avatar_url ?? asset('backend/imgs/theme/avatar-1.png');
-
                 return '
                     <div class="d-flex align-items-center user-cell">
                         <div class="user-avatar me-3">

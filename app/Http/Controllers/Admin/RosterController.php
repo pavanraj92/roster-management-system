@@ -60,4 +60,39 @@ class RosterController extends Controller
             'message' => 'Roster updated successfully',
         ]);
     }
+
+    public function shiftClockIn(Request $request) {
+        $validated = $request->validate([
+            'roster_id' => ['required', 'exists:rosters,id'],
+        ]);
+
+        $res = $this->rosterService->shiftClockIn($validated['roster_id']);
+
+        if(!$res)  {
+            return response()->json([
+                'status' => false,
+                'message' => 'Something Went Wrong!',
+            ]);                    
+        }
+
+        return response()->json([
+            'status' => true,
+            'message' => 'Clocked in Successfully',
+            ]);
+    }
+
+
+     public function shiftClockOut(Request $request) {
+        
+        $validated = $request->validate([
+            'attendance_id' => ['required', 'exists:rosters,id'],
+        ]);
+
+        $this->rosterService->shiftClockOut($validated['attendance_id']);
+        
+        return response()->json([
+            'status' => true,
+            'message' => 'Clocked out Successfully',
+        ]);
+    }
 }

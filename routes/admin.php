@@ -22,10 +22,6 @@ use App\Http\Controllers\Admin\TaskController;
 |--------------------------------------------------------------------------
 */
 
-// Route::get('/admin', function () {
-//     return redirect()->route('admin.login');
-// });
-
 Route::name('admin.')->group(function () {
 
     /*
@@ -117,5 +113,10 @@ Route::name('admin.')->group(function () {
         Route::get('roster', [RosterController::class, 'index'])->name('roster');
         Route::post('/roster/store', [RosterController::class,'store'])->name('roster.store');
         Route::put('roster/{roster}', [RosterController::class, 'update'])->name('roster.update');
+
+        // Shift routes
+        Route::get('roster/checkShiftClockIn',[RosterController::class, 'checkShiftClockIn'])->name('roster.shift.clock.in');
+        Route::post('roster/clock-in', [RosterController::class, 'shiftClockIn'])->name('roster.clock.in');
+        Route::post('roster/clock-out', [RosterController::class, 'shiftClockOut'])->name('roster.clock.out');
     });
 });
