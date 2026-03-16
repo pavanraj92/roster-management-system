@@ -18,10 +18,11 @@ return new class extends Migration
             $table->date('date');
             $table->timestamp('clock_in')->nullable();
             $table->timestamp('clock_out')->nullable();
-            $table->decimal('total_hours', 5, 2)->nullable();
+            $table->decimal('total_hours', 6, 2)->nullable();
             $table->enum('status', ['present', 'late', 'absent'])->default('present');
             $table->timestamps();
             $table->softDeletes();
+            $table->unique(['user_id','date']);
         });
     }
 

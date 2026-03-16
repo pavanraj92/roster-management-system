@@ -419,6 +419,56 @@ class PermissionsSeeder extends Seeder
                 'created_at'   => $createDate,
                 'updated_at'   => $timestamp,
             ],
+
+            // Attendance
+            [
+                'name'         => 'attendance_access',
+                'display_name' => 'Menu Access',
+                'guard_name'   => 'web',
+                'group_name'   => 'attendances',
+                'created_at'   => $createDate,
+                'updated_at'   => $timestamp,
+            ],
+            [
+                'name'         => 'attendance_list',
+                'display_name' => 'List Attendances',
+                'guard_name'   => 'web',
+                'group_name'   => 'attendances',
+                'created_at'   => $createDate,
+                'updated_at'   => $timestamp,
+            ],
+            [
+                'name'         => 'attendance_create',
+                'display_name' => 'Create Attendance',
+                'guard_name'   => 'web',
+                'group_name'   => 'attendances',
+                'created_at'   => $createDate,
+                'updated_at'   => $timestamp,
+            ],
+            [
+                'name'         => 'attendance_edit',
+                'display_name' => 'Edit Attendance',
+                'guard_name'   => 'web',
+                'group_name'   => 'attendances',
+                'created_at'   => $createDate,
+                'updated_at'   => $timestamp,
+            ],
+            [
+                'name'         => 'attendance_delete',
+                'display_name' => 'Delete Attendance',
+                'guard_name'   => 'web',
+                'group_name'   => 'attendances',
+                'created_at'   => $createDate,
+                'updated_at'   => $timestamp,
+            ],
+            [
+                'name'         => 'attendance_show',
+                'display_name' => 'View Attendance',
+                'guard_name'   => 'web',
+                'group_name'   => 'attendances',
+                'created_at'   => $createDate,
+                'updated_at'   => $timestamp,
+            ],
         ];
 
         Permission::upsert(

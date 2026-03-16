@@ -8,7 +8,9 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Attendance extends Model
 {
     use SoftDeletes;
-    
+
+    protected $table = 'attendances';
+
     protected $fillable = [
         'roster_id',
         'user_id',
@@ -18,17 +20,29 @@ class Attendance extends Model
         'clock_out',
         'total_hours',
         'status'
-        ];
+    ];
+
+    protected $casts = [
+        'date' => 'date',
+        'clock_in' => 'datetime',
+        'clock_out' => 'datetime',
+    ];
+
+    protected $attributes = [
+        'status' => 'present',
+    ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    public function shift()
+    {
+        return $this->belongsTo(Shift::class);
+    }
 
     public function roster() {
         return $this->belongsTo(Roster::class, 'roster_id');
-    }
-
-    public function user() {
-        return $this->belongsTo(User::class, 'user_id');
-    }
-
-    public function shift() {
-        return $this->belongsTo(Shift::class, 'shift_id');
     }
 }
