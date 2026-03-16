@@ -37,7 +37,7 @@ $logoPath = $setting && $setting->value ? storage_path('app/public/' . $setting-
             <li class="menu-item {{ request()->routeIs('admin.user.*') ? 'active' : '' }}">
                 <a class="menu-link" href="{{ route('admin.user.index') }}">
                     <i class="icon material-icons md-person"></i>
-                    <span class="text">User Manager</span>
+                    <span class="text">Users</span>
                 </a>
             </li>
             @endcan
@@ -76,11 +76,20 @@ $logoPath = $setting && $setting->value ? storage_path('app/public/' . $setting-
             </li>
             @endcan
 
+            @can('roster_list')
+            <li class="menu-item {{ request()->routeIs('admin.roster') ? 'active' : '' }}">
+                <a class="menu-link" href="{{route('admin.roster')}}">
+                    <i class="icon material-icons md-local_offer"></i>
+                    <span class="text"> Rosters </span>
+                </a>
+            </li>
+            @endcan
+
             @can('attendance_access')
             <li class="menu-item {{ request()->routeIs('admin.attendances.*') ? 'active' : '' }}">
                 <a class="menu-link" href="{{ route('admin.attendances.index') }}">
                     <i class="icon material-icons md-check_circle"></i>
-                    <span class="text">Attendance</span>
+                    <span class="text">Attendances</span>
                 </a>
             </li>
             @endcan
@@ -116,15 +125,6 @@ $logoPath = $setting && $setting->value ? storage_path('app/public/' . $setting-
                         class="{{ request()->routeIs('admin.settings.index') ? 'active' : '' }}">Website
                         Setting</a>
                 </div>
-            </li>
-            @endcan
-
-            @can('roster_list')
-            <li class="menu-item">
-                <a class="menu-link" href="{{route('admin.roster')}}">
-                    <i class="icon material-icons md-local_offer"></i>
-                    <span class="text"> Roster </span>
-                </a>
             </li>
             @endcan
         </ul>

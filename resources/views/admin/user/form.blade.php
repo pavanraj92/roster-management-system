@@ -54,7 +54,7 @@
     <div class="mb-4 col-12">
         <label class="form-check admin-form-status-toggle mb-0">
             <input class="form-check-input" type="checkbox" name="status" value="1" {{ old('status', isset($user) ? (int) $user->status : 1) ? 'checked' : '' }}>
-            <span class="form-check-label">Active Status</span>
+            <span class="form-check-label"> Active Status</span>
         </label>
         <p class="text-muted small mt-2">Activate or deactivate this user account.</p>
     </div>

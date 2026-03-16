@@ -98,7 +98,7 @@ class StaffService
         $staff->assignRole('staff');
 
         try {
-            Mail::to($staff->email)->send(new StaffCreatedMail($staff, $password));
+            Mail::to($staff->email)->queue(new StaffCreatedMail($staff, $password));
         } catch (\Throwable $e) {
             Log::error('Failed to send staff created email', [
                 'staff_id' => $staff->id,

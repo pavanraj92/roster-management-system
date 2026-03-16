@@ -132,7 +132,7 @@ class UserService
         }
 
         try {
-            Mail::to($user->email)->send(new UserCreatedMail($user, $password));
+            Mail::to($user->email)->queue(new UserCreatedMail($user, $password));
         } catch (\Throwable $e) {
             Log::error('Failed to send user created email', [
                 'user_id' => $user->id,

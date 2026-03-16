@@ -11,7 +11,7 @@ use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
-class UserCreatedMail extends Mailable
+class UserCreatedMail extends Mailable implements ShouldQueue
 {
     use Queueable, SerializesModels;
 
@@ -62,9 +62,12 @@ class UserCreatedMail extends Mailable
             );
         }
 
-        // return new Content(
-        //     view: 'emails.dynamic',
-        // );
+        return new Content(
+            view: 'emails.dynamic',
+            with: [
+                'content' => '',
+            ],
+        );
     }
 
     /**
