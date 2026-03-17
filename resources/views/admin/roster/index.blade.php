@@ -101,26 +101,26 @@
 
                         {{-- Task Log Update — shown via JS only for running shifts (non-admin, today) --}}
                         @can('update_task_progress')
-                        <div id="task-log-update-section" class="roster-detail-card d-none">
-                            <h6 class="roster-card-title">Update Task Status</h6>
-                            <div class="mb-2">
-                                <label class="form-label">Pending Task</label>
-                                <select id="task-log-task-select" class="form-control form-control-sm roster-input">
-                                    <option value="">Select a task</option>
-                                </select>
+                            <div id="task-log-update-section" class="roster-detail-card d-none">
+                                <h6 class="roster-card-title">Update Task Status</h6>
+                                <div class="mb-2">
+                                    <label class="form-label">Pending Task</label>
+                                    <select id="task-log-task-select" class="form-control form-control-sm roster-input">
+                                        <option value="">Select a task</option>
+                                    </select>
+                                </div>
+                                <div class="mb-2">
+                                    <label class="form-label">New Status</label>
+                                    <select id="task-log-status-select" class="form-control form-control-sm roster-input">
+                                        <option value="pending">Pending</option>
+                                        <option value="running">Running</option>
+                                        <option value="complete">Complete</option>
+                                    </select>
+                                </div>
+                                <button type="button" class="btn btn-primary btn-sm px-3" id="task-log-update-btn">
+                                    Update
+                                </button>
                             </div>
-                            <div class="mb-2">
-                                <label class="form-label">New Status</label>
-                                <select id="task-log-status-select" class="form-control form-control-sm roster-input">
-                                    <option value="pending">Pending</option>
-                                    <option value="running">Running</option>
-                                    <option value="complete">Complete</option>
-                                </select>
-                            </div>
-                            <button type="button" class="btn btn-primary btn-sm px-3" id="task-log-update-btn">
-                                Update
-                            </button>
-                        </div>
                         @endcan
                     </div>
 

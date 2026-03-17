@@ -55,7 +55,8 @@
                                     data-clocked-in="{{ $attendance && $attendance->clock_in ? 1 : 0 }}"
                                     data-clocked-out="{{ $attendance && $attendance->clock_out ? 1 : 0 }}"
                                     data-task-title="{{ $groupTaskTitles }}"
-                                    data-task-description="{{ $groupTaskDescriptions }}">
+                                    data-task-description="{{ $groupTaskDescriptions }}"  
+                                    data-auth-id = "{{ auth()->id() }}">
                                     <span>Shift:</span> {{ $item->shift->name }} <br>
                                     <span>Task:</span> {{ $groupTaskTitles }}
                                     <br>

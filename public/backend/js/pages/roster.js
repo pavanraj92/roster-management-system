@@ -124,6 +124,7 @@
             const hasClockIn = Number($row.data('clocked-in')) === 1;
             const hasClockOut = Number($row.data('clocked-out')) === 1;
             const taskIdsRaw = ($row.data('task-ids') || '').toString();
+            const loginUserId = Number($row.data('auth-id'));
             const taskIds = taskIdsRaw
                 .split(',')
                 .map(function(id) {
@@ -150,8 +151,9 @@
             $(selectors.editTask).val(taskIds.length ? taskIds : [taskId]).trigger('change');
 
             resetClockForms();
-
-            if (!isAdminUser && isTodayShift) {
+                        
+            // Show clock in/out options only for the assigned staff on today's shift
+            if (loginUserId === userId && isTodayShift ) { 
                 if (hasClockIn && !hasClockOut && attendanceId) {
                     $(selectors.clockOutForm).removeClass('d-none');
                     $(selectors.clockOutAttendanceId).val(attendanceId);
@@ -161,8 +163,8 @@
                 }
             }
 
-            // Only staff on today's running shift can update task status
-            const canUpdateTaskStatus = !isAdminUser && isTodayShift && hasClockIn && !hasClockOut && attendanceId;
+            // Only Staff On Today's Running Shift Can Update Task Status
+            const canUpdateTaskStatus = isTodayShift && hasClockIn && !hasClockOut && attendanceId;
             if (canUpdateTaskStatus) {
                 $(selectors.taskLogSection).removeClass('d-none');
             }
