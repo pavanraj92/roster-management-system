@@ -3,8 +3,6 @@
 namespace App\Services;
 
 use App\Models\Attendance;
-use App\Models\Roster;
-use App\Models\TaskLog;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -77,20 +75,6 @@ class AttendanceService
                 return $row->total_hours ?? '-';
             })
 
-            ->addColumn('shift_status', function ($row) {
-                $colors = [
-                    'running' => 'warning',
-                    'completed' => 'success',
-                ];
-                $status = $row->shift_status ?: '-';
-
-                if ($status === '-') {
-                    return '<span class="text-muted">-</span>';
-                }
-
-                return '<span class="badge bg-' . ($colors[$status] ?? 'secondary') . '">' . ucfirst($status) . '</span>';
-            })
-
             ->addColumn('status', function ($row) {
 
                 $colors = [
@@ -110,26 +94,13 @@ class AttendanceService
                 return $btn;
             })
 
-            ->rawColumns(['shift_status', 'status', 'action'])
+            ->rawColumns(['status', 'action'])
             ->make(true);
     }
 
     public function showAttendance($id)
     {
         $attendance = Attendance::with(['user', 'shift'])->findOrFail($id);
-
-        $rosterIds = Roster::query()
-            ->where('user_id', $attendance->user_id)
-            ->where('shift_id', $attendance->shift_id)
-            ->whereDate('date', $attendance->date)
-            ->pluck('id');
-
-        $taskLogs = TaskLog::query()
-            ->with(['task', 'user', 'shift', 'roster'])
-            ->whereIn('roster_id', $rosterIds)
-            ->orderBy('id')
-            ->get();
-
-        return view('admin.attendance.show', compact('attendance', 'taskLogs'));
+        return view('admin.attendance.show', compact('attendance'));
     }
 }
