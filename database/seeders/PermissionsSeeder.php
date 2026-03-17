@@ -429,6 +429,24 @@ class PermissionsSeeder extends Seeder
                 'updated_at'   => $timestamp,
             ],            
 
+            // Performance Analytics
+            [
+                'name'         => 'performance_access',
+                'display_name' => 'Menu Access',
+                'guard_name'   => 'web',
+                'group_name'   => 'performance',
+                'created_at'   => $createDate,
+                'updated_at'   => $timestamp,
+             ],
+             [
+                'name'         => 'performance_view',
+                'display_name' => 'View Performance Analytics',
+                'guard_name'   => 'web',
+                'group_name'   => 'performance',
+                'created_at'   => $createDate,
+                'updated_at'   => $timestamp,
+             ],
+             
             // Attendance
             [
                 'name'         => 'attendance_access',

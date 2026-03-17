@@ -16,6 +16,7 @@ use App\Http\Controllers\Admin\RosterController;
 use App\Http\Controllers\Admin\ShiftController;
 use App\Http\Controllers\Admin\TaskController;
 use App\Http\Controllers\Admin\AttendanceController;
+use App\Http\Controllers\Admin\PerformanceController;
 
 /*
 |--------------------------------------------------------------------------
@@ -126,5 +127,8 @@ Route::name('admin.')->group(function () {
         // Task log routes (more specific paths before the generic {roster} route)
         Route::get('roster/{roster}/task-logs', [RosterController::class, 'getTaskLogs'])->name('roster.task-logs');
         Route::put('roster/task-log/{taskLog}', [RosterController::class, 'updateTaskLog'])->name('roster.task-log.update');
+
+        // Performance Analytics
+        Route::get('/admin/performance', [PerformanceController::class, 'index'])->name('performance');
     });
 });
