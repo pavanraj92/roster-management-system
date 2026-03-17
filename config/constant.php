@@ -10,11 +10,10 @@ return [
     'shift_colors' => [
         'morning' => '#0000ff5c', // green
         'afternoon' => '#00ff004a', // yellow
-        'night'   => '#ff0000ad', // blue
+        'night'   => '#ff9e9ead', // blue
     ],
 
     'default_shift_color' => '#6c757d',
-
     
     'task_type' => [
         1 => 'Single Member',
