@@ -37,6 +37,20 @@
                     <span class="details-value">{{ $attendance->shift->name ?? '-' }}</span>
                 </div>
                 <div class="details-item">
+                    <span class="details-label">Shift Status</span>
+                    <span class="details-value">
+                        @php
+                            $shiftStatusColors = ['running' => 'warning', 'completed' => 'success'];
+                            $shiftStatusColor = $shiftStatusColors[$attendance->shift_status] ?? 'secondary';
+                        @endphp
+                        @if($attendance->shift_status)
+                            <span class="badge bg-{{ $shiftStatusColor }}">{{ ucfirst($attendance->shift_status) }}</span>
+                        @else
+                            -
+                        @endif
+                    </span>
+                </div>
+                <div class="details-item">
                     <span class="details-label">Clock In</span>
                     <span class="details-value">{{ $attendance->clock_in ? $attendance->clock_in->format('h:i A') : '-' }}</span>
                 </div>
@@ -66,6 +80,47 @@
                     <span class="details-label">Updated At</span>
                     <span class="details-value">{{ $attendance->updated_at->format('M d, Y h:i A') }}</span>
                 </div>
+            </div>
+
+            <div class="mt-4">
+                <h5 class="card-title mb-3">Task History ({{ $taskLogs->count() }})</h5>
+
+                @if($taskLogs->count() > 0)
+                    <div class="table-responsive">
+                        <table class="table table-hover align-middle mb-0">
+                            <thead>
+                                <tr>
+                                    <th width="60">#</th>
+                                    <th>Task</th>
+                                    <th width="120">Status</th>
+                                    <th width="170">Start</th>
+                                    <th width="170">End</th>
+                                    <th width="180">Updated At</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach($taskLogs as $i => $log)
+                                    <tr>
+                                        <td>{{ $i + 1 }}</td>
+                                        <td><strong>{{ $log->task?->title ?? '-' }}</strong></td>
+                                        <td>
+                                            @php
+                                                $statusColors = ['pending' => 'secondary', 'running' => 'warning', 'complete' => 'success'];
+                                                $statusColor = $statusColors[$log->status] ?? 'secondary';
+                                            @endphp
+                                            <span class="badge bg-{{ $statusColor }}">{{ ucfirst($log->status) }}</span>
+                                        </td>
+                                        <td>{{ $log->start_at?->format('M d, Y h:i A') ?? '-' }}</td>
+                                        <td>{{ $log->end_at?->format('M d, Y h:i A') ?? '-' }}</td>
+                                        <td>{{ $log->updated_at?->format('M d, Y h:i A') ?? '-' }}</td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                @else
+                    <p class="text-muted mb-0">No tasks found for this attendance date.</p>
+                @endif
             </div>
             <div class="mt-4">
                 <a href="{{ route('admin.attendances.index') }}" class="btn btn-light">

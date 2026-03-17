@@ -9,7 +9,7 @@
     <div class="content-header">
         <div>
             <h2 class="content-title card-title">Dashboard</h2>
-            <p>Roster management overview</p>
+            <p>Roster Management Overview</p>
         </div>
     </div>
 

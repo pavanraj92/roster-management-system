@@ -76,6 +76,7 @@
                         <th>Employee</th>
                         <th>Date</th>
                         <th>Shift</th>
+                        <th>Shift Status</th>
                         <th>Clock In</th>
                         <th>Clock Out</th>
                         <th>Total Hours</th>
