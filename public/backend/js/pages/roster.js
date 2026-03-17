@@ -387,7 +387,7 @@
                 $select.empty().append('<option value="">Select a task</option>');
 
                 if (logs.length) {
-                    var listHtml = '<ul class="list-unstyled mb-0">';
+                    var listHtml = '<div>';
 
                     logs.forEach(function(log) {
                         if (log.status === 'pending') {
@@ -415,10 +415,16 @@
                             timing += ' | Duration: ' + log.duration_minutes + ' min';
                         }
 
-                        listHtml += '<li class="mb-1"><strong>' + log.task_title + '</strong> - ' + log.status + timing + '</li>';
+                        listHtml += '<div class="roster-progress-item">'
+                            + '<div class="d-flex justify-content-between align-items-center">'
+                            + '<span class="roster-progress-item__title">' + log.task_title + '</span>'
+                            + '<span class="roster-status-chip roster-status-chip--' + log.status + '">' + log.status + '</span>'
+                            + '</div>'
+                            + '<div class="roster-progress-item__meta">' + (timing ? timing.replace(/^ \| /, '') : 'No timing info yet') + '</div>'
+                            + '</div>';
                     });
 
-                    listHtml += '</ul>';
+                    listHtml += '</div>';
                     $(selectors.taskLogStatusList).html(listHtml);
                 } else {
                     $(selectors.taskLogStatusList).html('No task progress yet.');

@@ -70,54 +70,58 @@
                 <div class="modal-body roster-modal__body">
                     {{-- View mode --}}
                     <div id="shift-detail-view">
-                        <div class="mb-1">
-                            <strong>Shift:</strong>
-                            <span id="detail-shift-name"></span>
-                        </div>
-                        <div class="mb-1">
-                            <strong>Time:</strong>
-                            <span id="detail-shift-time"></span>
-                        </div>
-                        <div class="mb-1">
-                            <strong>Task:</strong>
-                            <span id="detail-task-title"></span>
-                        </div>
-                        <div class="mb-0">
-                            <strong>Description:</strong>
-                            <p id="detail-task-description" class="mb-0 text-muted"></p>
+                        <div class="roster-detail-card mb-3">
+                            <div class="roster-detail-row">
+                                <span class="roster-detail-label">Shift</span>
+                                <span id="detail-shift-name" class="roster-detail-value"></span>
+                            </div>
+                            <div class="roster-detail-row">
+                                <span class="roster-detail-label">Time</span>
+                                <span id="detail-shift-time" class="roster-detail-value"></span>
+                            </div>
+                            <div class="roster-detail-row">
+                                <span class="roster-detail-label">Task</span>
+                                <span id="detail-task-title" class="roster-detail-value"></span>
+                            </div>
+                            <div class="roster-detail-row mb-0">
+                                <span class="roster-detail-label">Description</span>
+                                <p id="detail-task-description" class="mb-0 text-muted roster-detail-description"></p>
+                            </div>
                         </div>
 
-                        <div id="task-log-status-section" class="mt-3 pt-3 border-top d-none">
-                            <h6 class="mb-2">Task Progress</h6>
-                            <div class="d-flex gap-3 mb-2 small">
-                                <span>Pending: <strong id="task-log-count-pending">0</strong></span>
-                                <span>Running: <strong id="task-log-count-running">0</strong></span>
-                                <span>Complete: <strong id="task-log-count-complete">0</strong></span>
+                        <div id="task-log-status-section" class="roster-detail-card d-none mb-3">
+                            <h6 class="roster-card-title">Task Progress</h6>
+                            <div class="roster-progress-counts mb-3">
+                                <span class="roster-pill roster-pill--pending">Pending: <strong id="task-log-count-pending">0</strong></span>
+                                <span class="roster-pill roster-pill--running">Running: <strong id="task-log-count-running">0</strong></span>
+                                <span class="roster-pill roster-pill--complete">Complete: <strong id="task-log-count-complete">0</strong></span>
                             </div>
-                            <div id="task-log-status-list" class="small text-muted">No task progress yet.</div>
+                            <div id="task-log-status-list" class="small text-muted roster-progress-list">No task progress yet.</div>
                         </div>
 
                         {{-- Task Log Update — shown via JS only for running shifts (non-admin, today) --}}
-                        <div id="task-log-update-section" class="d-none mt-3 pt-3 border-top">
-                            <h6 class="mb-2">Update Task Status</h6>
+                        @can('update_task_progress')
+                        <div id="task-log-update-section" class="roster-detail-card d-none">
+                            <h6 class="roster-card-title">Update Task Status</h6>
                             <div class="mb-2">
                                 <label class="form-label">Pending Task</label>
-                                <select id="task-log-task-select" class="form-control form-control-sm">
+                                <select id="task-log-task-select" class="form-control form-control-sm roster-input">
                                     <option value="">Select a task</option>
                                 </select>
                             </div>
                             <div class="mb-2">
                                 <label class="form-label">New Status</label>
-                                <select id="task-log-status-select" class="form-control form-control-sm">
+                                <select id="task-log-status-select" class="form-control form-control-sm roster-input">
                                     <option value="pending">Pending</option>
                                     <option value="running">Running</option>
                                     <option value="complete">Complete</option>
                                 </select>
                             </div>
-                            <button type="button" class="btn btn-primary btn-sm" id="task-log-update-btn">
+                            <button type="button" class="btn btn-primary btn-sm px-3" id="task-log-update-btn">
                                 Update
                             </button>
                         </div>
+                        @endcan
                     </div>
 
                     {{-- Edit Mode --}}
@@ -210,6 +214,134 @@
             </div>
         </div>
     </div>
+
+    @push('styles')
+        <style>
+            #shiftDetailModal .modal-content {
+                border-radius: 14px;
+                border: 1px solid #e9eef5;
+                box-shadow: 0 12px 30px rgba(24, 39, 75, 0.12);
+            }
+
+            .roster-detail-card {
+                background: linear-gradient(180deg, #ffffff 0%, #f9fbfd 100%);
+                border: 1px solid #e7edf5;
+                border-radius: 12px;
+                padding: 14px;
+            }
+
+            .roster-card-title {
+                font-size: 14px;
+                font-weight: 700;
+                color: #334155;
+                margin-bottom: 10px;
+            }
+
+            .roster-detail-row {
+                display: grid;
+                grid-template-columns: 92px 1fr;
+                gap: 8px;
+                margin-bottom: 8px;
+            }
+
+            .roster-detail-label {
+                font-size: 12px;
+                font-weight: 700;
+                letter-spacing: 0.2px;
+                color: #64748b;
+                text-transform: uppercase;
+            }
+
+            .roster-detail-value {
+                font-size: 14px;
+                color: #1f2937;
+                font-weight: 600;
+            }
+
+            .roster-detail-description {
+                font-size: 13px;
+                line-height: 1.45;
+            }
+
+            .roster-progress-counts {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 8px;
+            }
+
+            .roster-pill {
+                display: inline-flex;
+                align-items: center;
+                gap: 4px;
+                padding: 5px 10px;
+                border-radius: 999px;
+                font-size: 12px;
+                border: 1px solid transparent;
+                font-weight: 600;
+            }
+
+            .roster-pill--pending {
+                background: #fff9eb;
+                border-color: #fde7b0;
+                color: #8a5a00;
+            }
+
+            .roster-pill--running {
+                background: #eaf4ff;
+                border-color: #cfe3ff;
+                color: #0d4ea6;
+            }
+
+            .roster-pill--complete {
+                background: #ecfdf3;
+                border-color: #bfeecf;
+                color: #166534;
+            }
+
+            .roster-progress-item {
+                border: 1px solid #e6edf4;
+                border-radius: 10px;
+                background: #fff;
+                padding: 8px 10px;
+                margin-bottom: 8px;
+            }
+
+            .roster-progress-item__title {
+                font-size: 13px;
+                font-weight: 700;
+                color: #334155;
+            }
+
+            .roster-progress-item__meta {
+                font-size: 12px;
+                color: #64748b;
+                margin-top: 4px;
+            }
+
+            .roster-status-chip {
+                font-size: 11px;
+                font-weight: 700;
+                padding: 2px 8px;
+                border-radius: 999px;
+                text-transform: capitalize;
+            }
+
+            .roster-status-chip--pending {
+                background: #fff9eb;
+                color: #8a5a00;
+            }
+
+            .roster-status-chip--running {
+                background: #eaf4ff;
+                color: #0d4ea6;
+            }
+
+            .roster-status-chip--complete {
+                background: #ecfdf3;
+                color: #166534;
+            }
+        </style>
+    @endpush
 
     @push('scripts')
         <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment.min.js"></script>

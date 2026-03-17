@@ -387,6 +387,7 @@ class PermissionsSeeder extends Seeder
                 'created_at'   => $createDate,
                 'updated_at'   => $timestamp,
             ],
+            //  Rosters related permissions
             [
                 'name'         => 'roster_list',
                 'display_name' => 'Roster List',
@@ -419,6 +420,14 @@ class PermissionsSeeder extends Seeder
                 'created_at'   => $createDate,
                 'updated_at'   => $timestamp,
             ],
+             [
+                'name'         => 'task_progress_update',
+                'display_name' => 'Update Task Progress',
+                'guard_name'   => 'web',
+                'group_name'   => 'rosters',
+                'created_at'   => $createDate,
+                'updated_at'   => $timestamp,
+            ],            
 
             // Attendance
             [
