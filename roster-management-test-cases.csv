@@ -1,0 +1,41 @@
+TestCaseID,Module,Title,Preconditions,Steps,TestData,ExpectedResult,Priority,Type
+AUTH-001,Auth,Admin login with valid credentials,Admin user exists,1) Open /admin/login 2) Enter valid email+password 3) Click Login,email=admin@example.com; password=Valid@123,User is logged in and redirected to Dashboard; success toast shown,High,Positive
+AUTH-002,Auth,Admin login with invalid password,Admin user exists,1) Open /admin/login 2) Enter valid email + invalid password 3) Click Login,email=admin@example.com; password=WrongPass,Login is rejected; error message displayed; user remains on login page,High,Negative
+AUTH-003,Auth,Forgot password sends reset link,User exists with email,1) Open Forgot Password 2) Enter email 3) Submit,email=user@example.com,Reset link email is queued/sent; confirmation message displayed,Medium,Positive
+AUTH-004,Auth,Logout ends session,Logged in as admin,1) Click Logout,N/A,Session is invalidated; redirected to login; cannot access protected routes,High,Positive
+,,,,,,,,
+DASH-001,Dashboard,Dashboard accessible with permission,Logged in user has dashboard_access,1) Open /admin/dashboard,N/A,Dashboard loads successfully,High,Positive
+DASH-002,Dashboard,Dashboard blocked without permission,Logged in user lacks dashboard_access,1) Open /admin/dashboard,N/A,Access denied/403 or redirected per middleware; no data shown,High,Negative
+,,,,,,,,
+ROLE-001,Roles,Create role with permissions,Logged in user has role_access,1) Open Roles 2) Click Create Role 3) Enter role name 4) Select permissions 5) Save,"name=qa; permissions=[dashboard_access,page_access]",Role is created; permissions are assigned; success toast shown,High,Positive
+ROLE-002,Roles,Role name unique validation,Logged in user has role_access; role 'admin' exists,1) Create role with name admin,name=admin,Validation error shown for duplicate name; role not created,High,Negative
+ROLE-003,Roles,Edit role name,Logged in user has role_access; role exists,1) Open role edit 2) Change name 3) Save,name=manager2,Role updated; success toast shown,Medium,Positive
+ROLE-004,Roles,Delete non super-admin role,Logged in user has role_access; role exists and is not super-admin,1) Click delete icon 2) Confirm,N/A,Role deleted; table reloads; success toast shown,High,Positive
+ROLE-005,Roles,Cannot delete super-admin,Logged in user has role_access; role=super-admin exists,1) Attempt delete on super-admin,N/A,Deletion blocked; error toast/message shown; role remains,High,Negative
+,,,,,,,,
+PERM-001,Permissions,Create permission,Logged in user has role_access,1) Open Permissions 2) Click Create 3) Enter name 4) Save,name=shift_access; description=Menu Access,Permission created; appears in list; success toast shown,High,Positive
+PERM-002,Permissions,Edit permission description,Logged in user has role_access; permission exists,1) Edit permission 2) Update description 3) Save,description=Updated,Permission updated; success toast shown,Medium,Positive
+PERM-003,Permissions,Delete permission,Logged in user has role_access; permission exists,1) Delete permission 2) Confirm,N/A,Permission deleted; list refreshes; success toast shown,Medium,Positive
+,,,,,,,,
+USER-001,Users,Create user assigns roles,Logged in user has user_access; roles exist,1) Open Users 2) Create User 3) Fill required fields 4) Assign roles 5) Save,first=John; last=Doe; email=john@example.com; phone=123; roles=[manager],User created; roles assigned; password email sent; success toast shown,High,Positive
+USER-002,Users,Email must be unique,Logged in user has user_access; user with email exists,1) Create user with existing email,email=existing@example.com,Validation error shown; user not created,High,Negative
+USER-003,Users,Filter users by status,Logged in user has user_access; multiple users exist with active/disabled,1) Open Users 2) Change status filter to Disabled,status=0,Table reloads; only disabled users shown,Medium,Positive
+USER-004,Users,Search user list,Logged in user has user_access; users exist,1) Type in search box,keyword=John,Table reloads; matching users shown,Medium,Positive
+,,,,,,,,
+SHIFT-001,Shifts,Create shift,Logged in user has shift_access,1) Open Shifts 2) Create Shift 3) Enter name/start/end 4) Save,name=Morning; start=08:00; end=16:00,Shift created; success toast shown,High,Positive
+SHIFT-002,Shifts,End time must be after start time,Logged in user has shift_access,1) Create shift with end before start,start=16:00; end=08:00,Validation error shown; shift not created,High,Negative
+SHIFT-003,Shifts,Search shifts list,Logged in user has shift_access; shifts exist,1) Type in search box,keyword=Morning,Table reloads; matching shifts shown,Medium,Positive
+SHIFT-004,Shifts,Delete shift shows toast,Logged in user has shift_access; shift exists,1) Click delete 2) Confirm,N/A,Shift deleted via AJAX; table reloads; success toast shown,High,Positive
+,,,,,,,,
+TASK-001,Tasks,Create task with rich text description,Logged in user has task_access,1) Open Tasks 2) Create Task 3) Enter title 4) Enter description in editor 5) Save,title=Prepare roster; description=<p>Details</p>,Task created; success toast shown; description renders on view page,High,Positive
+TASK-002,Tasks,Description required validation,Logged in user has task_access,1) Create task with empty editor content 2) Save,title=Test; description=(empty),Validation error shown for description; task not created,High,Negative
+TASK-003,Tasks,Search tasks list,Logged in user has task_access; tasks exist,1) Type in search box,keyword=roster,Table reloads; tasks filtered by title/description,Medium,Positive
+TASK-004,Tasks,Delete task shows toast,Logged in user has task_access; task exists,1) Delete task 2) Confirm,N/A,Task deleted via AJAX; table reloads; success toast shown,High,Positive
+,,,,,,,,
+ROSTER-001,Roster,Open roster page,Logged in user can access roster page,1) Click Roster in sidebar,N/A,Roster page loads without errors,High,Positive
+ROSTER-002,Roster,Roster requires authentication,Logged out,1) Open roster route directly,N/A,Redirected to login,High,Negative
+,,,,,,,,
+PAGES-001,Pages,Create page with CKEditor description,Logged in user has page_access,1) Open Pages 2) Create 3) Fill fields inc. description editor 4) Save,title=About; description=<p>About us</p>,Page created; success toast shown,Medium,Positive
+EMAIL-001,Email Templates,Create template with editor body,Logged in user has email_template_access,1) Open Email Templates 2) Create 3) Fill name/subject/body 4) Save,name=Welcome; subject=Hi; description=<p>Hello</p>,Template created; success toast shown,Medium,Positive
+SET-001,Settings,Update website settings,Logged in user has setting_access,1) Open Settings 2) Change values 3) Save,site_name=Roster,Settings updated; success toast shown,Medium,Positive
+PROFILE-001,Profile,Update profile details,Logged in,1) Open Profile 2) Update first/last/phone 3) Save,first=Admin,Profile updated; success toast shown,Medium,Positive

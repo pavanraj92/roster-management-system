@@ -34,6 +34,12 @@
                         name: 'shift'
                     },
                     {
+                        data: 'shift_status',
+                        name: 'shift_status',
+                        orderable: false,
+                        searchable: false
+                    },
+                    {
                         data: 'clock_in',
                         name: 'clock_in'
                     },
