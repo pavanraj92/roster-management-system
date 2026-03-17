@@ -392,7 +392,7 @@ class PermissionsSeeder extends Seeder
                 'name'         => 'roster_list',
                 'display_name' => 'Roster List',
                 'guard_name'   => 'web',
-                'group_name'   => 'roasters',
+                'group_name'   => 'rosters',
                 'created_at'   => $createDate,
                 'updated_at'   => $timestamp,
             ],

@@ -35,8 +35,8 @@ class ProfileController extends Controller
             'first_name' => 'required|string|max:255',
             'last_name'  => 'required|string|max:255',
             // 'email'      => 'required|email|max:255|unique:users,email,' . $user->id,
-            'phone'      => 'required|regex:/^[0-9]{10,20}$/|unique:users,phone,' . $user->id,
-            'address_line1' => 'required|string|max:255',
+            'phone'      => 'nullable|regex:/^[0-9]{10,20}$/|unique:users,phone,' . $user->id,
+            'address_line1' => 'nullable|string|max:255',
         ]);
 
         if ($validator->fails()) {

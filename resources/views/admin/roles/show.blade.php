@@ -46,15 +46,27 @@
             <div class="mt-4">
                 <h5 class="card-title">Assigned Permissions ({{ $permissions->count() }})</h5>
                 @if($permissions->count() > 0)
-                <div class="row">
-                    @foreach($permissions as $permission)
-                    <div class="col-md-4 mb-3">
-                        <span class="badge bg-primary p-2">
-                            {{ ucfirst(str_replace('_', ' ', $permission->name)) }}
-                        </span>
-                    </div>
+                    @php
+                        $permissionsByGroup = $permissions->groupBy(function ($p) {
+                            return $p->group_name ?: 'other';
+                        });
+                    @endphp
+
+                    @foreach($permissionsByGroup as $groupName => $groupPermissions)
+                        <div class="mb-3">
+                            <h6 class="mb-2">{{ ucfirst(str_replace('_', ' ', $groupName)) }}</h6>
+                            <div class="row">
+                                @foreach($groupPermissions as $permission)
+                                    <div class="col-md-4 mb-3">
+                                        <span class="badge bg-primary p-2">
+                                            {{ ucfirst(str_replace('_', ' ', $permission->name)) }}
+                                        </span>
+                                    </div>
+                                @endforeach
+                            </div>
+                            <hr class="mt-0" />
+                        </div>
                     @endforeach
-                </div>
                 @else
                 <p class="text-muted">No permissions assigned to this role.</p>
                 @endif
