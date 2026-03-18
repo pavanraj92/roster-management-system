@@ -4,7 +4,7 @@
 
         {{-- Template Name --}}
         <div class="mb-4">
-            <label class="form-label">Template Name</label>
+            <label class="form-label">Template Name <span class="text-danger">*</span></label>
             <input type="text" name="name" class="form-control" placeholder="Enter template name"
                 value="{{ old('name', $email_template->name ?? '') }}">
             @error('name')
@@ -14,7 +14,7 @@
 
         {{-- Subject --}}
         <div class="mb-4">
-            <label class="form-label">Email Subject</label>
+            <label class="form-label">Email Subject <span class="text-danger">*</span></label>
             <input type="text" name="subject" class="form-control" placeholder="Enter email subject"
                 value="{{ old('subject', $email_template->subject ?? '') }}">
             @error('subject')
@@ -58,7 +58,7 @@
     <div class="col-lg-12">
         {{-- Email Body --}}
         <div class="mb-4">
-            <label class="form-label">Email Body</label>
+            <label class="form-label">Email Body <span class="text-danger">*</span></label>
             <textarea name="description" id="description" rows="8" class="form-control"
                 placeholder="Write email template...">{{ old('description', $email_template->description ?? '') }}</textarea>
             @error('description')

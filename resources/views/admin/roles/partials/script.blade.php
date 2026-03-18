@@ -29,6 +29,7 @@
                         searchable: false
                     }
                     ],
+                    dom: 'lrtip',
                     language: {
                         search: "",
                         searchPlaceholder: "Search role...",
@@ -53,7 +54,7 @@
                     var checkedAll = $children.filter(':checked').length;
 
                     var $toggle = $('.role-group-toggle[data-group=\"' + groupKey + '\"]');
-                    if (! $toggle.length) return;
+                    if (!$toggle.length) return;
 
                     // If there's nothing selectable in this group, disable the group toggle,
                     // but still reflect the group's checked state (useful for Dashboard group).

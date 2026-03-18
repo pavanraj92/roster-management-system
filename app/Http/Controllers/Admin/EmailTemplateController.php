@@ -23,7 +23,16 @@ class EmailTemplateController extends Controller
 
             return DataTables::of($query)
                 ->addIndexColumn()
-
+                ->filter(function ($query) use ($request) {
+                    $search = $request->get('search');
+                    $keyword = trim((string) ($search['value'] ?? ''));
+                    if ($keyword !== '') {
+                        $query->where(function ($q) use ($keyword) {
+                            $q->where('name', 'like', '%' . $keyword . '%')
+                                ->orWhere('subject', 'like', '%' . $keyword . '%');
+                        });
+                    }
+                })
                 ->addColumn('status', function ($row) {
                     $checked = $row->status ? 'checked' : '';
                     return '<div class="form-check form-switch text-center">

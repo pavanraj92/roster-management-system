@@ -18,6 +18,13 @@ class RoleService
 
         return DataTables::of($data)
             ->addIndexColumn()
+            ->filter(function ($query) use ($request) {
+                $search = $request->get('search');
+                $keyword = trim((string) ($search['value'] ?? ''));
+                if ($keyword !== '') {
+                    $query->where('name', 'like', '%' . $keyword . '%');
+                }
+            })
             ->addColumn('name', function ($row) {
                 return ucfirst($row->name);
             })

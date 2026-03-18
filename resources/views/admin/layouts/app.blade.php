@@ -24,7 +24,8 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <link rel="shortcut icon" type="image/x-icon" href="{{ $faviconPath }}" />
     <!-- Template CSS -->
-    {{-- <script src="{{ asset('backend/js/vendors/color-modes.js') }}"></script> --}}
+    {{--
+    <script src="{{ asset('backend/js/vendors/color-modes.js') }}"></script> --}}
     <link href="{{ asset('backend/css/main.css?v=6.0') }}" rel="stylesheet" type="text/css" />
     <link href="{{ asset('backend/css/custom.css') }}" rel="stylesheet" type="text/css" />
     <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/dataTables.bootstrap5.min.css">
@@ -144,7 +145,24 @@
     </script>
 
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-    {{-- <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script> --}}
+    {{--
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script> --}}
+    <script>
+        $(document).ready(function () {
+            $('form').not('.delete-form, .no-disable-submit').on('submit', function (e) {
+                if (this.checkValidity && !this.checkValidity()) {
+                    return;
+                }
+
+                let $btn = $(this).find('button[type="submit"]');
+                if ($btn.length > 0) {
+                    setTimeout(() => {
+                        $btn.prop('disabled', true);
+                    }, 10);
+                }
+            });
+        });
+    </script>
     @stack('scripts')
 </body>
 

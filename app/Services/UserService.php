@@ -53,7 +53,7 @@ class UserService
                         ->orWhereRaw("CONCAT(COALESCE(first_name, ''), ' ', COALESCE(last_name, '')) LIKE ?", ['%' . $keyword . '%']);
                 });
             })
-           ->addColumn('role', function ($row) {
+            ->addColumn('role', function ($row) {
                 return $row->roles->pluck('name')->implode(', ');
             })
             ->addColumn('name', function ($row) {
@@ -105,7 +105,7 @@ class UserService
                     </div>
                 ';
             })
-            ->rawColumns(['name','role', 'status', 'action'])
+            ->rawColumns(['name', 'role', 'status', 'action'])
             ->make(true);
     }
 
@@ -152,6 +152,8 @@ class UserService
 
         $roles = $data['roles'] ?? [];
         unset($data['roles']);
+        unset($data['email']);
+        unset($data['phone']);
 
         $data['status'] = $statusFlag;
 

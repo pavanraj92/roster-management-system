@@ -4,7 +4,7 @@
 
         {{-- Title --}}
         <div class="mb-4">
-            <label class="form-label">Page Title</label>
+            <label class="form-label">Page Title <span class="text-danger">*</span></label>
             <input type="text" name="title" class="form-control" placeholder="Enter page title"
                 value="{{ old('title', $page->title ?? '') }}">
             @error('title')
@@ -70,7 +70,7 @@
     <div class="col-lg-12">
         {{-- Full Description (CKEditor) --}}
         <div class="mb-4">
-            <label class="form-label">Full Description</label>
+            <label class="form-label">Full Description <span class="text-danger">*</span></label>
             <textarea name="description" id="description" rows="6" class="form-control"
                 placeholder="Enter full description">{{ old('description', $page->description ?? '') }}</textarea>
             @error('description')

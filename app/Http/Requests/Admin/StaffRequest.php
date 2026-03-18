@@ -23,15 +23,20 @@ class StaffRequest extends FormRequest
     {
         $staffId = $this->route('staff') ? (is_object($this->route('staff')) ? $this->route('staff')->id : $this->route('staff')) : null;
 
-        return [
+        $rules = [
             'first_name' => 'required|string|max:255',
             'last_name' => 'nullable|string|max:255',
-            'email' => 'required|email|unique:users,email,' . $staffId,
-            'phone' => 'required|digits_between:7,15',
-            'designation'  => 'required|string|max:255',
+            'designation' => 'required|string|max:255',
             'joining_date' => 'required|date',
-            'avatar'       => 'nullable|image|max:2048',
-            'status'       => 'nullable|boolean',
+            'avatar' => 'nullable|image|max:2048',
+            'status' => 'nullable|boolean',
         ];
+
+        if (!$staffId) {
+            $rules['email'] = 'required|email|unique:users,email';
+            $rules['phone'] = 'required|digits_between:7,15';
+        }
+
+        return $rules;
     }
 }
