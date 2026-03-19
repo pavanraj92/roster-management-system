@@ -100,7 +100,8 @@
                         </div>
 
                         {{-- Task Log Update — shown via JS only for running shifts (non-admin, today) --}}
-                        @can('update_task_progress')
+
+                        @can('task_progress_update')
                             <div id="task-log-update-section" class="roster-detail-card d-none">
                                 <h6 class="roster-card-title">Update Task Status</h6>
                                 <div class="mb-2">

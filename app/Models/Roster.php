@@ -1,10 +1,9 @@
 <?php
-
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Roster extends Model
 {
@@ -32,5 +31,10 @@ class Roster extends Model
     public function task()
     {
         return $this->belongsTo(Task::class);
+    }
+
+    public function attendance()
+    {
+        return $this->hasOne(Attendance::class);
     }
 }

@@ -20,7 +20,8 @@ class Attendance extends Model
         'clock_out',
         'total_hours',
         'shift_status',
-        'status'
+        'status',
+        'attendance_id '
     ];
 
     protected $casts = [
@@ -45,5 +46,10 @@ class Attendance extends Model
 
     public function roster() {
         return $this->belongsTo(Roster::class, 'roster_id');
+    }
+
+    public function tasklogs()
+    {
+        return $this->hasMany(TaskLog::class, 'attendance_id');
     }
 }

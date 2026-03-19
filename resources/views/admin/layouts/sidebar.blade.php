@@ -93,6 +93,15 @@ $logoPath = $setting && $setting->value ? storage_path('app/public/' . $setting-
                 </a>
             </li>
             @endcan
+            
+            @can('performance_access')
+            <li class="menu-item {{ request()->routeIs('admin.performance.*') ? 'active' : '' }}">
+                <a class="menu-link" href="{{ route('admin.performance') }}">
+                    <i class="icon material-icons md-check_circle"></i>
+                    <span class="text">Performance</span>
+                </a>
+            </li>
+            @endcan
 
             @can('page_access')
             <li class="menu-item {{ request()->routeIs('admin.pages.*') ? 'active' : '' }}">

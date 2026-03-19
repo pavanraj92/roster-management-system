@@ -17,6 +17,7 @@ class TaskLog extends Model
         'status',
         'start_at',
         'end_at',
+        'attendance_id'
     ];
 
     protected $casts = [

@@ -83,9 +83,9 @@
             </div>
 
             <div class="mt-4">
-                <h5 class="card-title mb-3">Task History ({{ $taskLogs->count() }})</h5>
+                <h5 class="card-title mb-3">Task History ({{ isset($attendance->tasklogs) ? $attendance->tasklogs->count() : 0 }})</h5>
 
-                @if($taskLogs->count() > 0)
+                @if(isset($attendance->tasklogs) && $attendance->tasklogs->count() > 0)
                     <div class="table-responsive">
                         <table class="table table-hover align-middle mb-0">
                             <thead>
@@ -99,7 +99,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach($taskLogs as $i => $log)
+                                @foreach($attendance->tasklogs as $i => $log)
                                     <tr>
                                         <td>{{ $i + 1 }}</td>
                                         <td><strong>{{ $log->task?->title ?? '-' }}</strong></td>

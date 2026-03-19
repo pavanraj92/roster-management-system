@@ -14,14 +14,13 @@ class PerformanceController extends Controller
     ) {}
 
     public function index(Request $request)
-    {
-        dd('ddsdddddsdasdfsdf adssa dad ad sa');
-        $shifts = Shift::all();
+    {     
+     
         if ($request->ajax()) {
             return $this->performanceService->getPerformanceDataTable($request);
         }
 
-        return view('admin.performance.index', compact('shifts'));
+        return view('admin.performance.index');
     }
 
     public function show($id)

@@ -161,14 +161,21 @@ class RosterService
 
         $roster = Roster::findOrFail($id);
 
-        Attendance::create([
+        // check status is late or present based on shift start time
+        $shiftStartTime = Carbon::parse($roster->shift->start_time);
+        $currentTime = Carbon::now();
+        $status = $currentTime->greaterThan($shiftStartTime) ? 'late' : 'present';  
+
+        $attendance = Attendance::create([
             'user_id' => auth()->id(),
             'roster_id' => $id,
             'clock_in' => Carbon::now(),
             'date' => Carbon::today(),
             'shift_id' => $roster->shift_id,
+            'status'    => $status,
             'shift_status' => 'running',
         ]);
+
 
         // Create a pending task_log for every task in this shift group
         $rosterGroup = Roster::where('user_id', $roster->user_id)
@@ -182,6 +189,7 @@ class RosterService
                     'roster_id' => $rosterRow->id,
                     'user_id'   => $rosterRow->user_id,
                     'task_id'   => $rosterRow->task_id,
+                    'attendance_id' => $attendance->id,
                 ],
                 [
                     'shift_id' => $rosterRow->shift_id,
@@ -191,7 +199,7 @@ class RosterService
         }
 
         return true;
-        }catch(\Exception $e){
+        }catch( \Exception $e ) {
             Log::info('error while checkin rosterid:'.$id.'erro is '.$e->getMessage());
             return false;
         }

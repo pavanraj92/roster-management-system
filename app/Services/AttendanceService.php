@@ -20,7 +20,6 @@ class AttendanceService
             ->addIndexColumn()
 
             ->filter(function ($query) use ($request) {
-
                 // Employee filter
                 if ($search = $request->get('search')['value'] ?? null) {
                     $query->whereHas('user', function ($q) use ($search) {
@@ -74,9 +73,7 @@ class AttendanceService
             ->addColumn('total_hours', function ($row) {
                 return $row->total_hours ?? '-';
             })
-
             ->addColumn('status', function ($row) {
-
                 $colors = [
                     'present' => 'success',
                     'late' => 'warning',
@@ -100,7 +97,7 @@ class AttendanceService
 
     public function showAttendance($id)
     {
-        $attendance = Attendance::with(['user', 'shift'])->findOrFail($id);
+        $attendance = Attendance::with(['user', 'shift','tasklogs'])->findOrFail($id);        
         return view('admin.attendance.show', compact('attendance'));
     }
 }
