@@ -27,6 +27,7 @@
                         searchable: false
                     }
                     ],
+                    dom: 'lrtip',
                     language: {
                         search: "",
                         searchPlaceholder: "Search permission...",

@@ -20,31 +20,13 @@ class ProfileController extends Controller
 
         return view('admin.profile.index', [
             'user' => Auth::user(),
-            'tab'  => $tab
+            'tab' => $tab
         ]);
     }
 
-    /**
-     * Update general profile details
-     */
-    public function updateProfile(Request $request)
+    public function updateProfile(\App\Http\Requests\Admin\ProfileUpdateRequest $request)
     {
         $user = Auth::user();
-
-        $validator = Validator::make($request->all(), [
-            'first_name' => 'required|string|max:255',
-            'last_name'  => 'required|string|max:255',
-            // 'email'      => 'required|email|max:255|unique:users,email,' . $user->id,
-            'phone'      => 'required|regex:/^[0-9]{10,20}$/|unique:users,phone,' . $user->id,
-            'address_line1' => 'required|string|max:255',
-        ]);
-
-        if ($validator->fails()) {
-            return redirect()
-                ->route('admin.profile.index', ['tab' => 'profile'])
-                ->withErrors($validator)
-                ->withInput();
-        }
 
         $user->update($request->only([
             'first_name',
@@ -57,8 +39,8 @@ class ProfileController extends Controller
         $user->admin_address()->updateOrCreate(
             ['user_id' => $user->id], // condition
             [
-                'name'          => $user->first_name . ' ' . $user->last_name,
-                'phone'         => $user->phone,
+                'name' => $user->first_name . ' ' . $user->last_name,
+                'phone' => $user->phone,
                 'address_line1' => $request->address_line1,
             ]
         );
@@ -67,24 +49,9 @@ class ProfileController extends Controller
             ->with('success', 'Profile updated successfully.');
     }
 
-    /**
-     * Change user password
-     */
-    public function changePassword(Request $request)
+    public function changePassword(\App\Http\Requests\Admin\PasswordUpdateRequest $request)
     {
         $user = Auth::user();
-
-        $validator = Validator::make($request->all(), [
-            'current_password' => 'required',
-            'password'         => 'required|min:8|confirmed',
-        ]);
-
-        if ($validator->fails()) {
-            return redirect()
-                ->route('admin.profile.index', ['tab' => 'password'])
-                ->withErrors($validator)
-                ->withInput();
-        }
 
         // Check current password
         if (!Hash::check($request->current_password, $user->password)) {
@@ -111,23 +78,9 @@ class ProfileController extends Controller
             ->with('success', 'Password changed successfully.');
     }
 
-    /**
-     * Update profile avatar separately
-     */
-    public function updateProfileImage(Request $request)
+    public function updateProfileImage(\App\Http\Requests\Admin\ProfileImageUpdateRequest $request)
     {
         $user = Auth::user();
-
-        $validator = Validator::make($request->all(), [
-            'avatar' => 'required|image|mimes:jpg,jpeg,png,svg|max:2048',
-        ]);
-
-        if ($validator->fails()) {
-            return redirect()
-                ->route('admin.profile.index', ['tab' => 'profile'])
-                ->withErrors($validator)
-                ->withInput();
-        }
 
         if ($request->hasFile('avatar')) {
 

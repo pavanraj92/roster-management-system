@@ -2,7 +2,7 @@
 @section('title', 'Profile Setting')
 
 @section('content')
-{{-- @dd(auth()->user()->roles) --}}
+    {{-- @dd(auth()->user()->roles) --}}
     <section class="content-main">
         <div class="row">
             <div class="clearfix">
@@ -56,7 +56,8 @@
                                             <div class="row gx-3">
 
                                                 <div class="col-6 mb-3">
-                                                    <label class="form-label">First name</label>
+                                                    <label class="form-label">First name <span
+                                                            class="text-danger">*</span></label>
                                                     <input class="form-control" type="text" name="first_name"
                                                         value="{{ old('first_name', $user->first_name) }}">
                                                     @error('first_name')
@@ -65,7 +66,8 @@
                                                 </div>
 
                                                 <div class="col-6 mb-3">
-                                                    <label class="form-label">Last name</label>
+                                                    <label class="form-label">Last name <span
+                                                            class="text-danger">*</span></label>
                                                     <input class="form-control" type="text" name="last_name"
                                                         value="{{ old('last_name', $user->last_name) }}">
                                                     @error('last_name')
@@ -84,12 +86,18 @@
                                                     <label class="form-label">Phone</label>
                                                     <input class="form-control" type="tel" name="phone"
                                                         value="{{ old('phone', $user->phone) }}">
+                                                    @error('phone')
+                                                        <span class="text-danger small">{{ $message }}</span>
+                                                    @enderror
                                                 </div>
 
                                                 <div class="col-lg-12 mb-3">
                                                     <label class="form-label">Address</label>
                                                     <input class="form-control" type="text" name="address_line1"
                                                         value="{{ old('address_line1', optional($user->admin_address)->address_line1) }}">
+                                                    @error('address_line1')
+                                                        <span class="text-danger small">{{ $message }}</span>
+                                                    @enderror
                                                 </div>
 
                                             </div>
@@ -148,7 +156,7 @@
                                     <input type="password" name="fake_pass" style="display:none;">
 
                                     <div class="mb-3">
-                                        <label class="form-label">Current Password</label>
+                                        <label class="form-label">Current Password <span class="text-danger">*</span></label>
                                         <div class="position-relative">
                                             <input type="password" name="current_password" class="form-control pe-5">
                                             <span class="password-toggle position-absolute top-50 end-0 translate-middle-y me-3"
@@ -162,7 +170,7 @@
                                     </div>
 
                                     <div class="mb-3">
-                                        <label class="form-label">New Password</label>
+                                        <label class="form-label">New Password <span class="text-danger">*</span></label>
                                         <div class="position-relative">
                                             <input type="password" name="password" class="form-control pe-5">
                                             <span class="password-toggle position-absolute top-50 end-0 translate-middle-y me-3"
@@ -176,7 +184,8 @@
                                     </div>
 
                                     <div class="mb-3">
-                                        <label class="form-label">Confirm New Password</label>
+                                        <label class="form-label">Confirm New Password <span
+                                                class="text-danger">*</span></label>
                                         <div class="position-relative">
                                             <input type="password" name="password_confirmation" class="form-control pe-5">
                                             <span class="password-toggle position-absolute top-50 end-0 translate-middle-y me-3"

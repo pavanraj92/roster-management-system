@@ -1,6 +1,6 @@
 <div class="row g-4 user-form-grid">
     <div class="mb-4 col-lg-6">
-        <label for="first_name" class="form-label">First Name</label>
+        <label for="first_name" class="form-label">First Name <span class="text-danger">*</span></label>
         <input type="text" name="first_name" placeholder="First Name" class="form-control" id="first_name"
             value="{{ old('first_name', isset($user) ? $user->first_name : '') }}">
         @error('first_name') <span class="text-danger small">{{ $message }}</span> @enderror
@@ -12,20 +12,20 @@
         @error('last_name') <span class="text-danger small">{{ $message }}</span> @enderror
     </div>
     <div class="mb-4 col-lg-6">
-        <label for="email" class="form-label">Email</label>
-        <input type="email" name="email" placeholder="Email" class="form-control" id="email" 
+        <label for="email" class="form-label">Email <span class="text-danger">*</span></label>
+        <input type="email" name="email" placeholder="Email" class="form-control" id="email"
             value="{{ old('email', isset($user) ? $user->email : '') }}" {{ isset($user->email) ? 'readonly' : '' }}>
         @error('email') <span class="text-danger small">{{ $message }}</span> @enderror
     </div>
     <div class="mb-4 col-lg-6">
-        <label for="phone" class="form-label">Phone</label>
+        <label for="phone" class="form-label">Phone <span class="text-danger">*</span></label>
         <input type="text" name="phone" placeholder="Phone" class="form-control" id="phone"
-            value="{{ old('phone', isset($user) ? $user->phone : '') }}"  {{ isset($user->phone) ? 'readonly' : '' }}>
+            value="{{ old('phone', isset($user) ? $user->phone : '') }}" {{ isset($user->phone) ? 'readonly' : '' }}>
         @error('phone') <span class="text-danger small">{{ $message }}</span> @enderror
     </div>
 
     <div class="mb-4 col-lg-6">
-        <label for="roles" class="form-label">Assign Roles</label>
+        <label for="roles" class="form-label">Assign Roles <span class="text-danger">*</span></label>
         <select name="roles[]" id="roles" class="form-select select2" multiple>
             @foreach($roles as $role)
                 <option value="{{ $role->name }}" {{ isset($user) && $user->hasRole($role->name) ? 'selected' : '' }}>
@@ -39,13 +39,13 @@
     </div>
 
     <div class="mb-4 col-lg-6">
-        <label for="designation" class="form-label">Designation</label>
+        <label for="designation" class="form-label">Designation <span class="text-danger">*</span></label>
         <input type="text" name="designation" placeholder="Designation" class="form-control" id="designation"
             value="{{ old('designation', isset($user) ? $user->designation : '') }}">
         @error('designation') <span class="text-danger small">{{ $message }}</span> @enderror
     </div>
     <div class="mb-4 col-lg-6">
-        <label for="joining_date" class="form-label">Joining Date</label>
+        <label for="joining_date" class="form-label">Joining Date <span class="text-danger">*</span></label>
         <input type="text" placeholder="Select joining date" name="joining_date" class="form-control datepicker"
             id="joining_date" value="{{ old('joining_date', isset($user) ? $user->joining_date : '') }}"
             autocomplete="off">

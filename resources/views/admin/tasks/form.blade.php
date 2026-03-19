@@ -1,13 +1,13 @@
 {{-- common form fields for create/edit task --}}
 
 @php
-$title = old('title', isset($task) ? $task->title : '');
-$description = old('description', isset($task) ? $task->description : '');
+    $title = old('title', isset($task) ? $task->title : '');
+    $description = old('description', isset($task) ? $task->description : '');
 @endphp
 
 <div class="row g-4 page-form-grid">
     <div class="mb-4 col-lg-6">
-        <label for="title" class="form-label">Title</label>
+        <label for="title" class="form-label">Title <span class="text-danger">*</span></label>
         <input type="text" name="title" placeholder="Title" class="form-control" id="title"
             value="{{ old('title', isset($task) ? $task->title : '') }}">
         @error('title') <span class="text-danger small">{{ $message }}</span> @enderror

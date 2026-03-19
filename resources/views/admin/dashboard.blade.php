@@ -29,23 +29,7 @@
             </div>
         </div>
 
-        {{-- Total Managers --}}
-        <div class="col-lg-3 col-md-6">
-            <div class="card card-body mb-4">
-                <article class="icontext">
-                    <span class="icon icon-sm rounded-circle bg-primary-light">
-                        <i class="text-primary material-icons md-groups"></i>
-                    </span>
-                    <div class="text">
-                        <h6 class="mb-1 card-title">Total Managers</h6>
-                        <span>{{ $managersCount }}</span>
-                    </div>
-                </article>
-            </div>
-        </div>
-
-
-        {{-- Active Managers --}}
+        {{-- Active Users --}}
         <div class="col-lg-3 col-md-6">
             <div class="card card-body mb-4">
                 <article class="icontext">
@@ -53,14 +37,14 @@
                         <i class="text-success material-icons md-person"></i>
                     </span>
                     <div class="text">
-                        <h6 class="mb-1 card-title">Active managers</h6>
-                        <span>{{ $activeManagersCount }}</span>
+                        <h6 class="mb-1 card-title">Active Users</h6>
+                        <span>{{ $activeUsersCount }}</span>
                     </div>
                 </article>
             </div>
         </div>
 
-        {{-- Inactive Managers --}}
+        {{-- Inactive Users --}}
         <div class="col-lg-3 col-md-6">
             <div class="card card-body mb-4">
                 <article class="icontext">
@@ -68,53 +52,8 @@
                         <i class="text-danger material-icons md-person"></i>
                     </span>
                     <div class="text">
-                        <h6 class="mb-1 card-title">Inactive managers</h6>
-                        <span>{{ $inactiveManagersCount }}</span>
-                    </div>
-                </article>
-            </div>
-        </div>
-
-        {{-- Total Staff --}}
-        <div class="col-lg-3 col-md-6">
-            <div class="card card-body mb-4">
-                <article class="icontext">
-                    <span class="icon icon-sm rounded-circle bg-primary-light">
-                        <i class="text-primary material-icons md-groups"></i>
-                    </span>
-                    <div class="text">
-                        <h6 class="mb-1 card-title">Total Staff</h6>
-                        <span>{{ $staffsCount }}</span>
-                    </div>
-                </article>
-            </div>
-        </div>
-
-        {{-- Active Staff --}}
-        <div class="col-lg-3 col-md-6">
-            <div class="card card-body mb-4">
-                <article class="icontext">
-                    <span class="icon icon-sm rounded-circle bg-success-light">
-                        <i class="text-success material-icons md-person"></i>
-                    </span>
-                    <div class="text">
-                        <h6 class="mb-1 card-title">Active Staff</h6>
-                        <span>{{ $activeStaffsCount }}</span>
-                    </div>
-                </article>
-            </div>
-        </div>
-
-        {{-- Inactive Staff --}}
-        <div class="col-lg-3 col-md-6">
-            <div class="card card-body mb-4">
-                <article class="icontext">
-                    <span class="icon icon-sm rounded-circle bg-danger-light">
-                        <i class="text-danger material-icons md-person"></i>
-                    </span>
-                    <div class="text">
-                        <h6 class="mb-1 card-title">Inactive Staff</h6>
-                        <span>{{ $inactiveStaffsCount }}</span>
+                        <h6 class="mb-1 card-title">Inactive Users</h6>
+                        <span>{{ $inactiveUsersCount }}</span>
                     </div>
                 </article>
             </div>
@@ -223,19 +162,6 @@
                         <li class="list-group-item d-flex justify-content-between">
                             <span>Total Users</span>
                             <strong>{{ $totalUsersCount }}</strong>
-                        </li>
-
-                        <li class="list-group-item d-flex justify-content-between">
-                            <span>Total Staff</span>
-                            <strong>{{ $staffsCount }}</strong>
-                        </li>
-                        <li class="list-group-item d-flex justify-content-between">
-                            <span>Active Staff</span>
-                            <strong>{{ $activeStaffsCount }}</strong>
-                        </li>
-                        <li class="list-group-item d-flex justify-content-between">
-                            <span>Inactive Staff</span>
-                            <strong>{{ $inactiveStaffsCount }}</strong>
                         </li>
                         <li class="list-group-item d-flex justify-content-between">
                             <span>Total Shifts</span>

@@ -16,17 +16,19 @@ class DashboardController extends Controller
     public function index()
     {
         // total users
-        $totalUsersCount = User::count();
+        $totalUsersCount = User::role(['staff', 'manager'])->count();
+        $activeUsersCount = User::role(['staff', 'manager'])->where('status', 1)->count();
+        $inactiveUsersCount = User::role(['staff', 'manager'])->where('status', 0)->count();
 
         // manager counts
-        $managersCount = User::role('manager')->count();
-        $activeManagersCount = User::role('manager')->where('status', 1)->count();
-        $inactiveManagersCount = User::role('manager')->where('status', 0)->count();
+        // $managersCount = User::role('manager')->count();
+        // $activeManagersCount = User::role('manager')->where('status', 1)->count();
+        // $inactiveManagersCount = User::role('manager')->where('status', 0)->count();
 
         // Staff counts
-        $staffsCount = User::role('staff')->count();
-        $activeStaffsCount = User::role('staff')->where('status', 1)->count();
-        $inactiveStaffsCount = User::role('staff')->where('status', 0)->count();
+        // $staffsCount = User::role('staff')->count();
+        // $activeStaffsCount = User::role('staff')->where('status', 1)->count();
+        // $inactiveStaffsCount = User::role('staff')->where('status', 0)->count();
 
         // Shifts
         $totalShifts = Shift::count();
@@ -51,12 +53,14 @@ class DashboardController extends Controller
 
         return view('admin.dashboard', compact(
             'totalUsersCount',
-            'managersCount',
-            'activeManagersCount',
-            'inactiveManagersCount',
-            'staffsCount',
-            'activeStaffsCount',
-            'inactiveStaffsCount',
+            'activeUsersCount',
+            'inactiveUsersCount',
+            // 'managersCount',
+            // 'activeManagersCount',
+            // 'inactiveManagersCount',
+            // 'staffsCount',
+            // 'activeStaffsCount',
+            // 'inactiveStaffsCount',
             'totalShifts',
             'presentToday',
             'absentToday',

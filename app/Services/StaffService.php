@@ -29,6 +29,20 @@ class StaffService
 
         return DataTables::of($data)
             ->addIndexColumn()
+            ->filter(function ($query) use ($request) {
+                $search = $request->get('search');
+                $keyword = trim((string) ($search['value'] ?? ''));
+
+                if ($keyword !== '') {
+                    $query->where(function ($q) use ($keyword) {
+                        $q->where('first_name', 'like', '%' . $keyword . '%')
+                            ->orWhere('last_name', 'like', '%' . $keyword . '%')
+                            ->orWhere('email', 'like', '%' . $keyword . '%')
+                            ->orWhere('phone', 'like', '%' . $keyword . '%')
+                            ->orWhere('designation', 'like', '%' . $keyword . '%');
+                    });
+                }
+            })
             ->addColumn('name', function ($row) {
                 $avatarUrl = $row->avatar_url ?? asset('backend/imgs/people/avatar-1.png');
 
@@ -115,6 +129,8 @@ class StaffService
     public function updateStaff(User $staff, array $validated, bool $statusFlag = true): User
     {
         $data = $validated;
+        unset($data['email']);
+        unset($data['phone']);
         $data['status'] = $statusFlag;
 
         $staff->update($data);

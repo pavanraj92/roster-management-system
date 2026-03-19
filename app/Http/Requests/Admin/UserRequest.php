@@ -23,11 +23,9 @@ class UserRequest extends FormRequest
     {
         $userId = $this->route('user') ? (is_object($this->route('user')) ? $this->route('user')->id : $this->route('user')) : null;
 
-        return [
+        $rules = [
             'first_name' => 'required|string|max:255',
             'last_name' => 'nullable|string|max:255',
-            'email' => 'required|email|unique:users,email,' . $userId,
-            'phone' => 'required|digits_between:7,15',
             'designation' => 'required|string|max:255',
             'joining_date' => 'required|date',
             'avatar' => 'nullable|image|max:2048',
@@ -35,5 +33,12 @@ class UserRequest extends FormRequest
             'roles' => 'required|array|min:1',
             'roles.*' => 'exists:roles,name',
         ];
+
+        if (!$userId) {
+            $rules['email'] = 'required|email|unique:users,email';
+            $rules['phone'] = 'required|digits_between:7,15';
+        }
+
+        return $rules;
     }
 }
