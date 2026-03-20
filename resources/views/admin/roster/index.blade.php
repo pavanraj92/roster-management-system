@@ -1,5 +1,133 @@
 @extends('admin.layouts.app')
 @section('title', 'Roster Management')
+
+@push('styles')
+    <style>
+        #shiftDetailModal .modal-content {
+            border-radius: 14px;
+            border: 1px solid #e9eef5;
+            box-shadow: 0 12px 30px rgba(24, 39, 75, 0.12);
+        }
+
+        .roster-detail-card {
+            background: linear-gradient(180deg, #ffffff 0%, #f9fbfd 100%);
+            border: 1px solid #e7edf5;
+            border-radius: 12px;
+            padding: 14px;
+        }
+
+        .roster-card-title {
+            font-size: 14px;
+            font-weight: 700;
+            color: #334155;
+            margin-bottom: 10px;
+        }
+
+        .roster-detail-row {
+            display: grid;
+            grid-template-columns: 92px 1fr;
+            gap: 8px;
+            margin-bottom: 8px;
+        }
+
+        .roster-detail-label {
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 0.2px;
+            color: #64748b;
+            text-transform: uppercase;
+        }
+
+        .roster-detail-value {
+            font-size: 14px;
+            color: #1f2937;
+            font-weight: 600;
+        }
+
+        .roster-detail-description {
+            font-size: 13px;
+            line-height: 1.45;
+        }
+
+        .roster-progress-counts {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .roster-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 5px 10px;
+            border-radius: 999px;
+            font-size: 12px;
+            border: 1px solid transparent;
+            font-weight: 600;
+        }
+
+        .roster-pill--pending {
+            background: #fff9eb;
+            border-color: #fde7b0;
+            color: #8a5a00;
+        }
+
+        .roster-pill--running {
+            background: #eaf4ff;
+            border-color: #cfe3ff;
+            color: #0d4ea6;
+        }
+
+        .roster-pill--complete {
+            background: #ecfdf3;
+            border-color: #bfeecf;
+            color: #166534;
+        }
+
+        .roster-progress-item {
+            border: 1px solid #e6edf4;
+            border-radius: 10px;
+            background: #fff;
+            padding: 8px 10px;
+            margin-bottom: 8px;
+        }
+
+        .roster-progress-item__title {
+            font-size: 13px;
+            font-weight: 700;
+            color: #334155;
+        }
+
+        .roster-progress-item__meta {
+            font-size: 12px;
+            color: #64748b;
+            margin-top: 4px;
+        }
+
+        .roster-status-chip {
+            font-size: 11px;
+            font-weight: 700;
+            padding: 2px 8px;
+            border-radius: 999px;
+            text-transform: capitalize;
+        }
+
+        .roster-status-chip--pending {
+            background: #fff9eb;
+            color: #8a5a00;
+        }
+
+        .roster-status-chip--running {
+            background: #eaf4ff;
+            color: #0d4ea6;
+        }
+
+        .roster-status-chip--complete {
+            background: #ecfdf3;
+            color: #166534;
+        }
+    </style>
+@endpush
 @section('content')
     <section class="content-main roster-page">
 
@@ -8,11 +136,11 @@
                 <div class="float-start">
                     <h2 class="content-title card-title mb-0">Roster Management</h2>
                     <p class="listing-page-subtitle mb-3">
-                        Manage task
+                        Manage task assignments, shift schedules, and attendance for your team. View and edit roster details, track task progress, and ensure smooth operations all in one place.
                     </p>
                 </div>
                 <!-- Right Side: Breadcrumb -->
-                <x-admin.breadcrumb :list="[['label' => 'Roles Management']]" class="float-end" />
+                <x-admin.breadcrumb :list="[['label' => 'Roster Management']]" class="float-end" />
             </div>
         </div>
 
@@ -92,15 +220,17 @@
                         <div id="task-log-status-section" class="roster-detail-card d-none mb-3">
                             <h6 class="roster-card-title">Task Progress</h6>
                             <div class="roster-progress-counts mb-3">
-                                <span class="roster-pill roster-pill--pending">Pending: <strong id="task-log-count-pending">0</strong></span>
-                                <span class="roster-pill roster-pill--running">Running: <strong id="task-log-count-running">0</strong></span>
-                                <span class="roster-pill roster-pill--complete">Complete: <strong id="task-log-count-complete">0</strong></span>
+                                <span class="roster-pill roster-pill--pending">Pending: <strong
+                                        id="task-log-count-pending">0</strong></span>
+                                <span class="roster-pill roster-pill--running">Running: <strong
+                                        id="task-log-count-running">0</strong></span>
+                                <span class="roster-pill roster-pill--complete">Complete: <strong
+                                        id="task-log-count-complete">0</strong></span>
                             </div>
                             <div id="task-log-status-list" class="small text-muted roster-progress-list">No task progress yet.</div>
                         </div>
 
                         {{-- Task Log Update — shown via JS only for running shifts (non-admin, today) --}}
-
                         @can('task_progress_update')
                             <div id="task-log-update-section" class="roster-detail-card d-none">
                                 <h6 class="roster-card-title">Update Task Status</h6>
@@ -165,6 +295,11 @@
                             Save changes
                         </button>
                     @endcan
+                    @can('delete_assigned_roster')
+                        <button type="button" class="btn btn-danger me-2 d-none " style="border-radius: 999px" id="shift-detail-delete-btn">
+                            Delete
+                        </button>
+                    @endcan
                     <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
                         Close
                     </button>
@@ -216,133 +351,7 @@
         </div>
     </div>
 
-    @push('styles')
-        <style>
-            #shiftDetailModal .modal-content {
-                border-radius: 14px;
-                border: 1px solid #e9eef5;
-                box-shadow: 0 12px 30px rgba(24, 39, 75, 0.12);
-            }
 
-            .roster-detail-card {
-                background: linear-gradient(180deg, #ffffff 0%, #f9fbfd 100%);
-                border: 1px solid #e7edf5;
-                border-radius: 12px;
-                padding: 14px;
-            }
-
-            .roster-card-title {
-                font-size: 14px;
-                font-weight: 700;
-                color: #334155;
-                margin-bottom: 10px;
-            }
-
-            .roster-detail-row {
-                display: grid;
-                grid-template-columns: 92px 1fr;
-                gap: 8px;
-                margin-bottom: 8px;
-            }
-
-            .roster-detail-label {
-                font-size: 12px;
-                font-weight: 700;
-                letter-spacing: 0.2px;
-                color: #64748b;
-                text-transform: uppercase;
-            }
-
-            .roster-detail-value {
-                font-size: 14px;
-                color: #1f2937;
-                font-weight: 600;
-            }
-
-            .roster-detail-description {
-                font-size: 13px;
-                line-height: 1.45;
-            }
-
-            .roster-progress-counts {
-                display: flex;
-                flex-wrap: wrap;
-                gap: 8px;
-            }
-
-            .roster-pill {
-                display: inline-flex;
-                align-items: center;
-                gap: 4px;
-                padding: 5px 10px;
-                border-radius: 999px;
-                font-size: 12px;
-                border: 1px solid transparent;
-                font-weight: 600;
-            }
-
-            .roster-pill--pending {
-                background: #fff9eb;
-                border-color: #fde7b0;
-                color: #8a5a00;
-            }
-
-            .roster-pill--running {
-                background: #eaf4ff;
-                border-color: #cfe3ff;
-                color: #0d4ea6;
-            }
-
-            .roster-pill--complete {
-                background: #ecfdf3;
-                border-color: #bfeecf;
-                color: #166534;
-            }
-
-            .roster-progress-item {
-                border: 1px solid #e6edf4;
-                border-radius: 10px;
-                background: #fff;
-                padding: 8px 10px;
-                margin-bottom: 8px;
-            }
-
-            .roster-progress-item__title {
-                font-size: 13px;
-                font-weight: 700;
-                color: #334155;
-            }
-
-            .roster-progress-item__meta {
-                font-size: 12px;
-                color: #64748b;
-                margin-top: 4px;
-            }
-
-            .roster-status-chip {
-                font-size: 11px;
-                font-weight: 700;
-                padding: 2px 8px;
-                border-radius: 999px;
-                text-transform: capitalize;
-            }
-
-            .roster-status-chip--pending {
-                background: #fff9eb;
-                color: #8a5a00;
-            }
-
-            .roster-status-chip--running {
-                background: #eaf4ff;
-                color: #0d4ea6;
-            }
-
-            .roster-status-chip--complete {
-                background: #ecfdf3;
-                color: #166534;
-            }
-        </style>
-    @endpush
 
     @push('scripts')
         <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment.min.js"></script>
@@ -355,6 +364,7 @@
                 rosterUrl: "{{ route('admin.roster') }}",
                 storeUrl: "{{ route('admin.roster.store') }}",
                 updateUrlTemplate: "{{ route('admin.roster.update', ['roster' => 'ROSTER_ID_PLACEHOLDER']) }}",
+                deleteUrlTemplate: "{{ route('admin.roster.delete', ['roster' => 'ROSTER_ID_PLACEHOLDER']) }}",
                 clockInUrl: "{{ route('admin.roster.clock.in') }}",
                 clockOutUrl: "{{ route('admin.roster.clock.out') }}",
                 taskLogsUrlTemplate: "{{ route('admin.roster.task-logs', ['roster' => 'ROSTER_ID_PLACEHOLDER']) }}",

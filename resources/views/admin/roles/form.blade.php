@@ -20,6 +20,7 @@
     @endphp
 
     <div class="row">
+        {{-- @dd($permissionsByGroup) --}}
         @foreach($permissionsByGroup as $groupName => $groupPermissions)
             @php
                 $groupKey = \Illuminate\Support\Str::slug($groupName, '_');

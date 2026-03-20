@@ -420,14 +420,22 @@ class PermissionsSeeder extends Seeder
                 'created_at'   => $createDate,
                 'updated_at'   => $timestamp,
             ],
-             [
+            [
+                'name'         => 'delete_assigned_roster',
+                'display_name' => 'Delete Assigned Roster',
+                'guard_name'   => 'web',
+                'group_name'   => 'rosters',
+                'created_at'   => $createDate,
+                'updated_at'   => $timestamp,
+            ],
+            [
                 'name'         => 'task_progress_update',
                 'display_name' => 'Update Task Progress',
                 'guard_name'   => 'web',
                 'group_name'   => 'rosters',
                 'created_at'   => $createDate,
                 'updated_at'   => $timestamp,
-            ],            
+            ],
 
             // Performance Analytics
             [
@@ -437,16 +445,16 @@ class PermissionsSeeder extends Seeder
                 'group_name'   => 'performance',
                 'created_at'   => $createDate,
                 'updated_at'   => $timestamp,
-             ],
-             [
+            ],
+            [
                 'name'         => 'performance_view',
                 'display_name' => 'View Performance Analytics',
                 'guard_name'   => 'web',
                 'group_name'   => 'performance',
                 'created_at'   => $createDate,
                 'updated_at'   => $timestamp,
-             ],
-             
+            ],
+
             // Attendance
             [
                 'name'         => 'attendance_access',
@@ -500,8 +508,8 @@ class PermissionsSeeder extends Seeder
 
         Permission::upsert(
             $permissions,
-            ['name', 'guard_name'],                      // unique columns
-            ['display_name', 'group_name', 'updated_at'] // columns to update
+            ['name', 'guard_name'],                     // unique columns
+            ['display_name', 'group_name', 'updated_at']// columns to update
         );
     }
 }

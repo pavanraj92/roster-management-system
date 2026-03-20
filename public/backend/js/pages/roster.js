@@ -28,6 +28,7 @@
         shiftDetailLabel: '#shiftDetailModalLabel',
         editBtn: '#shift-detail-edit-btn',
         saveEditBtn: '#save-shift-edit-btn',
+        deleteBtn: '#shift-detail-delete-btn',
         editRosterId: '#edit-roster-id',
         editUser: '#edit-user',
         editDate: '#edit-date',
@@ -131,7 +132,16 @@
                     return id.trim();
                 })
                 .filter(Boolean);
-            const isTodayShift = window.moment(date).isSame(window.moment(), 'day');
+            const now = window.moment();
+            const shiftDate = window.moment(date);
+            const isTodayShift = shiftDate.isSame(now, 'day');
+            const isFutureShift = shiftDate.isAfter(now, 'day');
+            const shiftStartDateTime = window.moment(
+                date + ' ' + shiftStart,
+                ['YYYY-MM-DD HH:mm', 'YYYY-MM-DD HH:mm:ss', 'YYYY-MM-DD h:mm A', 'YYYY-MM-DD h:mm:ss A'],
+                true
+            );
+            const canDeleteTodayUpcomingShift = isTodayShift && shiftStartDateTime.isValid() && now.isBefore(shiftStartDateTime);
 
             $(selectors.detailShiftName).text(shiftName);
             $(selectors.detailShiftTime).text(shiftStart + ' - ' + shiftEnd);
@@ -143,6 +153,7 @@
             $(selectors.shiftDetailLabel).text('Shift & Task Details');
             $(selectors.editBtn).removeClass('d-none');
             $(selectors.saveEditBtn).addClass('d-none');
+            $(selectors.deleteBtn).addClass('d-none');
 
             $(selectors.editRosterId).val(rosterId);
             $(selectors.editUser).val(userId);
@@ -170,7 +181,15 @@
             }
 
             // Everyone can view task progress details in modal
-            loadTaskLogs(rosterId);
+            const canDeleteByDateAndAttendance = (isFutureShift || canDeleteTodayUpcomingShift) && !hasClockIn && !hasClockOut;
+            loadTaskLogs(rosterId, function(meta) {
+                const hasOnlyPendingTasks = !meta.hasRunningOrComplete;
+                if (canDeleteByDateAndAttendance && hasOnlyPendingTasks) {
+                    $(selectors.deleteBtn).removeClass('d-none');
+                } else {
+                    $(selectors.deleteBtn).addClass('d-none');
+                }
+            });
 
             $(selectors.shiftDetailModal).modal('show');
         });
@@ -242,6 +261,48 @@
                     $(selectors.shiftDetailModal).modal('hide');
                     loadRoster(currentStart, currentEnd);
                 }
+            });
+        });
+
+        $(selectors.deleteBtn).on('click', function() {
+            const rosterId = $(selectors.editRosterId).val();
+            if (!rosterId || !cfg.deleteUrlTemplate) {
+                window.Swal.fire('Delete route is not configured.');
+                return;
+            }
+
+            const deleteUrl = cfg.deleteUrlTemplate.replace('ROSTER_ID_PLACEHOLDER', rosterId);
+
+            window.Swal.fire({
+                title: 'Delete this shift?',
+                text: 'This action cannot be undone.',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Yes, Delete',
+                cancelButtonText: 'Cancel'
+            }).then(function(result) {
+                if (!result.isConfirmed) {
+                    return;
+                }
+
+                $.ajax({
+                    url: deleteUrl,
+                    type: 'POST',
+                    data: {
+                        _token: cfg.csrfToken
+                    },
+                    success: function(res) {
+                        if (res.status) {
+                            $(selectors.shiftDetailModal).modal('hide');
+                            loadRoster(currentStart);
+                        } else {
+                            window.Swal.fire(res.message || 'Delete failed.');
+                        }
+                    },
+                    error: function() {
+                        window.Swal.fire('Could not delete this shift.');
+                    }
+                });
             });
         });
 
@@ -370,7 +431,7 @@
         $(selectors.assignModal).modal('show');
     };
 
-    function loadTaskLogs(rosterId) {
+    function loadTaskLogs(rosterId, onLoaded) {
         var url = cfg.taskLogsUrlTemplate.replace('ROSTER_ID_PLACEHOLDER', rosterId);
         var $select = $(selectors.taskLogTaskSelect);
 
@@ -385,6 +446,7 @@
                 var pendingCount = 0;
                 var runningCount = 0;
                 var completeCount = 0;
+                var hasRunningOrComplete = false;
 
                 $select.empty().append('<option value="">Select a task</option>');
 
@@ -396,8 +458,10 @@
                             pendingCount += 1;
                         } else if (log.status === 'running') {
                             runningCount += 1;
+                            hasRunningOrComplete = true;
                         } else if (log.status === 'complete') {
                             completeCount += 1;
+                            hasRunningOrComplete = true;
                         }
 
                         if (log.status === 'pending' || log.status === 'running') {
@@ -440,6 +504,12 @@
                 $(selectors.taskLogCountRunning).text(String(runningCount));
                 $(selectors.taskLogCountComplete).text(String(completeCount));
                 $select.prop('disabled', false);
+
+                if (typeof onLoaded === 'function') {
+                    onLoaded({
+                        hasRunningOrComplete: hasRunningOrComplete
+                    });
+                }
             },
             error: function() {
                 $(selectors.taskLogStatusList).html('Failed to load task progress.');
@@ -447,6 +517,12 @@
                 $(selectors.taskLogCountRunning).text('0');
                 $(selectors.taskLogCountComplete).text('0');
                 $select.html('<option value="">Failed to load tasks</option>').prop('disabled', false);
+
+                if (typeof onLoaded === 'function') {
+                    onLoaded({
+                        hasRunningOrComplete: true
+                    });
+                }
             }
         });
     }

@@ -129,4 +129,13 @@ class RosterController extends Controller
             'message' => 'Task status updated successfully.',
         ]);
     }
+
+    public function deleteRoster(Request $request, Roster $roster) {
+        $roster->delete();
+
+        return response()->json([
+            'status'  => true,
+            'message' => 'Roster deleted successfully.',
+        ]);
+    }
 }

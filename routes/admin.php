@@ -118,6 +118,7 @@ Route::name('admin.')->group(function () {
         Route::get('roster', [RosterController::class, 'index'])->name('roster');
         Route::post('/roster/store', [RosterController::class, 'store'])->name('roster.store');
         Route::put('roster/{roster}', [RosterController::class, 'update'])->name('roster.update');
+        Route::post('/roster/delete/{roster}', [RosterController::class, 'deleteRoster'])->name('roster.delete');
 
         // Shift routes
         Route::get('roster/checkShiftClockIn',[RosterController::class, 'checkShiftClockIn'])->name('roster.shift.clock.in');
