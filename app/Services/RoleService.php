@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Models\Permission;
 use App\Models\Role;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\Facades\DataTables;
 
 class RoleService
@@ -14,40 +15,40 @@ class RoleService
      */
     public function getRoleDataTable(Request $request)
     {
-        $data = Role::where('guard_name', 'web')->latest();
+        $query = Role::query()
+            ->select(['id', 'name', 'guard_name', 'created_at'])
+            ->where('guard_name', 'web')
+            ->withCount('permissions')
+            ->orderBy('id', 'desc');
 
-        return DataTables::of($data)
+        return DataTables::of($query)
             ->addIndexColumn()
-            ->filter(function ($query) use ($request) {
+            ->filter(function ($q) use ($request) {
                 $search = $request->get('search');
                 $keyword = trim((string) ($search['value'] ?? ''));
                 if ($keyword !== '') {
-                    $query->where('name', 'like', '%' . $keyword . '%');
+                    $q->where('name', 'like', "%{$keyword}%");
                 }
             })
-            ->addColumn('name', function ($row) {
-                return ucfirst($row->name);
-            })
-            ->addColumn('permissions_count', function ($row) {
-                return $row->permissions()->count();
-            })
-            ->addColumn('action', function ($row) {
+            ->addColumn('name', fn(Role $role) => ucfirst($role->name))
+            ->addColumn('permissions_count', fn(Role $role) => $role->permissions_count)
+            ->addColumn('action', function (Role $role) {
                 $btn = '<div class="text-end">
-                                <a href="' . route('admin.roles.show', $row->id) . '" class="me-2" title="View">
-                                    <i class="material-icons md-remove_red_eye" style="color: #28a745;"> </i>
-                                </a>
-                                <a href="' . route('admin.roles.edit', $row->id) . '" class="me-2" title="Edit">
-                                    <i class="material-icons md-edit" style="color: #ffc107;"> </i>
-                                </a>';
+                            <a href="' . route('admin.roles.show', $role->id) . '" class="me-2" title="View">
+                                <i class="material-icons md-remove_red_eye text-success"></i>
+                            </a>
+                            <a href="' . route('admin.roles.edit', $role->id) . '" class="me-2" title="Edit">
+                                <i class="material-icons md-edit text-warning"></i>
+                            </a>';
 
-                if ($row->name !== 'super-admin') {
-                    $btn .= '<form action="' . route('admin.roles.destroy', $row->id) . '" method="POST" class="d-inline delete-form" data-module="Role">
-                                    ' . csrf_field() . '
-                                    ' . method_field('DELETE') . '
-                                    <button type="submit" class="border-0 bg-transparent p-0" title="Delete">
-                                        <i class="material-icons md-delete_forever" style="color: #dc3545;"> </i>
-                                    </button>
-                                </form>';
+                if ($role->name !== 'super-admin' && $role->name !== 'admin') {
+                    $btn .= '<form action="' . route('admin.roles.destroy', $role->id) . '" method="POST" class="d-inline delete-form" data-module="Role">
+                                ' . csrf_field() . '
+                                ' . method_field('DELETE') . '
+                                <button type="submit" class="border-0 bg-transparent p-0" title="Delete">
+                                    <i class="material-icons md-delete_forever text-danger"></i>
+                                </button>
+                            </form>';
                 }
 
                 $btn .= '</div>';
@@ -62,7 +63,12 @@ class RoleService
      */
     public function getAllPermissions()
     {
-        return Permission::where('guard_name', 'web')->get();
+        return Permission::query()
+            ->where('guard_name', 'web')
+            ->orderBy('group_name')
+            ->orderBy('display_name')
+            ->orderBy('name')
+            ->get();
     }
 
     /**
@@ -70,17 +76,16 @@ class RoleService
      */
     public function createRole(array $validated, ?array $permissionIds = null): Role
     {
-        $role = Role::create([
-            'name' => $validated['name'],
-            'guard_name' => 'web',
-        ]);
+        return DB::transaction(function () use ($validated, $permissionIds) {
+            $role = Role::create([
+                'name' => $validated['name'],
+                'guard_name' => 'web',
+            ]);
 
-        if (!empty($permissionIds)) {
-            $perms = Permission::whereIn('id', $permissionIds)->get();
-            $role->syncPermissions($perms);
-        }
+            $role->syncPermissions($this->resolvePermissions($permissionIds));
 
-        return $role;
+            return $role;
+        });
     }
 
     /**
@@ -88,18 +93,15 @@ class RoleService
      */
     public function updateRole(Role $role, array $validated, ?array $permissionIds = null): Role
     {
-        $role->update([
-            'name' => $validated['name'],
-        ]);
+        return DB::transaction(function () use ($role, $validated, $permissionIds) {
+            $role->update([
+                'name' => $validated['name'],
+            ]);
 
-        if (!is_null($permissionIds)) {
-            $perms = Permission::whereIn('id', $permissionIds)->get();
-            $role->syncPermissions($perms);
-        } else {
-            $role->syncPermissions([]);
-        }
+            $role->syncPermissions($this->resolvePermissions($permissionIds));
 
-        return $role;
+            return $role;
+        });
     }
 
     /**
@@ -107,13 +109,17 @@ class RoleService
      */
     public function deleteRole(Role $role): bool
     {
-        if ($role->name === 'super-admin') {
+        // Protected roles
+        if (in_array($role->name, ['super-admin', 'admin'])) {
             return false;
         }
 
-        $role->delete();
+        // Check if role is assigned to any user
+        if (DB::table('model_has_roles')->where('role_id', $role->id)->exists()) {
+            return false;
+        }
 
-        return true;
+        return $role->delete();
     }
 
     /**
@@ -121,7 +127,21 @@ class RoleService
      */
     public function syncPermissions(Role $role, ?array $permissionIds = null): void
     {
-        $role->syncPermissions($permissionIds ?? []);
+        $role->syncPermissions($this->resolvePermissions($permissionIds));
+    }
+
+    /**
+     * Resolve actual models from ID array to safely sync with Spatie.
+     */
+    private function resolvePermissions(?array $ids)
+    {
+        if (empty($ids)) {
+            return collect();
+        }
+
+        return Permission::query()
+            ->webGuard()
+            ->whereIn('id', $ids)
+            ->get();
     }
 }
-

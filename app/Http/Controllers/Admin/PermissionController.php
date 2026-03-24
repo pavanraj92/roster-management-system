@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Permission\PermissionRequest;
 use App\Models\Permission;
 use App\Services\PermissionService;
 use Illuminate\Http\Request;
@@ -19,11 +20,9 @@ class PermissionController extends Controller
      */
     public function index(Request $request)
     {
-        if ($request->ajax()) {
-            return $this->permissionService->getPermissionDataTable($request);
-        }
-
-        return view('admin.permissions.index');
+        return $request->ajax()
+            ? $this->permissionService->getPermissionDataTable($request)
+            : view('admin.permissions.index');
     }
 
     /**
@@ -61,15 +60,12 @@ class PermissionController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Permission $permission)
+    public function update(PermissionRequest $request, Permission $permission)
     {
-        $validated = $request->validate([
-            'display_name' => 'required|string|max:255',
-        ]);
+        $this->permissionService->updatePermission($permission, $request->validated());
 
-        $this->permissionService->updatePermission($permission, $validated);
-
-        return redirect()->route('admin.permissions.index')->with('success', 'Permission updated successfully.');
+        return redirect()->route('admin.permissions.index')
+            ->with('success', 'Permission updated successfully.');
     }
 
     /**
@@ -77,7 +73,14 @@ class PermissionController extends Controller
      */
     public function destroy(Permission $permission)
     {
-        $this->permissionService->deletePermission($permission);
-        return redirect()->route('admin.permissions.index')->with('success', 'Permission deleted successfully.');
+        try {
+            $this->permissionService->deletePermission($permission);
+
+            return redirect()->route('admin.permissions.index')
+                ->with('success', 'Permission deleted successfully.');
+        } catch (\RuntimeException $e) {
+            return redirect()->route('admin.permissions.index')
+                ->with('error', $e->getMessage());
+        }
     }
 }

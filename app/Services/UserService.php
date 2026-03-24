@@ -2,10 +2,11 @@
 
 namespace App\Services;
 
-use App\Http\Requests\Admin\UserRequest;
 use App\Mail\UserCreatedMail;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
@@ -19,80 +20,79 @@ class UserService
      */
     public function getUserDataTable(Request $request)
     {
-        $data = User::query()
+        $query = User::query()
+            ->select([
+                'id',
+                'first_name',
+                'last_name',
+                'email',
+                'phone',
+                'designation',
+                'avatar',
+                'status',
+                'created_at',
+            ])
+            ->with('roles:id,name')
             ->where('id', '!=', auth()->id())
+            ->filterStatus($request->status)
             ->latest();
 
-        if ($request->status !== null && $request->status !== '') {
-            $data->where('status', (int) $request->status);
-        }
-
-        return DataTables::of($data)
+        return DataTables::of($query)
             ->addIndexColumn()
-            ->filter(function ($query) use ($request) {
+            ->filter(function ($q) use ($request) {
                 $search = $request->get('search');
                 $keyword = trim((string) ($search['value'] ?? ''));
 
                 if ($keyword !== '') {
-                    $query->where(function ($q) use ($keyword) {
-                        $q->where('first_name', 'like', '%' . $keyword . '%')
-                            ->orWhere('last_name', 'like', '%' . $keyword . '%')
-                            ->orWhere('email', 'like', '%' . $keyword . '%')
-                            ->orWhere('phone', 'like', '%' . $keyword . '%')
-                            ->orWhere('designation', 'like', '%' . $keyword . '%');
-                    });
+                    $q->search($keyword);
                 }
             })
-            ->orderColumn('name', function ($query, $order) {
-                $query->orderBy('first_name', $order)->orderBy('last_name', $order);
+            ->orderColumn('name', function ($q, $order) {
+                $q->orderBy('first_name', $order)->orderBy('last_name', $order);
             })
-            ->filterColumn('name', function ($query, $keyword) {
-                $query->where(function ($q) use ($keyword) {
-                    $q->where('first_name', 'like', '%' . $keyword . '%')
-                        ->orWhere('last_name', 'like', '%' . $keyword . '%')
-                        ->orWhereRaw("CONCAT(COALESCE(first_name, ''), ' ', COALESCE(last_name, '')) LIKE ?", ['%' . $keyword . '%']);
-                });
+            ->filterColumn('name', function ($q, $keyword) {
+                $q->search($keyword);
             })
-            ->addColumn('role', function ($row) {
-                return $row->roles->pluck('name')->implode(', ');
+            ->addColumn('role', function (User $user) {
+                return $user->roles->pluck('name')->implode(', ');
             })
-            ->addColumn('name', function ($row) {
-                $avatarUrl = $row->avatar_url ?? asset('backend/imgs/theme/avatar-1.png');
+            ->addColumn('name', function (User $user) {
                 return '
                     <div class="d-flex align-items-center user-cell">
                         <div class="user-avatar me-3">
-                            <img style="height: 50px !important; width: 50px !important;" src="' . $avatarUrl . '" alt="' . e($row->name) . '" class="rounded-circle">
+                            <a href="' . $user->avatar_url . '" class="image-popup">
+                                <img style="height: 50px !important; width: 50px !important;" src="' . $user->avatar_url . '" alt="' . e($user->name) . '" class="rounded-circle shadow-sm border">
+                            </a>
                         </div>
                         <div class="user-meta">
-                            <div class="user-name fw-semibold">' . e($row->name) . '</div>
-                            <div class="user-email text-muted small">' . e($row->email) . '</div>
-                            ' . ($row->designation ? '<div class="user-designation badge bg-light text-dark mt-1">' . e($row->designation) . '</div>' : '') . '
+                            <div class="user-name fw-semibold">' . e($user->name) . '</div>
+                            <div class="user-email text-muted small">' . e($user->email) . '</div>
+                            ' . ($user->designation ? '<div class="user-designation badge bg-light text-dark mt-1">' . e($user->designation) . '</div>' : '') . '
                         </div>
                     </div>
                 ';
             })
-            ->addColumn('status', function ($row) {
-                $checked = $row->status ? 'checked' : '';
-                return '<div class="form-check form-switch text-center">
+            ->addColumn('status', function (User $user) {
+                $checked = $user->status ? 'checked' : '';
+                return '
+                    <div class="form-check form-switch text-center">
                         <input class="form-check-input toggle-status"
                             type="checkbox"
-                            data-id="' . $row->id . '"
-                            data-url="' . route('admin.user.toggle-status', $row->id) . '"
+                            data-id="' . $user->id . '"
+                            data-url="' . route('admin.user.toggle-status', $user->id) . '"
                             ' . $checked . '>
                     </div>';
             })
-            ->addColumn('action', function ($row) {
+            ->addColumn('action', function (User $user) {
                 return '
                     <div class="text-end">
-                        <a href="' . route('admin.user.show', $row->id) . '" class="me-2" title="View">
+                        <a href="' . route('admin.user.show', $user->id) . '" class="me-2" title="View">
                             <i class="material-icons md-remove_red_eye text-success"></i>
                         </a>
-
-                        <a href="' . route('admin.user.edit', $row->id) . '" class="me-2" title="Edit">
+                        <a href="' . route('admin.user.edit', $user->id) . '" class="me-2" title="Edit">
                             <i class="material-icons md-edit text-warning"></i>
                         </a>
-
-                        <form action="' . route('admin.user.destroy', $row->id) . '"
+                        <form action="' . route('admin.user.destroy', $user->id) . '"
                               method="POST"
                               class="d-inline delete-form"
                               data-module="User">
@@ -115,21 +115,23 @@ class UserService
     public function createUser(array $validated, bool $statusFlag = true): User
     {
         $password = Str::random(10);
-
-        $data = $validated;
-
-        $roles = $data['roles'] ?? [];
-        unset($data['roles']);
-
+        [$data, $roles, $avatar] = $this->extractUserPayload($validated);
         $data['password'] = Hash::make($password);
         $data['status'] = $statusFlag;
 
-        $user = User::create($data);
+        $user = DB::transaction(function () use ($data, $roles, $avatar) {
+            $user = User::create($data);
 
-        // Assign roles (multi-role support)
-        if (!empty($roles)) {
-            $user->syncRoles($roles);
-        }
+            if (!empty($roles)) {
+                $user->syncRoles($roles);
+            }
+
+            if ($avatar instanceof UploadedFile) {
+                $user->uploadMedia($avatar, 'avatar');
+            }
+
+            return $user;
+        });
 
         try {
             Mail::to($user->email)->queue(new UserCreatedMail($user, $password));
@@ -148,21 +150,22 @@ class UserService
      */
     public function updateUser(User $user, array $validated, bool $statusFlag = true): User
     {
-        $data = $validated;
-
-        $roles = $data['roles'] ?? [];
-        unset($data['roles']);
-        unset($data['email']);
-        unset($data['phone']);
-
+        [$data, $roles, $avatar] = $this->extractUserPayload($validated);
         $data['status'] = $statusFlag;
 
-        $user->update($data);
+        // Disallow updating email and phone on edit
+        unset($data['email'], $data['phone']);
 
-        // Sync roles (removes old + adds new)
-        $user->syncRoles($roles);
+        return DB::transaction(function () use ($user, $data, $roles, $avatar) {
+            $user->update($data);
+            $user->syncRoles($roles);
 
-        return $user;
+            if ($avatar instanceof UploadedFile) {
+                $user->uploadMedia($avatar, 'avatar');
+            }
+
+            return $user;
+        });
     }
 
     /**
@@ -170,6 +173,7 @@ class UserService
      */
     public function deleteUser(User $user): void
     {
+        $user->clearMedia('avatar'); // Optional: Cleanup media on permanent delete
         $user->delete();
     }
 
@@ -184,5 +188,17 @@ class UserService
 
         return $user;
     }
-}
 
+    /**
+     * Helper to extract data, roles and avatar from payload.
+     */
+    private function extractUserPayload(array $validated): array
+    {
+        $roles = $validated['roles'] ?? [];
+        $avatar = $validated['avatar'] ?? null;
+
+        unset($validated['roles'], $validated['avatar']);
+
+        return [$validated, $roles, $avatar];
+    }
+}

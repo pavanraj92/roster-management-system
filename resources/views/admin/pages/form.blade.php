@@ -5,7 +5,7 @@
         {{-- Title --}}
         <div class="mb-4">
             <label class="form-label">Page Title <span class="text-danger">*</span></label>
-            <input type="text" name="title" class="form-control" placeholder="Enter page title"
+            <input type="text" name="title" class="form-control @error('title') is-invalid @enderror" placeholder="Enter page title"
                 value="{{ old('title', $page->title ?? '') }}">
             @error('title')
                 <span class="text-danger small">{{ $message }}</span>
@@ -15,7 +15,7 @@
         {{-- Subtitle --}}
         <div class="mb-4">
             <label class="form-label">Subtitle</label>
-            <input type="text" name="subtitle" class="form-control" placeholder="Enter subtitle"
+            <input type="text" name="subtitle" class="form-control @error('subtitle') is-invalid @enderror" placeholder="Enter subtitle"
                 value="{{ old('subtitle', $page->subtitle ?? '') }}">
             @error('subtitle')
                 <span class="text-danger small">{{ $message }}</span>
@@ -25,7 +25,7 @@
         {{-- Short Description --}}
         <div class="mb-4">
             <label class="form-label">Short Description</label>
-            <textarea name="short_description" rows="3" class="form-control"
+            <textarea name="short_description" rows="3" class="form-control @error('short_description') is-invalid @enderror"
                 placeholder="Enter short description">{{ old('short_description', $page->short_description ?? '') }}</textarea>
             @error('short_description')
                 <span class="text-danger small">{{ $message }}</span>
@@ -49,20 +49,20 @@
 
             <div class="mb-3">
                 <label class="form-label">Meta Title</label>
-                <input type="text" name="meta_title" class="form-control"
+                <input type="text" name="meta_title" class="form-control @error('meta_title') is-invalid @enderror"
                     value="{{ old('meta_title', $page->meta_title ?? '') }}">
             </div>
 
             <div class="mb-3">
                 <label class="form-label">Meta Keyword</label>
-                <input type="text" name="meta_keyword" class="form-control"
+                <input type="text" name="meta_keyword" class="form-control @error('meta_keyword') is-invalid @enderror"
                     value="{{ old('meta_keyword', $page->meta_keyword ?? '') }}">
             </div>
 
             <div class="mb-3">
                 <label class="form-label">Meta Description</label>
                 <textarea name="meta_description" rows="3"
-                    class="form-control">{{ old('meta_description', $page->meta_description ?? '') }}</textarea>
+                    class="form-control @error('meta_description') is-invalid @enderror">{{ old('meta_description', $page->meta_description ?? '') }}</textarea>
             </div>
         </div>
     </div>
@@ -71,7 +71,7 @@
         {{-- Full Description (CKEditor) --}}
         <div class="mb-4">
             <label class="form-label">Full Description <span class="text-danger">*</span></label>
-            <textarea name="description" id="description" rows="6" class="form-control"
+            <textarea name="description" id="description" rows="6" class="form-control @error('description') is-invalid @enderror"
                 placeholder="Enter full description">{{ old('description', $page->description ?? '') }}</textarea>
             @error('description')
                 <span class="text-danger small">{{ $message }}</span>

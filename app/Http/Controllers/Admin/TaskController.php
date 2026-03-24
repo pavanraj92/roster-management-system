@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Task;
+use App\Http\Requests\Task\TaskRequest;
 use App\Services\TaskService;
 use Illuminate\Http\Request;
 
@@ -37,25 +38,9 @@ class TaskController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(TaskRequest $request)
     {
-        $validated = $request->validate([
-            'title' => 'required|string|max:255',
-            'description' => [
-                'required',
-                'string',
-                function (string $attribute, mixed $value, \Closure $fail) {
-                    $plain = html_entity_decode(strip_tags((string) $value), ENT_QUOTES | ENT_HTML5);
-                    $plain = preg_replace('/[\s\x{00A0}]+/u', '', $plain ?? '');
-                    if ($plain === '') {
-                        $fail('The description field is required.');
-                    }
-                },
-            ],
-        ]);
-        
-
-        $this->taskService->createTask($validated, $request->user()->id);
+        $this->taskService->createTask($request->validated(), $request->user()->id);
 
         return redirect()->route('admin.tasks.index')->with('success', 'Task created successfully.');
     }
@@ -80,24 +65,9 @@ class TaskController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Task $task)
+    public function update(TaskRequest $request, Task $task)
     {
-        $validated = $request->validate([
-            'title' => 'required|string|max:255',
-            'description' => [
-                'required',
-                'string',
-                function (string $attribute, mixed $value, \Closure $fail) {
-                    $plain = html_entity_decode(strip_tags((string) $value), ENT_QUOTES | ENT_HTML5);
-                    $plain = preg_replace('/[\s\x{00A0}]+/u', '', $plain ?? '');
-                    if ($plain === '') {
-                        $fail('The description field is required.');
-                    }
-                },
-            ],
-        ]);
-
-        $this->taskService->updateTask($task, $validated);
+        $this->taskService->updateTask($task, $request->validated());
 
         return redirect()->route('admin.tasks.index')->with('success', 'Task updated successfully.');
     }
@@ -109,15 +79,15 @@ class TaskController extends Controller
     {
         $res = $this->taskService->deleteTask($task);
 
-        if( $request->ajax()) {
-            if($res){
+        if ($request->ajax()) {
+            if ($res) {
                 return response()->json(['success' => true, 'message' => 'Task deleted successfully.']);
             }
             return response()->json(['success' => false, 'message' => 'This task is already assigned']);
-        }else{
-             if($res){
-            return redirect()->route('admin.tasks.index')->with('success', 'Task deleted successfully.');
-             }
+        } else {
+            if ($res) {
+                return redirect()->route('admin.tasks.index')->with('success', 'Task deleted successfully.');
+            }
             return redirect()->route('admin.tasks.index')->with('error', 'This task is already assigned.');
         }
 

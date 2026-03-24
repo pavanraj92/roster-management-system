@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Admin\ShiftStoreRequest;
-use App\Http\Requests\Admin\ShiftUpdateRequest;
+use App\Http\Requests\Shift\ShiftStoreRequest;
+use App\Http\Requests\Shift\ShiftUpdateRequest;
 use App\Models\Shift;
 use App\Services\ShiftService;
 use Illuminate\Http\Request;

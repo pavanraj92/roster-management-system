@@ -29,19 +29,10 @@
                 <a href="#" class="requestfullscreen nav-link btn-icon"><i class="material-icons md-cast"></i></a>
             </li> -->
             <li class="dropdown nav-item">
-                    @php
-                        $avatarPath = Auth::user()->avatar ? storage_path('app/public/' . Auth::user()->avatar) : null;
-                        if ($avatarPath && file_exists($avatarPath)) {
-                            $avatarUrl = asset('storage/' . Auth::user()->avatar);
-                        } else {
-                            $avatarUrl = asset('backend/imgs/theme/avatar-1.png'); // default image
-                        }
-                    @endphp
                 <a class="dropdown-toggle" data-bs-toggle="dropdown" href="#" id="dropdownAccount"
                     aria-expanded="false">
-
-                    {{-- <img class="img-xs rounded-circle" src="{{ asset('backend/imgs/people/avatar-2.png') }}" alt="User" /> --}}
-                    <img class="img-xs rounded-circle" src="{{ $avatarUrl }}" alt="User" />
+                    <img class="img-xs rounded-circle shadow-sm border" src="{{ Auth::user()->avatar_url }}" alt="User Profile" 
+                        style="width: 40px; height: 40px; object-fit: cover; background: #fff;" />
                 </a>
 
                 <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownAccount">

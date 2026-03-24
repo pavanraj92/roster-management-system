@@ -1,8 +1,9 @@
 <?php
 
-namespace App\Http\Requests\Admin;
+namespace App\Http\Requests\User;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class UserRequest extends FormRequest
 {
@@ -21,7 +22,8 @@ class UserRequest extends FormRequest
      */
     public function rules(): array
     {
-        $userId = $this->route('user') ? (is_object($this->route('user')) ? $this->route('user')->id : $this->route('user')) : null;
+        $user = $this->route('user');
+        $isUpdate = $user !== null;
 
         $rules = [
             'first_name' => 'required|string|max:255',
@@ -31,12 +33,22 @@ class UserRequest extends FormRequest
             'avatar' => 'nullable|image|max:2048',
             'status' => 'nullable|boolean',
             'roles' => 'required|array|min:1',
-            'roles.*' => 'exists:roles,name',
+            'roles.*'    => [
+                Rule::exists('roles', 'name')
+                    ->where('guard_name', 'web')
+                    ->whereNotIn('name', ['admin', 'super-admin']),
+            ],
         ];
 
-        if (!$userId) {
-            $rules['email'] = 'required|email|unique:users,email';
-            $rules['phone'] = 'required|digits_between:7,15';
+        if (!$isUpdate) {
+            $rules['email'] = [
+                'required', 'email',
+                Rule::unique('users', 'email')->whereNull('deleted_at')
+            ];
+            $rules['phone'] = [
+                'required', 'digits_between:7,15',
+                Rule::unique('users', 'phone')->whereNull('deleted_at')
+            ];
         }
 
         return $rules;

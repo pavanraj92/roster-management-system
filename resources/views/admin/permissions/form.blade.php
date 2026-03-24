@@ -2,7 +2,7 @@
     <div class="mb-4 col-lg-6">
         <label class="form-label">Display Name <span class="text-danger">*</span></label>
         <input type="text" class="form-control @error('display_name') is-invalid @enderror" name="display_name"
-            value="{{ old('display_name', $permission->display_name) }}" placeholder="Enter display name" required>
+            value="{{ old('display_name', $permission->display_name) }}" placeholder="Enter display name">
         @error('display_name')
             <div class="invalid-feedback">{{ $message }}</div>
         @enderror

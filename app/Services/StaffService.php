@@ -6,6 +6,7 @@ use App\Http\Requests\Admin\StaffRequest;
 use App\Mail\StaffCreatedMail;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
@@ -21,11 +22,8 @@ class StaffService
     {
         $data = User::role('staff')
             ->where('id', '!=', auth()->id())
+            ->filterStatus($request->status)
             ->latest();
-
-        if ($request->status !== null && $request->status !== '') {
-            $data->where('status', (int) $request->status);
-        }
 
         return DataTables::of($data)
             ->addIndexColumn()
@@ -34,22 +32,16 @@ class StaffService
                 $keyword = trim((string) ($search['value'] ?? ''));
 
                 if ($keyword !== '') {
-                    $query->where(function ($q) use ($keyword) {
-                        $q->where('first_name', 'like', '%' . $keyword . '%')
-                            ->orWhere('last_name', 'like', '%' . $keyword . '%')
-                            ->orWhere('email', 'like', '%' . $keyword . '%')
-                            ->orWhere('phone', 'like', '%' . $keyword . '%')
-                            ->orWhere('designation', 'like', '%' . $keyword . '%');
-                    });
+                    $query->search($keyword);
                 }
             })
             ->addColumn('name', function ($row) {
-                $avatarUrl = $row->avatar_url ?? asset('backend/imgs/people/avatar-1.png');
-
                 return '
                     <div class="d-flex align-items-center staff-cell">
                         <div class="staff-avatar me-3">
-                            <img src="' . $avatarUrl . '" alt="' . e($row->name) . '" class="rounded-circle">
+                            <a href="' . $row->avatar_url . '" class="image-popup">
+                                <img style="height: 50px !important; width: 50px !important;" src="' . $row->avatar_url . '" alt="' . e($row->name) . '" class="rounded-circle shadow-sm border">
+                            </a>
                         </div>
                         <div class="staff-meta">
                             <div class="staff-name fw-semibold">' . e($row->name) . '</div>
@@ -103,13 +95,20 @@ class StaffService
     public function createStaff(array $validated, bool $statusFlag = true): User
     {
         $password = Str::random(10);
-
-        $data = $validated;
+        [$data, $avatar] = $this->extractStaffPayload($validated);
         $data['password'] = Hash::make($password);
         $data['status'] = $statusFlag;
 
-        $staff = User::create($data);
-        $staff->assignRole('staff');
+        $staff = DB::transaction(function () use ($data, $avatar) {
+            $staff = User::create($data);
+            $staff->assignRole('staff');
+
+            if ($avatar instanceof \Illuminate\Http\UploadedFile) {
+                $staff->uploadMedia($avatar, 'avatar');
+            }
+
+            return $staff;
+        });
 
         try {
             Mail::to($staff->email)->queue(new StaffCreatedMail($staff, $password));
@@ -128,14 +127,19 @@ class StaffService
      */
     public function updateStaff(User $staff, array $validated, bool $statusFlag = true): User
     {
-        $data = $validated;
-        unset($data['email']);
-        unset($data['phone']);
+        [$data, $avatar] = $this->extractStaffPayload($validated);
+        unset($data['email'], $data['phone']);
         $data['status'] = $statusFlag;
 
-        $staff->update($data);
+        return DB::transaction(function () use ($staff, $data, $avatar) {
+            $staff->update($data);
 
-        return $staff;
+            if ($avatar instanceof \Illuminate\Http\UploadedFile) {
+                $staff->uploadMedia($avatar, 'avatar');
+            }
+
+            return $staff;
+        });
     }
 
     /**
@@ -143,6 +147,7 @@ class StaffService
      */
     public function deleteStaff(User $staff): void
     {
+        $staff->clearMedia('avatar');
         $staff->delete();
     }
 
@@ -156,6 +161,13 @@ class StaffService
         $staff->save();
 
         return $staff;
+    }
+
+    private function extractStaffPayload(array $validated): array
+    {
+        $avatar = $validated['avatar'] ?? null;
+        unset($validated['avatar']);
+        return [$validated, $avatar];
     }
 }
 

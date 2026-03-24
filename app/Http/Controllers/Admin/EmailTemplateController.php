@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\EmailTemplate;
-use App\Http\Requests\Admin\EmailTemplateRequest;
+use App\Http\Requests\EmailTemplate\EmailTemplateRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Yajra\DataTables\Facades\DataTables;

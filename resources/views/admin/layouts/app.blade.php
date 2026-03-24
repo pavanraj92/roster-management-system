@@ -33,6 +33,8 @@
     <script src="https://cdn.lordicon.com/lusqsztk.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <!-- GLightbox CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/glightbox/dist/css/glightbox.min.css" />
     @stack('styles')
 </head>
 
@@ -85,6 +87,8 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="{{ asset('backend/js/custom.js') }}"></script>
     <script src="https://cdn.ckeditor.com/ckeditor5/41.4.2/classic/ckeditor.js"></script>
+    <!-- GLightbox JS -->
+    <script src="https://cdn.jsdelivr.net/npm/glightbox/dist/js/glightbox.min.js"></script>
     <script>
         window.adminCkEditorInstances = window.adminCkEditorInstances || {};
 
@@ -161,6 +165,17 @@
                     }, 10);
                 }
             });
+
+            // GLightbox for Image Popups
+            const initLightbox = () => {
+                const lightbox = GLightbox({
+                    selector: '.image-popup',
+                    touchNavigation: true,
+                    loop: false
+                });
+            };
+            initLightbox();
+            window.reinitLightbox = initLightbox;
         });
     </script>
     @stack('scripts')

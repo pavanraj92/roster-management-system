@@ -44,4 +44,14 @@ class Role extends SpatieRole
     {
         return $this->guard_name;
     }
+
+    /**
+     * Scope a query to only include assignable roles (excluding admin/super-admin).
+     */
+    public function scopeAssignable($query)
+    {
+        return $query->where('guard_name', 'web')
+            ->whereNotIn('name', ['admin', 'super-admin'])
+            ->orderBy('name');
+    }
 }

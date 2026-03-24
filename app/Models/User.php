@@ -9,11 +9,12 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Laravel\Sanctum\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
+use App\Traits\HasMedia;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasApiTokens, HasFactory, Notifiable, SoftDeletes, HasRoles;
+    use HasApiTokens, HasFactory, Notifiable, SoftDeletes, HasRoles, HasMedia;
 
     /**
      * The attributes that are mass assignable.
@@ -25,7 +26,6 @@ class User extends Authenticatable implements MustVerifyEmail
         'last_name',
         'email',
         'phone',
-        'avatar',
         'status',
         'password',
         'email_verified_at',
@@ -83,20 +83,51 @@ class User extends Authenticatable implements MustVerifyEmail
         return trim("{$this->first_name} {$this->last_name}");
     }
 
-    public function getAvatarUrlAttribute(): ?string
+    public function getAvatarUrlAttribute(): string
     {
-        return $this->avatar ? asset('storage/' . $this->avatar) : null;
+        $media = $this->media()->where('collection_name', 'avatar')->first();
+        return $media ? $media->url : asset('backend/imgs/theme/avatar-1.png');
     }
 
-    public function admin_address() {
+    /**
+     * Scope for User Search (DataTable).
+     */
+    public function scopeSearch($query, string $keyword)
+    {
+        return $query->where(function ($q) use ($keyword) {
+            $q->where('first_name', 'like', "%{$keyword}%")
+                ->orWhere('last_name', 'like', "%{$keyword}%")
+                ->orWhere('email', 'like', "%{$keyword}%")
+                ->orWhere('phone', 'like', "%{$keyword}%")
+                ->orWhere('designation', 'like', "%{$keyword}%")
+                ->orWhereRaw("CONCAT(COALESCE(first_name, ''), ' ', COALESCE(last_name, '')) LIKE ?", ["%{$keyword}%"]);
+        });
+    }
+
+    /**
+     * Scope for filtering users by status.
+     */
+    public function scopeFilterStatus($query, $status)
+    {
+        if ($status !== null && $status !== '') {
+            $query->where('status', (int) $status);
+        }
+
+        return $query;
+    }
+
+    public function admin_address()
+    {
         return $this->hasOne(\App\Models\Address::class, 'user_id');
     }
 
-    public function rosters() {
+    public function rosters()
+    {
         return $this->hasMany(Roster::class, 'user_id');
     }
 
-    public function createdTasks() {
+    public function createdTasks()
+    {
         return $this->hasMany(Task::class, 'created_by');
     }
 }

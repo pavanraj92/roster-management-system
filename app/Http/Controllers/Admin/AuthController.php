@@ -11,10 +11,10 @@ use Illuminate\Support\Str;
 use Illuminate\Auth\Events\PasswordReset;
 use Spatie\Permission\Models\Role;
 use App\Models\User;
-use App\Http\Requests\Admin\LoginRequest;
-use App\Http\Requests\Admin\RegisterRequest;
-use App\Http\Requests\Admin\ForgotPasswordRequest;
-use App\Http\Requests\Admin\ResetPasswordRequest;
+use App\Http\Requests\Auth\LoginRequest;
+use App\Http\Requests\Auth\RegisterRequest;
+use App\Http\Requests\Auth\ForgotPasswordRequest;
+use App\Http\Requests\Auth\ResetPasswordRequest;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\AdminPasswordResetMail;
 

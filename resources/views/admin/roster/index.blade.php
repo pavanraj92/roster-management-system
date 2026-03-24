@@ -320,7 +320,7 @@
                     <div class="modal-body roster-modal__body">
                         <input type="hidden" name="user_id" id="user_id">
                         <input type="hidden" name="date" id="date">
-                        <div class="mb-1">
+                        <div class="mb-3">
                             <label class="form-label">Shift</label>
                             <select name="shift_id" class="form-control">
                                 @foreach ($shifts as $shift)
@@ -339,11 +339,11 @@
                         </div>
                     </div>
                     <div class="modal-footer roster-modal__footer">
+                        <button class="btn btn-primary">
+                            Save Assignment
+                        </button>
                         <button type="button" class="btn btn-outline-secondary me-2" data-bs-dismiss="modal">
                             Cancel
-                        </button>
-                        <button class="btn btn-primary">
-                            Save assignment
                         </button>
                     </div>
                 </form>

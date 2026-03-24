@@ -1,38 +1,38 @@
 <div class="row g-4 staff-form-grid">
     <div class="mb-4 col-lg-6">
         <label for="first_name" class="form-label">First Name <span class="text-danger">*</span></label>
-        <input type="text" name="first_name" placeholder="First Name" class="form-control" id="first_name"
+        <input type="text" name="first_name" placeholder="First Name" class="form-control @error('first_name') is-invalid @enderror" id="first_name"
             value="{{ old('first_name', isset($staff) ? $staff->first_name : '') }}">
         @error('first_name') <span class="text-danger small">{{ $message }}</span> @enderror
     </div>
     <div class="mb-4 col-lg-6">
         <label for="last_name" class="form-label">Last Name</label>
-        <input type="text" name="last_name" placeholder="Last Name" class="form-control" id="last_name"
+        <input type="text" name="last_name" placeholder="Last Name" class="form-control @error('last_name') is-invalid @enderror" id="last_name"
             value="{{ old('last_name', isset($staff) ? $staff->last_name : '') }}">
         @error('last_name') <span class="text-danger small">{{ $message }}</span> @enderror
     </div>
     <div class="mb-4 col-lg-6">
         <label for="email" class="form-label">Email <span class="text-danger">*</span></label>
-        <input type="email" name="email" placeholder="Email" class="form-control" id="email"
+        <input type="email" name="email" placeholder="Email" class="form-control @error('email') is-invalid @enderror" id="email"
             value="{{ old('email', isset($staff) ? $staff->email : '') }}">
         @error('email') <span class="text-danger small">{{ $message }}</span> @enderror
     </div>
     <div class="mb-4 col-lg-6">
         <label for="phone" class="form-label">Phone <span class="text-danger">*</span></label>
-        <input type="text" name="phone" placeholder="Phone" class="form-control" id="phone"
+        <input type="text" name="phone" placeholder="Phone" class="form-control @error('phone') is-invalid @enderror" id="phone"
             value="{{ old('phone', isset($staff) ? $staff->phone : '') }}">
         @error('phone') <span class="text-danger small">{{ $message }}</span> @enderror
     </div>
 
     <div class="mb-4 col-lg-6">
         <label for="designation" class="form-label">Designation <span class="text-danger">*</span></label>
-        <input type="text" name="designation" placeholder="Designation" class="form-control" id="designation"
+        <input type="text" name="designation" placeholder="Designation" class="form-control @error('designation') is-invalid @enderror" id="designation"
             value="{{ old('designation', isset($staff) ? $staff->designation : '') }}">
         @error('designation') <span class="text-danger small">{{ $message }}</span> @enderror
     </div>
     <div class="mb-4 col-lg-6">
         <label for="joining_date" class="form-label">Joining Date <span class="text-danger">*</span></label>
-        <input type="text" placeholder="Select joining date" name="joining_date" class="form-control datepicker"
+        <input type="text" placeholder="Select joining date" name="joining_date" class="form-control datepicker @error('joining_date') is-invalid @enderror"
             id="joining_date" value="{{ old('joining_date', isset($staff) ? $staff->joining_date : '') }}"
             autocomplete="off">
         @error('joining_date') <span class="text-danger small">{{ $message }}</span> @enderror

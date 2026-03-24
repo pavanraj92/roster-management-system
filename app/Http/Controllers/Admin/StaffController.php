@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Admin\StaffRequest;
+use App\Http\Requests\Staff\StaffRequest;
 use App\Models\User;
 use App\Services\StaffService;
 use Illuminate\Http\Request;

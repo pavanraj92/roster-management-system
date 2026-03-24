@@ -21,7 +21,7 @@ class Attendance extends Model
         'total_hours',
         'shift_status',
         'status',
-        'attendance_id '
+        'attendance_id'
     ];
 
     protected $casts = [

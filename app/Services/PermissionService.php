@@ -13,50 +13,49 @@ class PermissionService
      */
     public function getPermissionDataTable(Request $request)
     {
-        $data = Permission::where('guard_name', 'web')->latest();
+        $query = Permission::query()
+            ->select(['id', 'name', 'display_name', 'group_name', 'guard_name', 'created_at'])
+            ->where('guard_name', 'web')
+            ->orderBy('id', 'desc');
 
-        return DataTables::of($data)
+        return DataTables::of($query)
             ->addIndexColumn()
-            ->filter(function ($query) use ($request) {
+            ->filter(function ($q) use ($request) {
                 $search = $request->get('search');
                 $keyword = trim((string) ($search['value'] ?? ''));
-
                 if ($keyword !== '') {
-                    $query->where(function ($q) use ($keyword) {
-                        $q->where('display_name', 'like', '%' . $keyword . '%')
-                            ->orWhere('group_name', 'like', '%' . $keyword . '%');
-                    });
+                    $q->search($keyword);
                 }
             })
-            ->orderColumn('display_name', function ($query, $order) {
-                $query->orderBy('display_name', $order);
+            ->orderColumn('display_name', fn($q, $order) => $q->orderBy('display_name', $order))
+            ->orderColumn('group_name', fn($q, $order) => $q->orderBy('group_name', $order))
+            ->addColumn('display_name', fn(Permission $p) => $p->label)
+            ->addColumn('group_name', function (Permission $p) {
+                if ($p->group_name) {
+                    return '<span class="badge bg-info text-dark">' . e($p->group_name) . '</span>';
+                }
+                return '<span class="text-muted italic">System</span>';
             })
-            ->orderColumn('group_name', function ($query, $order) {
-                $query->orderBy('group_name', $order);
-            })
-            ->addColumn('display_name', function ($row) {
-                return $row->display_name ?: ucfirst(str_replace('_', ' ', (string) $row->name));
-            })
-            ->addColumn('group_name', function ($row) {
-                return $row->group_name ?: '<span class="text-muted">-</span>';
-            })
-            ->addColumn('action', function ($row) {
-                $btn = '<div class="text-end">
-                                <a href="' . route('admin.permissions.show', $row->id) . '" class="me-2" title="View">
-                                    <i class="material-icons md-remove_red_eye" style="color: #28a745;"> </i>
-                                </a>
-                                <a href="' . route('admin.permissions.edit', $row->id) . '" class="me-2" title="Edit">
-                                    <i class="material-icons md-edit" style="color: #ffc107;"> </i>
-                                </a>
-                                <form action="' . route('admin.permissions.destroy', $row->id) . '" method="POST" class="d-inline delete-form" data-module="Permission">
-                                    ' . csrf_field() . '
-                                    ' . method_field('DELETE') . '
-                                    <button type="submit" class="border-0 bg-transparent p-0" title="Delete">
-                                        <i class="material-icons md-delete_forever" style="color: #dc3545;"> </i>
-                                    </button>
-                                </form>
-                            </div>';
-                return $btn;
+            ->addColumn('action', function (Permission $p) {
+                return '
+                    <div class="text-end">
+                        <a href="' . route('admin.permissions.show', $p->id) . '" class="me-2" title="View">
+                            <i class="material-icons md-remove_red_eye text-success"> </i>
+                        </a>
+                        <a href="' . route('admin.permissions.edit', $p->id) . '" class="me-2" title="Edit">
+                            <i class="material-icons md-edit text-warning"> </i>
+                        </a>
+                        <form action="' . route('admin.permissions.destroy', $p->id) . '"
+                              method="POST"
+                              class="d-inline delete-form"
+                              data-module="Permission">
+                            ' . csrf_field() . '
+                            ' . method_field('DELETE') . '
+                            <button type="submit" class="border-0 bg-transparent p-0" title="Delete">
+                                <i class="material-icons md-delete_forever text-danger"> </i>
+                            </button>
+                        </form>
+                    </div>';
             })
             ->rawColumns(['action', 'group_name'])
             ->make(true);
@@ -87,7 +86,10 @@ class PermissionService
      */
     public function deletePermission(Permission $permission): void
     {
+        if ($permission->roles()->exists()) {
+            throw new \RuntimeException('Cannot delete permission while it is assigned to roles.');
+        }
+
         $permission->delete();
     }
 }
-

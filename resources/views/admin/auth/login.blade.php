@@ -47,8 +47,7 @@
 
                                 <div class="mb-3">
                                     <input class="form-control @error('email') is-invalid @enderror" name="email"
-                                        value="{{ old('email', $login_email ?? '') }}" placeholder="Email"
-                                        type="text" />
+                                        value="{{ old('email', $login_email ?? '') }}" placeholder="Email" type="text" />
                                     @error('email')
                                         <div class="invalid-feedback">
                                             {{ $message }}
@@ -57,14 +56,15 @@
                                 </div>
 
                                 <div class="mb-3 position-relative">
-                                    <input type="password" name="password" placeholder="Password"
+                                   <div class="position-relative"> <input type="password" name="password" placeholder="Password"
                                         class="form-control @error('password') is-invalid @enderror"
-                                        style="padding-right: 45px;" value="{{ isset($login_pass) ? $login_pass : '' }}">
+                                        style="padding-right:2.5rem;" value="{{ isset($login_pass) ? $login_pass : '' }}">
 
-                                    <span class="password-toggle"
-                                        style="position:absolute; right:15px; top:50%; transform:translateY(-50%); cursor:pointer;">
+                                    <span class="password-toggle position-absolute top-50 end-0 translate-middle-y me-5"
+                                        style="cursor:pointer;">
                                         <i class="ri-eye-off-line"></i>
                                     </span>
+                                </div>
 
                                     @error('password')
                                         <div class="invalid-feedback">

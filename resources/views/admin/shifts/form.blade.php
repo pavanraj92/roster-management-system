@@ -10,19 +10,19 @@
 <div class="row g-4 page-form-grid">
     <div class="mb-4 col-lg-6">
         <label for="name" class="form-label">Name <span class="text-danger">*</span></label>
-        <input type="text" name="name" placeholder="Name" class="form-control" id="name"
+        <input type="text" name="name" placeholder="Name" class="form-control @error('name') is-invalid @enderror" id="name"
             value="{{ old('name', isset($shift) ? $shift->name : '') }}">
         @error('name') <span class="text-danger small">{{ $message }}</span> @enderror
     </div>
     <div class="mb-4 col-lg-6">
         <label for="start_time" class="form-label">Start Time <span class="text-danger">*</span></label>
-        <input type="text" name="start_time" placeholder="Start Time" class="form-control timepicker" id="start_time"
+        <input type="text" name="start_time" placeholder="Start Time" class="form-control timepicker @error('start_time') is-invalid @enderror" id="start_time"
             value="{{ $startTime }}">
         @error('start_time') <span class="text-danger small">{{ $message }}</span> @enderror
     </div>
     <div class="mb-4 col-lg-6">
         <label for="end_time" class="form-label">End Time <span class="text-danger">*</span></label>
-        <input type="text" name="end_time" placeholder="End Time" class="form-control timepicker" id="end_time"
+        <input type="text" name="end_time" placeholder="End Time" class="form-control timepicker @error('end_time') is-invalid @enderror" id="end_time"
             value="{{ $endTime }}">
         @error('end_time') <span class="text-danger small">{{ $message }}</span> @enderror
     </div>

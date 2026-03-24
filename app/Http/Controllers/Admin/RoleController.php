@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Role\RoleRequest;
 use App\Models\Role;
 use App\Services\RoleService;
 use Illuminate\Http\Request;
@@ -19,11 +20,9 @@ class RoleController extends Controller
      */
     public function index(Request $request)
     {
-        if ($request->ajax()) {
-            return $this->roleService->getRoleDataTable($request);
-        }
-
-        return view('admin.roles.index');
+        return $request->ajax()
+            ? $this->roleService->getRoleDataTable($request)
+            : view('admin.roles.index');
     }
 
     /**
@@ -31,24 +30,20 @@ class RoleController extends Controller
      */
     public function create()
     {
-        $permissions = $this->roleService->getAllPermissions();
-        return view('admin.roles.create', compact('permissions'));
+        return view('admin.roles.create', [
+            'permissions' => $this->roleService->getAllPermissions()
+        ]);
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(RoleRequest $request)
     {
-        $validated = $request->validate([
-            'name' => 'required|string|unique:roles,name|max:255',
-            'permissions' => 'array',
-            'permissions.*' => 'exists:permissions,id',
-        ]);
+        $this->roleService->createRole($request->validated(), $request->validated('permissions'));
 
-        $this->roleService->createRole($validated, $request->input('permissions'));
-
-        return redirect()->route('admin.roles.index')->with('success', 'Role created successfully.');
+        return redirect()->route('admin.roles.index')
+            ->with('success', 'Role created successfully.');
     }
 
     /**
@@ -56,7 +51,9 @@ class RoleController extends Controller
      */
     public function show(Role $role)
     {
-        $permissions = $role->permissions()->get();
+        $role->loadMissing('permissions');
+        $permissions = $role->permissions;
+
         return view('admin.roles.show', compact('role', 'permissions'));
     }
 
@@ -65,25 +62,24 @@ class RoleController extends Controller
      */
     public function edit(Role $role)
     {
-        $permissions = $this->roleService->getAllPermissions();
-        $rolePermissions = $role->permissions()->pluck('id')->toArray();
-        return view('admin.roles.edit', compact('role', 'permissions', 'rolePermissions'));
+        $role->loadMissing('permissions:id');
+
+        return view('admin.roles.edit', [
+            'role' => $role,
+            'permissions' => $this->roleService->getAllPermissions(),
+            'rolePermissions' => $role->permissions->pluck('id')->all()
+        ]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Role $role)
+    public function update(RoleRequest $request, Role $role)
     {
-        $validated = $request->validate([
-            'name' => 'required|string|max:255|unique:roles,name,' . $role->id,
-            'permissions' => 'array',
-            'permissions.*' => 'exists:permissions,id',
-        ]);
+        $this->roleService->updateRole($role, $request->validated(), $request->validated('permissions'));
 
-        $this->roleService->updateRole($role, $validated, $request->input('permissions'));
-
-        return redirect()->route('admin.roles.index')->with('success', 'Role updated successfully.');
+        return redirect()->route('admin.roles.index')
+            ->with('success', 'Role updated successfully.');
     }
 
     /**
@@ -91,15 +87,17 @@ class RoleController extends Controller
      */
     public function destroy(Role $role)
     {
-        if (! $this->roleService->deleteRole($role)) {
-            return redirect()->route('admin.roles.index')->with('error', 'Cannot delete super-admin role.');
+        if (!$this->roleService->deleteRole($role)) {
+            return redirect()->route('admin.roles.index')
+                ->with('error', 'Cannot delete this role while it is protected or assigned.');
         }
 
-        return redirect()->route('admin.roles.index')->with('success', 'Role deleted successfully.');
+        return redirect()->route('admin.roles.index')
+            ->with('success', 'Role deleted successfully.');
     }
 
     /**
-     * Assign permissions to a role
+     * Assign permissions to a role.
      */
     public function assignPermissions(Request $request, Role $role)
     {
@@ -110,6 +108,9 @@ class RoleController extends Controller
 
         $this->roleService->syncPermissions($role, $validated['permissions'] ?? []);
 
-        return response()->json(['success' => true, 'message' => 'Permissions assigned successfully.']);
+        return response()->json([
+            'success' => true,
+            'message' => 'Permissions assigned successfully.'
+        ]);
     }
 }

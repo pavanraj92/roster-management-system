@@ -15,20 +15,15 @@ class DashboardController extends Controller
      */
     public function index()
     {
-        // total users
-        $totalUsersCount = User::role(['staff', 'manager'])->count();
-        $activeUsersCount = User::role(['staff', 'manager'])->where('status', 1)->count();
-        $inactiveUsersCount = User::role(['staff', 'manager'])->where('status', 0)->count();
+        $userCounts = User::role(['staff', 'manager'])
+            ->selectRaw('COUNT(*) as total_users')
+            ->selectRaw('SUM(CASE WHEN status = 1 THEN 1 ELSE 0 END) as active_users')
+            ->selectRaw('SUM(CASE WHEN status = 0 THEN 1 ELSE 0 END) as inactive_users')
+            ->first();
 
-        // manager counts
-        // $managersCount = User::role('manager')->count();
-        // $activeManagersCount = User::role('manager')->where('status', 1)->count();
-        // $inactiveManagersCount = User::role('manager')->where('status', 0)->count();
-
-        // Staff counts
-        // $staffsCount = User::role('staff')->count();
-        // $activeStaffsCount = User::role('staff')->where('status', 1)->count();
-        // $inactiveStaffsCount = User::role('staff')->where('status', 0)->count();
+        $totalUsersCount = (int) ($userCounts->total_users ?? 0);
+        $activeUsersCount = (int) ($userCounts->active_users ?? 0);
+        $inactiveUsersCount = (int) ($userCounts->inactive_users ?? 0);
 
         // Shifts
         $totalShifts = Shift::count();
@@ -36,20 +31,23 @@ class DashboardController extends Controller
         // Attendance stats (today)
         $today = Carbon::today()->toDateString();
 
-        $presentToday = Attendance::whereDate('date', $today)
-            ->where('status', 'present')
-            ->count();
+        $attendanceStats = Attendance::query()
+            ->whereDate('date', $today)
+            ->selectRaw("SUM(CASE WHEN status = 'present' THEN 1 ELSE 0 END) as present_today")
+            ->selectRaw("SUM(CASE WHEN status = 'absent' THEN 1 ELSE 0 END) as absent_today")
+            ->selectRaw("SUM(CASE WHEN status = 'late' THEN 1 ELSE 0 END) as late_today")
+            ->first();
 
-        $absentToday = Attendance::whereDate('date', $today)
-            ->where('status', 'absent')
-            ->count();
-
-        $lateToday = Attendance::whereDate('date', $today)
-            ->where('status', 'late')
-            ->count();
+        $presentToday = (int) ($attendanceStats->present_today ?? 0);
+        $absentToday = (int) ($attendanceStats->absent_today ?? 0);
+        $lateToday = (int) ($attendanceStats->late_today ?? 0);
 
         // Latest 5 staff
-        $latestUsers = User::latest()->take(5)->get();
+        $latestUsers = User::query()
+            ->select(['id', 'first_name', 'last_name', 'email', 'created_at'])
+            ->latest()
+            ->take(5)
+            ->get();
 
         return view('admin.dashboard', compact(
             'totalUsersCount',

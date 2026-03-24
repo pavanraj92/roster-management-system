@@ -23,7 +23,7 @@
             <div>
             </div>
         </div>
-        <form action="{{ route('admin.user.update', $user->id) }}" method="POST">
+        <form action="{{ route('admin.user.update', $user->id) }}" method="POST" enctype="multipart/form-data">
             @csrf
             @method('PUT')
             <div class="row">

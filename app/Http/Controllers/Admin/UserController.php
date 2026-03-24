@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Admin\UserRequest;
+use App\Http\Requests\User\UserRequest;
 use App\Models\Role;
 use App\Models\User;
 use App\Services\UserService;
@@ -18,17 +18,16 @@ class UserController extends Controller
 
     public function index(Request $request)
     {
-        if ($request->ajax()) {
-            return $this->userService->getUserDataTable($request);
-        }
-
-        return view('admin.user.index');
+        return $request->ajax()
+            ? $this->userService->getUserDataTable($request)
+            : view('admin.user.index');
     }
 
     public function create()
     {
-        $roles = Role::whereNotIn('name', ['admin'])->get();
-        return view('admin.user.create', compact('roles'));
+        return view('admin.user.create', [
+            'roles' => Role::assignable()->get()
+        ]);
     }
 
     public function store(UserRequest $request)
@@ -41,13 +40,19 @@ class UserController extends Controller
 
     public function show(User $user)
     {
+        $user->loadMissing('roles:id,name');
+
         return view('admin.user.show', compact('user'));
     }
 
     public function edit(User $user)
     {
-        $roles = Role::whereNotIn('name', ['admin'])->get();
-        return view('admin.user.edit', compact('user', 'roles'));
+        $user->loadMissing('roles:id,name');
+
+        return view('admin.user.edit', [
+            'user' => $user,
+            'roles' => Role::assignable()->get()
+        ]);
     }
 
     public function update(UserRequest $request, User $user)

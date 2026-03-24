@@ -144,6 +144,11 @@ class SettingController extends Controller
             unset($data['service_highlights']);
         }
 
+        // Handle Checkboxes (set to 0 if not present)
+        if ($group == 'system') {
+            $data['maintenance_mode'] = $request->has('maintenance_mode') ? '1' : '0';
+        }
+
         // Handle All Other Regular Data
         foreach ($data as $key => $value) {
             // Encode arrays to JSON (for any other repeaters)

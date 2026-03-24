@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Page;
-use App\Http\Requests\Admin\PageRequest;
+use App\Http\Requests\Page\PageRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Yajra\DataTables\Facades\DataTables;

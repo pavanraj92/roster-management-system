@@ -59,7 +59,7 @@
                             </form>
 
                             <p class="text-center mb-0">
-                                Remembered password? <a href="{{ route('admin.login') }}">Back to login</a>
+                                Remember your Password? <a href="{{ route('admin.login') }}">Back to login</a>
                             </p>
                         </div>
                     </div>

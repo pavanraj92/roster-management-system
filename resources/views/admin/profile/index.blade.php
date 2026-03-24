@@ -58,7 +58,7 @@
                                                 <div class="col-6 mb-3">
                                                     <label class="form-label">First name <span
                                                             class="text-danger">*</span></label>
-                                                    <input class="form-control" type="text" name="first_name"
+                                                    <input class="form-control @error('first_name') is-invalid @enderror" type="text" name="first_name"
                                                         value="{{ old('first_name', $user->first_name) }}">
                                                     @error('first_name')
                                                         <span class="text-danger small">{{ $message }}</span>
@@ -68,7 +68,7 @@
                                                 <div class="col-6 mb-3">
                                                     <label class="form-label">Last name <span
                                                             class="text-danger">*</span></label>
-                                                    <input class="form-control" type="text" name="last_name"
+                                                    <input class="form-control @error('last_name') is-invalid @enderror" type="text" name="last_name"
                                                         value="{{ old('last_name', $user->last_name) }}">
                                                     @error('last_name')
                                                         <span class="text-danger small">{{ $message }}</span>
@@ -84,7 +84,7 @@
 
                                                 <div class="col-lg-6 mb-3">
                                                     <label class="form-label">Phone</label>
-                                                    <input class="form-control" type="tel" name="phone"
+                                                    <input class="form-control @error('phone') is-invalid @enderror" type="tel" name="phone"
                                                         value="{{ old('phone', $user->phone) }}">
                                                     @error('phone')
                                                         <span class="text-danger small">{{ $message }}</span>
@@ -93,7 +93,7 @@
 
                                                 <div class="col-lg-12 mb-3">
                                                     <label class="form-label">Address</label>
-                                                    <input class="form-control" type="text" name="address_line1"
+                                                    <input class="form-control @error('address_line1') is-invalid @enderror" type="text" name="address_line1"
                                                         value="{{ old('address_line1', optional($user->admin_address)->address_line1) }}">
                                                     @error('address_line1')
                                                         <span class="text-danger small">{{ $message }}</span>
@@ -112,19 +112,12 @@
                                     <aside class="col-lg-4">
                                         <figure class="text-lg-center">
 
-                                            @php
-                                                $avatarPath = $user->avatar
-                                                    ? storage_path('app/public/' . $user->avatar)
-                                                    : null;
-
-                                                $avatarUrl =
-                                                    $avatarPath && file_exists($avatarPath)
-                                                    ? asset('storage/' . $user->avatar)
-                                                    : asset('backend/imgs/theme/avatar-1.png');
-                                            @endphp
-
-                                            <img src="{{ $avatarUrl }}" class="img-lg mb-3 img-avatar" id="avatar-preview"
-                                                alt="Staff" />
+                                            <a href="{{ $user->avatar_url }}" class="image-popup">
+                                                <img src="{{ $user->avatar_url }}"
+                                                    class="img-lg mb-3 img-avatar shadow-sm border p-1 rounded-circle"
+                                                    id="avatar-preview" alt="User Avatar"
+                                                    style="width: 120px; height: 120px;" />
+                                            </a>
 
                                             <figcaption>
                                                 <form action="{{ route('admin.profile.update-avatar') }}" method="POST"
@@ -158,8 +151,8 @@
                                     <div class="mb-3">
                                         <label class="form-label">Current Password <span class="text-danger">*</span></label>
                                         <div class="position-relative">
-                                            <input type="password" name="current_password" class="form-control pe-5">
-                                            <span class="password-toggle position-absolute top-50 end-0 translate-middle-y me-3"
+                                            <input type="password" name="current_password" class="form-control pe-5 @error('current_password') is-invalid @enderror">
+                                            <span class="password-toggle position-absolute top-50 end-0 translate-middle-y me-5"
                                                 style="cursor:pointer;">
                                                 <i class="ri-eye-off-line"></i>
                                             </span>
@@ -172,8 +165,8 @@
                                     <div class="mb-3">
                                         <label class="form-label">New Password <span class="text-danger">*</span></label>
                                         <div class="position-relative">
-                                            <input type="password" name="password" class="form-control pe-5">
-                                            <span class="password-toggle position-absolute top-50 end-0 translate-middle-y me-3"
+                                            <input type="password" name="password" class="form-control pe-5 @error('password') is-invalid @enderror">
+                                            <span class="password-toggle position-absolute top-50 end-0 translate-middle-y me-5"
                                                 style="cursor:pointer;">
                                                 <i class="ri-eye-off-line"></i>
                                             </span>
@@ -184,11 +177,10 @@
                                     </div>
 
                                     <div class="mb-3">
-                                        <label class="form-label">Confirm New Password <span
-                                                class="text-danger">*</span></label>
+                                        <label class="form-label">Confirm New Password <span class="text-danger">*</span></label>
                                         <div class="position-relative">
-                                            <input type="password" name="password_confirmation" class="form-control pe-5">
-                                            <span class="password-toggle position-absolute top-50 end-0 translate-middle-y me-3"
+                                            <input type="password" name="password_confirmation" class="form-control pe-5 @error('password_confirmation') is-invalid @enderror">
+                                            <span class="password-toggle position-absolute top-50 end-0 translate-middle-y me-5"
                                                 style="cursor:pointer;">
                                                 <i class="ri-eye-off-line"></i>
                                             </span>

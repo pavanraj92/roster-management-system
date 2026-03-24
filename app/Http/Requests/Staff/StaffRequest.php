@@ -1,8 +1,9 @@
 <?php
 
-namespace App\Http\Requests\Admin;
+namespace App\Http\Requests\Staff;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class StaffRequest extends FormRequest
 {
@@ -21,7 +22,8 @@ class StaffRequest extends FormRequest
      */
     public function rules(): array
     {
-        $staffId = $this->route('staff') ? (is_object($this->route('staff')) ? $this->route('staff')->id : $this->route('staff')) : null;
+        $staffId = $this->route('staff');
+        $id = $staffId instanceof \App\Models\User ? $staffId->id : $staffId;
 
         $rules = [
             'first_name' => 'required|string|max:255',
@@ -29,12 +31,18 @@ class StaffRequest extends FormRequest
             'designation' => 'required|string|max:255',
             'joining_date' => 'required|date',
             'avatar' => 'nullable|image|max:2048',
-            'status' => 'nullable|boolean',
+            'status' => 'nullable',
         ];
 
-        if (!$staffId) {
-            $rules['email'] = 'required|email|unique:users,email';
-            $rules['phone'] = 'required|digits_between:7,15';
+        if (!$id) {
+            $rules['email'] = [
+                'required', 'email',
+                Rule::unique('users', 'email')->whereNull('deleted_at')
+            ];
+            $rules['phone'] = [
+                'required', 'digits_between:7,15',
+                Rule::unique('users', 'phone')->whereNull('deleted_at')
+            ];
         }
 
         return $rules;

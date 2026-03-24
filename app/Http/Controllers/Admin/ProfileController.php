@@ -8,6 +8,9 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
+use App\Http\Requests\Profile\ProfileUpdateRequest;
+use App\Http\Requests\Profile\PasswordUpdateRequest;
+use App\Http\Requests\Profile\ProfileImageUpdateRequest;
 
 class ProfileController extends Controller
 {
@@ -24,7 +27,7 @@ class ProfileController extends Controller
         ]);
     }
 
-    public function updateProfile(\App\Http\Requests\Admin\ProfileUpdateRequest $request)
+    public function updateProfile(ProfileUpdateRequest $request)
     {
         $user = Auth::user();
 
@@ -37,19 +40,19 @@ class ProfileController extends Controller
 
         // Update or Create Admin Address
         $user->admin_address()->updateOrCreate(
-            ['user_id' => $user->id], // condition
-            [
-                'name' => $user->first_name . ' ' . $user->last_name,
-                'phone' => $user->phone,
-                'address_line1' => $request->address_line1,
-            ]
+        ['user_id' => $user->id], // condition
+        [
+            'name' => $user->first_name . ' ' . $user->last_name,
+            'phone' => $user->phone,
+            'address_line1' => $request->address_line1,
+        ]
         );
         return redirect()
             ->route('admin.profile.index', ['tab' => 'profile'])
             ->with('success', 'Profile updated successfully.');
     }
 
-    public function changePassword(\App\Http\Requests\Admin\PasswordUpdateRequest $request)
+    public function changePassword(PasswordUpdateRequest $request)
     {
         $user = Auth::user();
 
@@ -78,23 +81,12 @@ class ProfileController extends Controller
             ->with('success', 'Password changed successfully.');
     }
 
-    public function updateProfileImage(\App\Http\Requests\Admin\ProfileImageUpdateRequest $request)
+    public function updateProfileImage(ProfileImageUpdateRequest $request)
     {
         $user = Auth::user();
 
         if ($request->hasFile('avatar')) {
-
-            // Delete old avatar if exists
-            if ($user->avatar && Storage::disk('public')->exists($user->avatar)) {
-                Storage::disk('public')->delete($user->avatar);
-            }
-
-            // Store new avatar
-            $path = $request->file('avatar')->store('users', 'public');
-
-            $user->update([
-                'avatar' => $path
-            ]);
+            $user->uploadMedia($request->file('avatar'), 'avatar');
         }
 
         return redirect()

@@ -1,4 +1,4 @@
-(function(window, $) {
+(function (window, $) {
     'use strict';
 
     if (!window || !$) {
@@ -50,7 +50,7 @@
     };
 
     function initTaskSelect2() {
-        $('.task-selection').each(function() {
+        $('.task-selection').each(function () {
             const $el = $(this);
             if ($el.hasClass('select2-hidden-accessible')) {
                 return;
@@ -82,7 +82,7 @@
             data: {
                 start: startDate
             },
-            success: function(res) {
+            success: function (res) {
                 $(selectors.tableContainer).html(res);
                 bindShiftDetailClicks();
             }
@@ -109,7 +109,7 @@
 
     function bindShiftDetailClicks() {
         $(document).off('click.rosterShiftDetail', '.roster-shift-detail-trigger');
-        $(document).on('click.rosterShiftDetail', '.roster-shift-detail-trigger', function() {
+        $(document).on('click.rosterShiftDetail', '.roster-shift-detail-trigger', function () {
             const $row = $(this);
             const shiftName = $row.data('shift-name');
             const shiftStart = $row.data('shift-start');
@@ -128,7 +128,7 @@
             const loginUserId = Number($row.data('auth-id'));
             const taskIds = taskIdsRaw
                 .split(',')
-                .map(function(id) {
+                .map(function (id) {
                     return id.trim();
                 })
                 .filter(Boolean);
@@ -162,9 +162,9 @@
             $(selectors.editTask).val(taskIds.length ? taskIds : [taskId]).trigger('change');
 
             resetClockForms();
-                        
+
             // Show clock in/out options only for the assigned staff on today's shift
-            if (loginUserId === userId && isTodayShift ) { 
+            if (loginUserId === userId && isTodayShift) {
                 if (hasClockIn && !hasClockOut && attendanceId) {
                     $(selectors.clockOutForm).removeClass('d-none');
                     $(selectors.clockOutAttendanceId).val(attendanceId);
@@ -182,7 +182,7 @@
 
             // Everyone can view task progress details in modal
             const canDeleteByDateAndAttendance = (isFutureShift || canDeleteTodayUpcomingShift) && !hasClockIn && !hasClockOut;
-            loadTaskLogs(rosterId, function(meta) {
+            loadTaskLogs(rosterId, function (meta) {
                 const hasOnlyPendingTasks = !meta.hasRunningOrComplete;
                 if (canDeleteByDateAndAttendance && hasOnlyPendingTasks) {
                     $(selectors.deleteBtn).removeClass('d-none');
@@ -196,27 +196,27 @@
     }
 
     function bindEvents() {
-        $('#nextWeek').on('click', function() {
+        $('#nextWeek').on('click', function () {
             const start = window.moment(currentStart)
                 .add(7, 'days')
                 .format('YYYY-MM-DD');
             loadRoster(start);
         });
 
-        $('#prevWeek').on('click', function() {
+        $('#prevWeek').on('click', function () {
             const start = window.moment(currentStart)
                 .subtract(7, 'days')
                 .format('YYYY-MM-DD');
             loadRoster(start);
         });
 
-        $(selectors.shiftForm).on('submit', function(e) {
+        $(selectors.shiftForm).on('submit', function (e) {
             e.preventDefault();
             $.ajax({
                 url: cfg.storeUrl,
                 type: 'POST',
                 data: $(this).serialize(),
-                success: function() {
+                success: function () {
                     $(selectors.assignModal).modal('hide');
                     $(selectors.shiftForm)[0].reset();
                     $(selectors.assignTask).val(null).trigger('change');
@@ -225,7 +225,7 @@
             });
         });
 
-        $(selectors.editBtn).on('click', function() {
+        $(selectors.editBtn).on('click', function () {
             $(selectors.shiftDetailView).addClass('d-none');
             $(selectors.shiftEditFormContainer).removeClass('d-none');
             $(selectors.shiftDetailLabel).text('Edit Shift & Task Assignment');
@@ -241,7 +241,7 @@
             }
         });
 
-        $(selectors.saveEditBtn).on('click', function() {
+        $(selectors.saveEditBtn).on('click', function () {
             const rosterId = $(selectors.editRosterId).val();
             const payload = {
                 _token: cfg.csrfToken,
@@ -257,14 +257,14 @@
                 url: updateUrl,
                 type: 'PUT',
                 data: payload,
-                success: function() {
+                success: function () {
                     $(selectors.shiftDetailModal).modal('hide');
                     loadRoster(currentStart, currentEnd);
                 }
             });
         });
 
-        $(selectors.deleteBtn).on('click', function() {
+        $(selectors.deleteBtn).on('click', function () {
             const rosterId = $(selectors.editRosterId).val();
             if (!rosterId || !cfg.deleteUrlTemplate) {
                 window.Swal.fire('Delete route is not configured.');
@@ -280,7 +280,7 @@
                 showCancelButton: true,
                 confirmButtonText: 'Yes, Delete',
                 cancelButtonText: 'Cancel'
-            }).then(function(result) {
+            }).then(function (result) {
                 if (!result.isConfirmed) {
                     return;
                 }
@@ -291,7 +291,7 @@
                     data: {
                         _token: cfg.csrfToken
                     },
-                    success: function(res) {
+                    success: function (res) {
                         if (res.status) {
                             $(selectors.shiftDetailModal).modal('hide');
                             loadRoster(currentStart);
@@ -299,14 +299,14 @@
                             window.Swal.fire(res.message || 'Delete failed.');
                         }
                     },
-                    error: function() {
+                    error: function () {
                         window.Swal.fire('Could not delete this shift.');
                     }
                 });
             });
         });
 
-        $(selectors.clockOutForm).on('submit', function(e) {
+        $(selectors.clockOutForm).on('submit', function (e) {
             e.preventDefault();
 
             const attendanceId = $(selectors.clockOutAttendanceId).val();
@@ -326,7 +326,7 @@
                 icon: 'warning',
                 showCancelButton: true,
                 confirmButtonText: 'Yes, Clock Out'
-            }).then(function(result) {
+            }).then(function (result) {
                 if (!result.isConfirmed) {
                     return;
                 }
@@ -335,7 +335,7 @@
                     url: cfg.clockOutUrl,
                     type: 'POST',
                     data: payload,
-                    success: function(res) {
+                    success: function (res) {
                         if (res.status) {
                             $(selectors.shiftDetailModal).modal('hide');
                             loadRoster(currentStart);
@@ -347,7 +347,7 @@
             });
         });
 
-        $(selectors.clockInForm).on('submit', function(e) {
+        $(selectors.clockInForm).on('submit', function (e) {
             e.preventDefault();
 
             const rosterId = $(selectors.clockInRosterId).val();
@@ -365,7 +365,7 @@
                 url: cfg.clockInUrl,
                 type: 'POST',
                 data: payload,
-                success: function(res) {
+                success: function (res) {
                     if (res.status) {
                         $(selectors.shiftDetailModal).modal('hide');
                         loadRoster(currentStart);
@@ -376,9 +376,9 @@
             });
         });
 
-        $(selectors.taskLogUpdateBtn).on('click', function() {
+        $(selectors.taskLogUpdateBtn).on('click', function () {
             var taskLogId = $(selectors.taskLogTaskSelect).val();
-            var status    = $(selectors.taskLogStatusSelect).val();
+            var status = $(selectors.taskLogStatusSelect).val();
 
             if (!taskLogId) {
                 window.Swal.fire('Please select a task to update.');
@@ -394,7 +394,7 @@
                     _token: cfg.csrfToken,
                     status: status
                 },
-                success: function(res) {
+                success: function (res) {
                     if (res.status) {
                         $(selectors.shiftDetailModal).modal('hide');
                         loadRoster(currentStart);
@@ -402,7 +402,7 @@
                         window.Swal.fire(res.message || 'Update failed.');
                     }
                 },
-                error: function() {
+                error: function () {
                     window.Swal.fire('Could not update task status.');
                 }
             });
@@ -418,13 +418,13 @@
             dateFormat: 'Y-m-d',
             defaultDate: currentStart,
             allowInput: false,
-            onChange: function(selectedDates, dateStr) {
+            onChange: function (selectedDates, dateStr) {
                 loadRoster(dateStr);
             }
         });
     }
 
-    window.openModal = function(userId, date) {
+    window.openModal = function (userId, date) {
         $(selectors.userId).val(userId);
         $(selectors.date).val(date);
         $(selectors.assignTask).val(null).trigger('change');
@@ -441,7 +441,7 @@
 
         $.ajax({
             url: url,
-            success: function(res) {
+            success: function (res) {
                 var logs = (res && res.data) ? res.data : [];
                 var pendingCount = 0;
                 var runningCount = 0;
@@ -453,7 +453,7 @@
                 if (logs.length) {
                     var listHtml = '<div>';
 
-                    logs.forEach(function(log) {
+                    logs.forEach(function (log) {
                         if (log.status === 'pending') {
                             pendingCount += 1;
                         } else if (log.status === 'running') {
@@ -511,7 +511,7 @@
                     });
                 }
             },
-            error: function() {
+            error: function () {
                 $(selectors.taskLogStatusList).html('Failed to load task progress.');
                 $(selectors.taskLogCountPending).text('0');
                 $(selectors.taskLogCountRunning).text('0');
@@ -527,7 +527,7 @@
         });
     }
 
-    $(function() {
+    $(function () {
         if (!cfg.rosterUrl) {
             return;
         }
